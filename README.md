@@ -1,6 +1,3 @@
-# compling_573_nlpsystems_washington
-work done for Ling 573
-
 # Deliverable 1
 # Create and lay out your repository.
 This is demonstrated with the src, doc, outputs, and results folders
