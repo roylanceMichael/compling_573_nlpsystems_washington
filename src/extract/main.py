@@ -3,50 +3,32 @@ import json
 import re
 from os import listdir
 
-recordDocQuery = ".//doc"
+recordDocQuery = ".//DOC"
 diseasesQuery = ".//diseases"
 
 whiteSpaceRegex = "[\s]+"
 
 maxInsertCount = 1000
 
-def insertRecords(folders, connection):
-	cur = connection.cursor(buffered=True)
-	
+def parseRecords(folders):	
 	# patient records
 	for recordFolder in folders:
 
 		for fileName in listdir(recordFolder):
 			# read in entire file
-			tree = ET.parse(recordFolder + "/" + fileName)
+			print recordFolder + "/" + fileName
+			parser = ET.XMLParser()
+			parser.parser.UseForeignDTD(True)
+			tree = ET.parse(recordFolder + "/" + fileName, parser=parser)
 
 			# get and parse
 			root = tree.getroot()
 
 			for element in root.findall(recordDocQuery):
-				valueTuple = (element.attrib["id"], reconstruct(element[0].text), recordFolder)
+				print "HELLO"
 
-				cur.execute(recordInsertStatement, valueTuple)
-				connection.commit()
-				
-				print "uploaded " + valueTuple[0]
+def main():
+	parseRecords(["doc/nyt/1998"])
 
-def reconstruct(text):
-	obeseRegex = "obes(?i)"
-	obeseReplace = "#obese#"
-
-	asthmaRegex = "asthm(?i)"
-	asthmaReplace = "#asthma#"
-
-	normalizedText = re.sub(whiteSpaceRegex, " ", text)
-
-	words = []
-	for word in normalizedText.split(" "):
-		if re.search(obeseRegex, word):
-			words.append(obeseReplace)
-		elif re.search(asthmaRegex, word):
-			words.append(asthmaReplace)
-		else:
-			words.append(word)
-
-	return " ".join(words)
+if __name__ == '__main__':
+    main()
