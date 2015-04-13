@@ -1,0 +1,9 @@
+CAPE CANAVERAL, Fla. _ With some difficulty, the Russians regained steering control of their drifting Mir space station Monday, satisfying NASA that it was safe to proceed with a final U.S. shuttle visit.
+The shuttle Discovery and a six-member crew were to blast off from the Kennedy Space Center at 6:09 p.m., EDT, Tuesday.
+Shuttle program managers planned to monitor the Russian repair effort through the night but did not slow efforts to dispatch Discovery.
+U.S. astronaut Andy Thomas, who boarded Mir in late January, waited eagerly for the arrival of his ride back to Earth on Thursday.
+At midday Monday, Mir cosmonauts Talgat Musabayev and Nikolai Budarin and their flight control team in suburban Moscow managed to restart the station's steering system after two days of slow but uncontrolled drift.
+The system constantly steers Mir so that its power generating solar arrays gather the sunlight required to generate electricity.
+NASA's experts acknowledged that the underlying cause of the steering problem had not been pinpointed, though it seemed to reside in the primary sensor that measures Mir's turning motions.
+Those rates are then transmitted to the guidance computer so that it can command the station's turbinelike gyrodynes to move the outpost.
+Initially, the Russians believed the difficulty was in the system's software, then the guidance computer itself.

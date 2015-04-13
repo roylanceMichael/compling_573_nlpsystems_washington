@@ -1,0 +1,9 @@
+Networks can pay huge dividends by letting employees swap files, share printers and hop onto the Internet at will.
+But they used to require expensive consultants, exotic hardware and complicated software, making them something to avoid whenever possible.
+Improved technology has slashed the cost and complexity of networks.
+Today, even an amateur can set up a network for a few hundred dollars and a few hours' time.
+On the hardware side, a network requires two or more computers, each with a network interface card inside.
+It needs a central box called a ``hub'' to which the computers all connect.
+And it needs cables to link the network cards to the hub.
+&LR;   &LR; Computer catalogs and stores are full of such devices these days.
+For software, a simple network needs only Windows 95 on every PC.

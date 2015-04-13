@@ -1,0 +1,9 @@
+The price wars that staggered the computer industry took another swipe at Data General Corp.
+The company Monday laid off 400 workers _ 150 in Massachusetts _ and said it would take a $125 million charge as it abandons the manufacturing of low-end server computers.
+``The prices have dropped so fast,'' said Data General's chief executive, Ronald Skates, adding, ``we're just not going to be in a position to design these products for ourselves.''
+Instead, Skates said, Westborough-based Data General will focus solely on producing high-end server and data storage systems, which bring in fatter profit margins than do low-end models.
+Since 1989, Data General, once among the hardware industry's hottest companies, has slashed its work force from 18,000 to 5,100 as the industry has shifted to meet the rising popularity of personal computers.
+Until recently, there was reason to believe that the bloodletting at Data General was over and a turnaround had begun.
+Prior to last quarter, it had reported 10 straight quarterly profits, and booming sales of servers and data storage systems.
+But recently, prices for low-end servers have softened.
+Servers are used to store or transfer information among PCs in a network.

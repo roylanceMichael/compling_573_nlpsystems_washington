@@ -1,0 +1,8 @@
+Here are the daily key rates from The New York Times.
+---------------------Monday----Previous day---Year Ago    PRIME RATE ---------- 8.50 ------ 8.50 ------- 8.50    DISCOUNT RATE ------- 5.00 ------ 5.00 ------- 5.00    FEDERAL FUNDS(x) ---- 5.88 ------ 5.63 ------- 5.63    3-MO.
+TREAS.
+BILLS -- 4.95 ------ 4.87 ------- 4.93    6-MO.
+TREAS.
+BILLS -- 5.11 ------ 5.10 ------- 5.22    10-YR. TREAS.
+INF(xx) 3.73 ------ 3.73 ------- 3.57    10-YR. TREAS.
+NOTES - 5.52 ------ 5.55 ------- 6.66    30-YR. TREAS.
