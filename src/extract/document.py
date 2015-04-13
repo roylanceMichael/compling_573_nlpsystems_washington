@@ -18,6 +18,25 @@ class Document:
 		self.body = ""
 		self.paragraphs = []
 
+	def __str__(self):
+
+		paragraphText = ""
+		for paragraph in self.paragraphs:
+			paragraphText += paragraph
+
+		return """
+		{
+			docNo: '%s',
+			dateTime: '%s',
+			header: '%s',
+			slug: '%s',
+			headline: '%s',
+			trailer: '%s',
+			body: '%s',
+			paragraphs: '%s'
+		}
+		""" % (self.docNo, self.dateTime, self.header, self.slug, self.headline, self.trailer, self.body, paragraphText)
+
 	@staticmethod
 	def build(objectDictionary):
 		newDocument = Document()
@@ -55,25 +74,6 @@ class Document:
 				newDocument.body += item
 
 		return newDocument
-
-	def __str__(self):
-
-		paragraphText = ""
-		for paragraph in self.paragraphs:
-			paragraphText += paragraph
-
-		return """
-		{
-			docNo: '%s',
-			dateTime: '%s',
-			header: '%s',
-			slug: '%s',
-			headline: '%s',
-			trailer: '%s',
-			body: '%s',
-			paragraphs: '%s'
-		}
-		""" % (self.docNo, self.dateTime, self.header, self.slug, self.headline, self.trailer, self.body, paragraphText)
 
 	@staticmethod
 	def factory(filePath):
