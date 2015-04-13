@@ -1,31 +1,23 @@
-import xml.etree.ElementTree as ET
 import json
 import re
+import document
 from os import listdir
-
-recordDocQuery = ".//DOC"
-diseasesQuery = ".//diseases"
 
 whiteSpaceRegex = "[\s]+"
 
 maxInsertCount = 1000
 
 def parseRecords(folders):	
-	# patient records
+	
 	for recordFolder in folders:
 
 		for fileName in listdir(recordFolder):
-			# read in entire file
-			print recordFolder + "/" + fileName
-			parser = ET.XMLParser()
-			parser.parser.UseForeignDTD(True)
-			tree = ET.parse(recordFolder + "/" + fileName, parser=parser)
+			filePath = recordFolder + "/" + fileName
+			for obj in document.Document.factory(filePath):
+				print obj
 
-			# get and parse
-			root = tree.getroot()
-
-			for element in root.findall(recordDocQuery):
-				print "HELLO"
+			# let's just do one for now...
+			return
 
 def main():
 	parseRecords(["doc/nyt/1998"])
