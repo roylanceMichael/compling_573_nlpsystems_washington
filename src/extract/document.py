@@ -101,7 +101,7 @@ class Document:
 					tagStackLen = len(tagStack)
 
 					if tagStackLen > 0:
-						if currentObject.has_key(tagStack[tagStackLen - 1]):
+						if tagStack[tagStackLen - 1] in currentObject:
 							currentObject[tagStack[tagStackLen - 1]].append(workspace)
 						else:
 							currentObject[tagStack[tagStackLen - 1]] = [ workspace ]
