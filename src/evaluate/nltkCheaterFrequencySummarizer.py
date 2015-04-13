@@ -19,8 +19,7 @@ __author__ = 'thomas'
 import argparse
 import re
 import glob
-
-from src.evaluate import frequencySummarizer
+import frequencySummarizer
 
 
 # get parser args and set up global variables
@@ -35,12 +34,15 @@ namePattern = re.compile("<DOCNO> (.+) </DOCNO>")
 # write the first ten lines to a file
 ##############################################################
 def writeBuffer(docName, docBuffer):
-    docFileName = args.outputPath[0] + "/" + docName + ".A.txt"
-    outFile = open(docFileName, "w")
+    docFileName = args.outputPath[0] + "/" + docName + ".Frequency.txt"
 
     fs = frequencySummarizer.FrequencySummarizer()
     fsSentences = fs.summarize(docBuffer, 10)
 
+    if len(fsSentences) == 0:
+        return
+
+    outFile = open(docFileName, "w")
     for sentence in fsSentences:
       sentence = sentence.replace("\n", "").strip()
       outFile.write(sentence + "\n")
@@ -68,9 +70,6 @@ def extract(fileName):
                 while line != "</P>\n":
                     docBuffer += " " + line
                     line = file.next()
-
-
-
 
 
 ##############################################################
