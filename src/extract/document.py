@@ -9,6 +9,9 @@ bodyKey = "BODY"
 
 class Document:
 	def __init__(self):
+		"""
+			Initilize the document
+		"""
 		self.docNo = ""
 		self.dateTime = ""
 		self.header = ""
@@ -19,6 +22,9 @@ class Document:
 		self.paragraphs = []
 
 	def __str__(self):
+		""" 
+			simple tostring method, used for the developer to see what the object looks like (need to cleanse single quotes)
+		"""
 
 		paragraphText = ""
 		for paragraph in self.paragraphs:
@@ -39,6 +45,10 @@ class Document:
 
 	@staticmethod
 	def build(objectDictionary):
+		""" 
+			build the document object given a dictionary with string keys and array of strings values: { 'key', [ 'first', 'second' ]}
+		"""
+
 		newDocument = Document()
 
 		if docNoKey in objectDictionary:
@@ -76,58 +86,97 @@ class Document:
 		return newDocument
 
 	@staticmethod
-	def factory(filePath):
+	def returnCharsFromDocument(filePath):
+		""" 
+			return the characters from a document
+		"""
 		with open(filePath) as f:
-			tagStack = []
-			currentTag = ""
-			currentObject = {}
-
-			seenOpeningTag = False
-			seenClosingTag = False
-			seenClosingXml = False
-
-
-			workspace = ""
 			while True:
 				c = f.read(1)
 
-				# end of file
 				if not c:
-					break
+					return
 
-				if c == "<":
-					seenOpeningTag = True
+				yield c
 
-					tagStackLen = len(tagStack)
+	@staticmethod
+	def returnCharsFromString(largeString):
+		""" 
+			return the characters from a string
+		"""
+		for char in largeString:
+			yield char
 
-					if tagStackLen > 0:
-						lastTag = tagStack[tagStackLen - 1]
-						if lastTag in currentObject:
-							currentObject[lastTag].append(workspace)
-						else:
-							currentObject[lastTag] = [ workspace ]
+	@staticmethod
+	def factory(input, isFile=False):
+		""" 
+			build a single document given an input
+		"""
+		result = list(Document.factoryMultiple(input, isFile))
+		
+		if len(result) > 0:
+			return result[0]
+		return None
 
-					currentTag = ""
-					workspace = ""
-				elif c == "/" and seenOpeningTag:
-					seenClosingXml = True
-				elif c == ">" and seenOpeningTag:
-					# remove the last one
-					if seenClosingXml and len(tagStack) > 0:
-						tagStack.pop()
+	@staticmethod
+	def factoryMultiple(input, isFile=False, isSingle=True):
+		""" 
+			build multiple documents given an input
+		"""
+
+		charMethod = Document.returnCharsFromString
+    	
+		if isFile:
+			charMethod = Document.returnCharsFromDocument
+
+		tagStack = []
+		currentTag = ""
+		currentObject = {}
+
+		seenOpeningTag = False
+		seenClosingTag = False
+		seenClosingXml = False
+		workspace = ""
+
+		for c in charMethod(input):
+			if c == "<":
+				seenOpeningTag = True
+
+				tagStackLen = len(tagStack)
+
+				if tagStackLen > 0:
+					lastTag = tagStack[tagStackLen - 1]
+					if lastTag in currentObject:
+						currentObject[lastTag].append(workspace)
 					else:
-						tagStack.append(currentTag)
+						currentObject[lastTag] = [ workspace ]
 
-					seenOpeningTag = False
-					seenClosingXml = False
-					seenClosingTag = False
-					workspace = ""
-
-					if len(tagStack) == 0:
-						yield Document.build(currentObject)
-						currentObject = {}
-
-				elif seenOpeningTag:
-					currentTag += c
+				currentTag = ""
+				workspace = ""
+			elif c == "/" and seenOpeningTag:
+				seenClosingXml = True
+			elif c == ">" and seenOpeningTag:
+				# remove the last one
+				if seenClosingXml and len(tagStack) > 0:
+					tagStack.pop()
 				else:
-					workspace += c
+					tagStack.append(currentTag)
+
+				seenOpeningTag = False
+				seenClosingXml = False
+				seenClosingTag = False
+				workspace = ""
+
+				if len(tagStack) == 0:
+					yield Document.build(currentObject)
+
+					# don't want to compute more than we have to...
+					if isSingle:
+						break
+
+					currentObject = {}
+
+			elif seenOpeningTag:
+				currentTag += c
+			else:
+				workspace += c
