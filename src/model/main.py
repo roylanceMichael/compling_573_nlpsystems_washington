@@ -1,5 +1,4 @@
 import doc_model
-from src.extract.main import parseRecords
 import json
 import re
 import src.extract.document as document
@@ -11,8 +10,9 @@ maxInsertCount = 1000
 
 def parseRecords(filePath):	
 	
-	for obj in document.Document.factory(filePath):
-		return obj
+	for obj in document.Document.factoryMultiple(filePath, True, False):
+		if obj:
+			return obj
 	# let's just do one for now...
 	return None
 
