@@ -1,4 +1,3 @@
-import extract.document
 import nltk
 import nltk.data
 from nltk.sourcedstring import SourcedString
