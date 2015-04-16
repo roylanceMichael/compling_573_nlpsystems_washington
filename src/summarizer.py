@@ -17,6 +17,8 @@ __author__ = 'thomas'
 import glob
 import argparse
 from evaluate.rougeEvaluator import RougeEvaluator
+import extract
+from extract import document
 
 # get parser args and set up global variables
 parser = argparse.ArgumentParser(description='Basic Document Summarizer.')
@@ -38,41 +40,33 @@ args = parser.parse_args()
 ##############################################################
 # read a data file
 ##############################################################
-def extract(fileName):
+def extract(docBuffer):
     # call here into Michael's reader
-    # docExtractor = docExtractor.DocExtractor()
-    # return docExtractor.extract(filename)
-    return ["input data1", "input data2"]
+    return document.Document.factory(docBuffer)
 
 
 ##############################################################
 # send the data to the model generator
 ##############################################################
 def getModel(docData):
-    # create brandon's model class
-    # return docModel.DocModel(docData)
-    return ["doc data1", "doc data2"]
+    return [docData.docNo, docData.paragraphs[0]]
 
 
 ##############################################################
 # summarize
 ##############################################################
 def summarize(docModel):
-    # summarizer = summarizer.Summarizer()
-    # return summarizer.summarize(docModel)
-
-    return "Kenneth Joseph Lenihan, a New York research" + \
-           "sociologist who helped refine the scientific methods used in" + \
-           "criminology, died May 25 at his home in Manhattan"
+    return docModel
 
 
 ##############################################################
 # evaluate our summary with rouge
 ##############################################################
 def evaluate(summary):
-    evaluator = RougeEvaluator(args.rougePath, args.summaryOutputPath,
-                               args.goldStandardSummaryPath, args.evaluationOutputPath)
-    return evaluator.evaluate(summary)
+    #evaluator = RougeEvaluator(args.rougePath, args.summaryOutputPath,
+    #                           args.goldStandardSummaryPath, args.evaluationOutputPath)
+    #return evaluator.evaluate(summary)
+    return "testEvaluation"
 
 
 ##############################################################
@@ -83,8 +77,25 @@ def evaluate(summary):
 # main loop
 files = glob.glob(args.docInputPath)
 for filePath in files:
-    docDataArray = extract(filePath)
-    for docData in docDataArray:
+    docBuffer = ""
+    docName = ""
+    dataFile = open(filePath, "r")
+    for line in dataFile:
+        # read file
+        if line == "<DOC>\n":
+            docBuffer = line
+            line = dataFile.next
+            while line != "</DOC>\n":
+                docBuffer += line
+                line = dataFile.next
+            docBuffer += line
+        # now process
+        docData = extract(docBuffer)
         docModel = getModel(docData)
         summary = summarize(docModel)
+        # save our summary
+        outputFileName = args.summaryOutputPath + "/" + summary[0]
+        outputFile = open(outpufFileName, "w")
+        outputFile.write(summary)
         evaluation = evaluate(summary)
+    close(filePath)
