@@ -22,6 +22,20 @@ rootFolder = "../doc/"
 class DocumentRepositoryTests(unittest.TestCase):
 	def test_simpleTopicGet(self):
 		# arrange
+		xmlFileLocation = "../doc/Documents/devtest/simpleTest.xml"
+		topics = extract.topicReader.Topic.factoryMultiple(xmlFileLocation)
+		docRepo = extract.documentRepository.DocumentRepository(rootFolder, topics)
+		foundDocuments = []
+
+		# act
+		for foundDocument in docRepo.getDocumentsGroupedByTopic():
+			foundDocuments.append(foundDocument)
+
+		# assert
+		self.assertTrue(len(foundDocuments) > 0)
+
+	def test_simpleTopicGet(self):
+		# arrange
 		topicId = "D1009B"
 		xmlFileLocation = "../doc/Documents/devtest/GuidedSumm10_test_topics.xml"
 		topics = extract.topicReader.Topic.factoryMultiple(xmlFileLocation)

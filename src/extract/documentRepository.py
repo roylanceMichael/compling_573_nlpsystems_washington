@@ -12,6 +12,12 @@ class DocumentRepository:
 		for topic in topics:
 			self.topics[topic.id] = topic
 
+	def getDocumentsGroupedByTopic(self, useDocsetA=True):
+		for key in self.topics:
+			yield self.topics[key]
+
+			for foundDocument in self.getDocumentsByTopic(key):
+				yield foundDocument
 
 	def getDocumentsByTopic(self, topicId, useDocsetA=True):
 		if topicId == None or topicId not in self.topics:
