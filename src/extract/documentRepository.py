@@ -3,10 +3,14 @@ import document
 import documentIndexer
 
 filePathTemplate = "%s/%s/%s/%s%s_%s"
+trainingFilePathTemplate = "%s/%s/%s_%s%s.xml"
 
+# file paths are:
+# /corpora/LDC/LDC08T25/data
 class DocumentRepository:
-	def __init__(self, rootDocumentFolder, topics):
+	def __init__(self, rootDocumentFolder, trainRootFolder, topics):
 		self.rootDocumentFolder = rootDocumentFolder
+		self.trainRootFolder = trainRootFolder
 		self.topics = { }
 		self.fileIdDictionary = { }
 
@@ -37,6 +41,31 @@ class DocumentRepository:
 			if foundDocument != None:
 				yield foundDocument
 
+	def isTest(self, key):
+		return "ENG" not in key
+
+	def buildTestFileName(self, docId):
+		# first, find folder
+		folderName = docId[0:3].lower()
+		year = docId[3:7]
+		fileId = docId[7:11]
+		docNumber = docId[12:16]
+
+		# does our file exist?
+		fileName = filePathTemplate % (self.rootDocumentFolder, folderName, year, year, fileId, folderName.upper())
+		return fileName
+
+	def buildTrainFileName(self, docId):
+		# first, find folder
+		# APW_ENG_20050902.0312
+		folderName = docId[0:7].lower()
+		year = docId[8:11]
+		fileId = docId[11:13]
+
+		# does our file exist?
+		fileName = trainingFilePathTemplate % (self.trainRootFolder, folderName, folderName.upper(), year, fileId)
+		return fileName
+
 	def getDocument(self, docId):
 		# example id:
 		# APW19990421.0284
@@ -49,13 +78,11 @@ class DocumentRepository:
 			return self.fileIdDictionary[cleansedDocId]
 
 		# first, find folder
-		folderName = docId[0:3].lower()
-		year = docId[3:7]
-		fileId = docId[7:11]
-		docNumber = docId[12:16]
-
-		# does our file exist?
-		fileName = filePathTemplate % (self.rootDocumentFolder, folderName, year, year, fileId, folderName.upper())
+		fileName = ""
+		if self.isTest(docId):
+			fileName = self.buildTestFileName(docId)
+		else:
+			fileName = self.buildTrainFileName(docId)
 
 		for foundDocument in documentIndexer.DocumentIndexer.factoryMultiple(fileName):
 			self.fileIdDictionary[foundDocument.docNo.strip()] = foundDocument

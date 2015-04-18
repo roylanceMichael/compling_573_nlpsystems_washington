@@ -24,7 +24,7 @@ class DocumentRepositoryTests(unittest.TestCase):
 		# arrange
 		xmlFileLocation = "../doc/Documents/devtest/simpleTest.xml"
 		topics = extract.topicReader.Topic.factoryMultiple(xmlFileLocation)
-		docRepo = extract.documentRepository.DocumentRepository(rootFolder, topics)
+		docRepo = extract.documentRepository.DocumentRepository(rootFolder, rootFolder, topics)
 		foundDocuments = []
 
 		# act
@@ -34,12 +34,26 @@ class DocumentRepositoryTests(unittest.TestCase):
 		# assert
 		self.assertTrue(len(foundDocuments) > 0)
 
-	def test_simpleTopicGet(self):
+	def test_simpleTopicGetTraining(self):
+		# arrange
+		xmlFileLocation = "../doc/Documents/training/2009/UpdateSumm09_test_topics.xml"
+		topics = extract.topicReader.Topic.factoryMultiple(xmlFileLocation)
+		docRepo = extract.documentRepository.DocumentRepository(rootFolder, rootFolder, topics)
+		foundDocuments = []
+
+		# act
+		for foundDocument in docRepo.getDocumentsGroupedByTopic():
+			foundDocuments.append(foundDocument)
+
+		# assert
+		self.assertTrue(len(foundDocuments) > 0)
+
+	def test_simpleTopicGetFull(self):
 		# arrange
 		topicId = "D1009B"
 		xmlFileLocation = "../doc/Documents/devtest/GuidedSumm10_test_topics.xml"
 		topics = extract.topicReader.Topic.factoryMultiple(xmlFileLocation)
-		docRepo = extract.documentRepository.DocumentRepository(rootFolder, topics)
+		docRepo = extract.documentRepository.DocumentRepository(rootFolder, rootFolder, topics)
 		foundDocuments = []
 
 		# act
@@ -54,7 +68,7 @@ class DocumentRepositoryTests(unittest.TestCase):
 		documentId = "NYT19980601.0001"
 		xmlFileLocation = "../doc/Documents/devtest/GuidedSumm10_test_topics.xml"
 		topics = extract.topicReader.Topic.factoryMultiple(xmlFileLocation)
-		docRepo =extract.documentRepository.DocumentRepository(rootFolder, topics)
+		docRepo =extract.documentRepository.DocumentRepository(rootFolder, rootFolder, topics)
 
 		# act
 		foundDocument = docRepo.getDocument(documentId)

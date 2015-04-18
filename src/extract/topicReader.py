@@ -19,7 +19,7 @@ class Topic:
 		self.docsetB = []
 
 	def __str__(self):
-			""" 
+			"""
 				simple tostring method, used for the developer to see what the object looks like (need to cleanse single quotes)
 			"""
 
@@ -73,9 +73,12 @@ class Topic:
 		for element in root.findall(topicQuery):
 			newTopic = Topic()
 			newTopic.id = element.attrib["id"]
-			newTopic.category = element.attrib["category"]
+
+			if element.attrib.has_key("category"):
+				newTopic.category = element.attrib["category"]
 
 			for subElement in element:
-				elementDictionary[subElement.tag](newTopic,subElement)
+				if subElement.tag != None and subElement.tag in elementDictionary:
+					elementDictionary[subElement.tag](newTopic,subElement)
 
 			yield newTopic
