@@ -5,7 +5,7 @@ import unittest
 testModules = [
     'tests.documentTests',
     'tests.topicReaderTests',
-    'tests.repoTests',
+    'tests.documentRepositoryTests',
     ]
 
 suite = unittest.TestSuite()

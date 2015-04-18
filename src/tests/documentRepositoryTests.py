@@ -1,14 +1,46 @@
 import unittest
 import extract.documentRepository
 
+# D1009B
+"""
+	<docsetA id = "D1009B-A">
+		<doc id = "NYT19981001.0493" />
+		<doc id = "APW19990107.0206" />
+		<doc id = "APW19990128.0158" />
+		<doc id = "APW19990206.0079" />
+		<doc id = "NYT19981215.0290" />
+		<doc id = "NYT19980625.0509" />
+		<doc id = "NYT19980627.0184" />
+		<doc id = "APW19980709.0454" />
+		<doc id = "NYT19980821.0418" />
+		<doc id = "NYT19980904.0388" />
+	</docsetA>
+"""
+
+rootFolder = "../doc/"
+
 class DocumentRepositoryTests(unittest.TestCase):
+	def test_simpleTopicGet(self):
+		# arrange
+		topicId = "D1009B"
+		xmlFileLocation = "../doc/Documents/devtest/GuidedSumm10_test_topics.xml"
+		topics = extract.topicReader.Topic.factoryMultiple(xmlFileLocation)
+		docRepo = extract.documentRepository.DocumentRepository(rootFolder, topics)
+		foundDocuments = []
+
+		# act
+		for foundDocument in docRepo.getDocumentsByTopic(topicId):
+			foundDocuments.append(foundDocument)
+
+		# assert
+		self.assertTrue(len(foundDocuments) > 0)
+
 	def test_simpleGet(self):
 		# arrange
 		documentId = "NYT19980601.0001"
-		rootFolder = "../doc/"
 		xmlFileLocation = "../doc/Documents/devtest/GuidedSumm10_test_topics.xml"
 		topics = extract.topicReader.Topic.factoryMultiple(xmlFileLocation)
-		docRepo =extract.documentIdRepository.DocumentRepository(rootFolder, topics)
+		docRepo =extract.documentRepository.DocumentRepository(rootFolder, topics)
 
 		# act
 		foundDocument = docRepo.getDocument(documentId)

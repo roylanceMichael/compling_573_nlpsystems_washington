@@ -1,3 +1,5 @@
+import os.path
+
 docNoKey = "DOCNO"
 dateTimeKey = "DATE_TIME"
 docTypeKey = "DOCTYPE"
@@ -78,7 +80,7 @@ class Document:
 				newDocument.headline += item
 
 		if trailerKey in objectDictionary:
-			for item in objectDictionary[pKey]:
+			for item in objectDictionary[trailerKey]:
 				newDocument.trailer += item
 
 		if pKey in objectDictionary:
@@ -96,14 +98,15 @@ class Document:
 		"""
 			return the characters from a document
 		"""
-		with open(filePath) as f:
-			while True:
-				c = f.read(1)
+		if os.path.isfile(filePath):
+			with open(filePath) as f:
+				while True:
+					c = f.read(1)
 
-				if not c:
-					return
+					if not c:
+						return
 
-				yield c
+					yield c
 
 	@staticmethod
 	def returnCharsFromString(largeString):

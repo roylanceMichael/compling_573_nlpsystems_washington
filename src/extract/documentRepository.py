@@ -1,18 +1,38 @@
 import os.path
 import document
 
-filePathTemplate = "%s/%s/%s%s_%s"
+filePathTemplate = "%s/%s/%s/%s%s_%s"
 
 class DocumentRepository:
-	def __init__(rootDocumentFolder, topics):
+	def __init__(self, rootDocumentFolder, topics):
 		self.rootDocumentFolder = rootDocumentFolder
-		self.topics = topics
+		self.topics = { }
 		self.fileIdDictionary = { }
+
+		for topic in topics:
+			self.topics[topic.id] = topic
+
+
+	def getDocumentsByTopic(self, topicId, useDocsetA=True):
+		if topicId == None or topicId not in self.topics:
+			return
+
+		foundTopic = self.topics[topicId]
+
+		docsetList = foundTopic.docsetA
+
+		if not useDocsetA:
+			docsetList = foundTopic.docsetB
+
+		for docId in docsetList:
+			foundDocument = self.getDocument(docId)
+
+			if foundDocument != None:
+				yield foundDocument
 
 	def getDocument(self, docId):
 		# example id:
 		# APW19990421.0284
-
 		if docId == None or len(docId) < 16:
 			return None
 
@@ -28,9 +48,9 @@ class DocumentRepository:
 		docNumber = docId[12:16]
 
 		# does our file exist?
-		fileName = filePathTemplate % (folderName, year, year, fileId, folderName.upper())
+		fileName = filePathTemplate % (self.rootDocumentFolder, folderName, year, year, fileId, folderName.upper())
 
-		for foundDocument in document.factoryMultiple(fileName, True, False):
+		for foundDocument in document.Document.factoryMultiple(fileName, True, False):
 			self.fileIdDictionary[foundDocument.docNo.strip()] = foundDocument
 
 		if cleansedDocId in self.fileIdDictionary:
