@@ -4,6 +4,7 @@ import unittest
 
 testModules = [
     'tests.documentTests',
+    'tests.topicReaderTests',
     ]
 
 suite = unittest.TestSuite()
