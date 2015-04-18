@@ -117,6 +117,21 @@ class Document:
 			yield char
 
 	@staticmethod
+	def factoryFromIndexer(documentIndexer):
+		if documentIndexer == None:
+			return None
+
+		index = 0
+		actualString = ""
+		for char in Document.returnCharsFromDocument(documentIndexer.fileName):
+			if index >= documentIndexer.start and index <= documentIndexer.end:
+				actualString += char
+			elif index > documentIndexer.end:
+				return Document.factory(actualString)
+
+			index += 1
+
+	@staticmethod
 	def factory(input, isFile=False):
 		"""
 			build a single document given an input

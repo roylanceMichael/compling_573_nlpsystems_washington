@@ -6,12 +6,12 @@ testModules = [
     'tests.documentTests',
     'tests.topicReaderTests',
     'tests.documentRepositoryTests',
+    'tests.documentIndexerTests',
     ]
 
 suite = unittest.TestSuite()
 
 for testModule in testModules:
     suite.addTest(unittest.defaultTestLoader.loadTestsFromName(testModule))
-
 
 unittest.TextTestRunner().run(suite)
