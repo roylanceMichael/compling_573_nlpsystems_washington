@@ -1,5 +1,6 @@
 docNoKey = "DOCNO"
 dateTimeKey = "DATE_TIME"
+docTypeKey = "DOCTYPE"
 headerKey = "HEADER"
 slugKey = "SLUG"
 trailerKey = "TRAILER"
@@ -15,6 +16,7 @@ class Document:
 		self.docNo = ""
 		self.dateTime = ""
 		self.header = ""
+		self.docType = ""
 		self.slug = ""
 		self.headline = ""
 		self.trailer = ""
@@ -22,7 +24,7 @@ class Document:
 		self.paragraphs = []
 
 	def __str__(self):
-		""" 
+		"""
 			simple tostring method, used for the developer to see what the object looks like (need to cleanse single quotes)
 		"""
 
@@ -45,7 +47,7 @@ class Document:
 
 	@staticmethod
 	def build(objectDictionary):
-		""" 
+		"""
 			build the document object given a dictionary with string keys and array of strings values: { 'key', [ 'first', 'second' ]}
 		"""
 
@@ -55,9 +57,13 @@ class Document:
 			for item in objectDictionary[docNoKey]:
 				newDocument.docNo += item
 
+		if docTypeKey in objectDictionary:
+			for item in objectDictionary[docTypeKey]:
+				newDocument.docType += item
+
 		if dateTimeKey in objectDictionary:
 			for item in objectDictionary[dateTimeKey]:
-				newDocument.dateTime += item		
+				newDocument.dateTime += item
 
 		if headerKey in objectDictionary:
 			for item in objectDictionary[headerKey]:
@@ -87,7 +93,7 @@ class Document:
 
 	@staticmethod
 	def returnCharsFromDocument(filePath):
-		""" 
+		"""
 			return the characters from a document
 		"""
 		with open(filePath) as f:
@@ -101,7 +107,7 @@ class Document:
 
 	@staticmethod
 	def returnCharsFromString(largeString):
-		""" 
+		"""
 			return the characters from a string
 		"""
 		for char in largeString:
@@ -109,23 +115,23 @@ class Document:
 
 	@staticmethod
 	def factory(input, isFile=False):
-		""" 
+		"""
 			build a single document given an input
 		"""
 		result = list(Document.factoryMultiple(input, isFile))
-		
+
 		if len(result) > 0:
 			return result[0]
 		return None
 
 	@staticmethod
 	def factoryMultiple(input, isFile=False, isSingle=True):
-		""" 
+		"""
 			build multiple documents given an input
 		"""
 
 		charMethod = Document.returnCharsFromString
-    	
+
 		if isFile:
 			charMethod = Document.returnCharsFromDocument
 
