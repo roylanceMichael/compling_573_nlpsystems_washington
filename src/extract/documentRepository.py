@@ -29,7 +29,6 @@ class DocumentRepository:
 			return
 
 		foundTopic = self.topics[topicId]
-
 		docsetList = foundTopic.docsetA
 
 		if not useDocsetA:
@@ -75,7 +74,7 @@ class DocumentRepository:
 		cleansedDocId = docId.strip()
 
 		if cleansedDocId in self.fileIdDictionary:
-			return self.fileIdDictionary[cleansedDocId]
+			return document.Document.factoryFromIndexer(self.fileIdDictionary[cleansedDocId])
 
 		# first, find folder
 		fileName = ""
