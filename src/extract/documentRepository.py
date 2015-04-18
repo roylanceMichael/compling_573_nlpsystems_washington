@@ -1,5 +1,6 @@
 import os.path
 import document
+import documentIndexer
 
 filePathTemplate = "%s/%s/%s/%s%s_%s"
 
@@ -56,9 +57,10 @@ class DocumentRepository:
 		# does our file exist?
 		fileName = filePathTemplate % (self.rootDocumentFolder, folderName, year, year, fileId, folderName.upper())
 
-		for foundDocument in document.Document.factoryMultiple(fileName, True, False):
+		for foundDocument in documentIndexer.DocumentIndexer.factoryMultiple(fileName):
 			self.fileIdDictionary[foundDocument.docNo.strip()] = foundDocument
 
 		if cleansedDocId in self.fileIdDictionary:
-			return self.fileIdDictionary[cleansedDocId]
+			return document.Document.factoryFromIndexer(self.fileIdDictionary[cleansedDocId])
+
 		return None
