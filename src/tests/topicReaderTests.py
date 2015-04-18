@@ -62,6 +62,3 @@ class TopicReaderTests(unittest.TestCase):
 		self.assertTrue( foundTopic.docsetB[0] ==  "APW19990502.0104" )
 		self.assertTrue( foundTopic.docsetB[3] ==  "APW19990503.0260" )
 		self.assertTrue( foundTopic.docsetB[9] ==  "APW19990511.0210" )
-
-def run():
-    unittest.main()

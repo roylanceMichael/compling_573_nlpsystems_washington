@@ -1,7 +1,6 @@
 import unittest
 import extract.document
 
-
 docXml = """
 <DOC>
 <DOCNO> NYT19980601.0001 </DOCNO>
@@ -165,7 +164,3 @@ Manhattan; a daughter, Jean Lenihan of Seattle; four sisters,
 Eileen McEwan of Houston, Moira Earhart of North Carolina, Jean
 Dobson of Bay Shore, N.Y., and Sue Adams of Cape May, N.J.; and
 three grandchildren.""")
-
-
-def run():
-    unittest.main()
