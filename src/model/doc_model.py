@@ -75,7 +75,8 @@ class Chunk(list, ParentCompare):
 		
 		if isinstance(tree, Tree):
 			
-			self.tag = tree.node
+			#self.tag = tree.node #nltk 2 version
+			self.tag = tree.label()
 			list.__init__(self, ( Word(tree[x][0],tree[x][1], self, x) for x in range(len(tree)) ))
 			self.full = " ".join(w.full for w in self)
 		else:
