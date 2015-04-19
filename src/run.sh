@@ -19,7 +19,7 @@ if [ -z "$3" ]; then
 	topicXmlFile="../doc/Documents/devtest/GuidedSumm10_test_topics.xml"
 fi
 if [ -z "$4" ]; then
-	summaryOutputPath="../outputs"
+	summaryOutputPath="../outputs/systemSummaries"
 fi
 if [ -z "$5" ]; then
 	modelSummaryPath="/opt/dropbox/14-15/573/Data/models/devtest"

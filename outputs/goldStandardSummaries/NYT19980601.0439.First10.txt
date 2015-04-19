@@ -1,9 +1,0 @@
-With a Song on Your Web    Listen carefully: Is that the song of a cerulean warbler outside your window?
-If you aren't sure _ and most people aren't, even while looking at a bird book _ a new Web site will play the song for you.
-The site has been designed to help scholars collect information from birders to build a database on North American wood warblers.
-Some of the 51 species are endangered or threatened, and all will migrate thousands of miles to nest and breed from April through July.
-The Web project marks the first online census of the warbler migration, a project set up by the Cornell University Laboratory of Ornithology and the National Audubon Society.
-The site for sightings is http://birdsource.cornell.edu.
-At the Web site, you can learn which states have the most sightings (New York, Pennsylvania, Texas and Florida), or the greatest variety by species (Texas, Pennsylvania, Ohio and Louisiana).
-The site's goal is to track these thumb-sized birds of yellow, blue, red, green, black and white, who sing with a range of rich warbles or trills or rings, and to improve the data on the routes of the warblers, whose annual commute from South and Central America homeward to Canada and the United States typically covers thousands of miles.
-Birders are asked to respond to questions and post observations.
