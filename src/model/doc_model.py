@@ -1,7 +1,6 @@
 import nltk
 import nltk.data
 from nltk.tree import Tree
-from nltk.sourcedstring import SourcedString, CompoundSourcedString
 from nltk.tokenize import word_tokenize
 from nltk.stem.porter import *
 #from nltk.stem.snowball import SnowballStemmer
@@ -44,7 +43,7 @@ class ParentCompare:
 class Text(list, ParentCompare):
 	def __init__(self, in_string, parent, position_in_parent):
 		self.parent, self.position_in_parent = parent, position_in_parent
-		self.full = SourcedString(in_string.strip(), "text body")
+		self.full = in_string.strip()
 		sentences = sentence_breaker.tokenize(self.full)
 		list.__init__(self, ( Sentence(sentences[x], self, x) for x in range(len(sentences)) ) )
 		
@@ -78,11 +77,7 @@ class Chunk(list, ParentCompare):
 			
 			self.tag = tree.node
 			list.__init__(self, ( Word(tree[x][0],tree[x][1], self, x) for x in range(len(tree)) ))
-			if isinstance(self[0].full, SourcedString) and isinstance(self[-1].full, SourcedString) and not isinstance(self[0].full, CompoundSourcedString) and not isinstance(self[-1].full, CompoundSourcedString):
-				# ):
-				self.full = parent.full[self[0].full.begin:self[-1].full.end]
-			else:
-				self.full = " ".join(w.full for w in self)
+			self.full = " ".join(w.full for w in self)
 		else:
 			self.full, self.tag = tree
 			list.__init__(self, [Word(self.full, self.tag, self, 0)])
