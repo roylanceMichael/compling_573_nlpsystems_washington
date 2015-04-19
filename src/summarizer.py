@@ -28,7 +28,8 @@ parser.add_argument('--doc-input-path2', help='Path to secondary data files', de
 parser.add_argument('--topic-xml', help='Path to topic xml file', dest='topicXml')
 parser.add_argument('--output-path', help='Path to our output', dest='outputPath')
 parser.add_argument('--rouge-path', help='Path to rouge', dest='rougePath')
-parser.add_argument('--gold-standard-summary-path', help='Path to gold standard summaries', dest='goldStandardSummaryPath')
+parser.add_argument('--gold-standard-summary-path', help='Path to gold standard summaries',
+					dest='goldStandardSummaryPath')
 args = parser.parse_args()
 
 ##############################################################
@@ -43,24 +44,27 @@ rouge = RougeEvaluator(args.rougePath, args.goldStandardSummaryPath, summaryOutp
 # send the data to the model generator
 ##############################################################
 def getModel(docData):
-    return model.docModel.DocModel(docData)
+	return model.docModel.DocModel(docData)
 
 
 ##############################################################
 # summarize
 ##############################################################
 def summarize(docModels):
-    summary = ""
-    for docModel in docModels:
-        summary += docModel.body[0].full + "\n"
-    return summary
+	summary = ""
+	for docModel in docModels:
+		try:
+			summary += docModel.body[0].full + "\n"
+		except IndexError:
+			pass  # no summary for this doc
+	return summary
 
 
 ##############################################################
 # evaluate our summary with rouge
 ##############################################################
 def evaluate(topicID):
-    return rouge.evaluate(topicID)
+	return rouge.evaluate(topicID)
 
 
 ##############################################################
@@ -71,32 +75,32 @@ def evaluate(topicID):
 # go through each topic
 topics = []
 for topic in extract.topicReader.Topic.factoryMultiple(args.topicXml):
-    topics.append(topic)
+	topics.append(topic)
 
 documentRepository = extract.documentRepository.DocumentRepository(args.docInputPath, args.docInputPath2, topics)
 
 for topic in topics:
-    transformedTopicId = topic.docsetAId[:-3] + '-A'
-    # let's get all the documents associated with this topic
-    models = list()
-    # get the doc objects, and build doc models from them
-    for foundDocument in documentRepository.getDocumentsByTopic(topic.id):
-        models.append(getModel(foundDocument))
+	transformedTopicId = topic.docsetAId[:-3] + '-A'
+	# let's get all the documents associated with this topic
+	models = list()
+	# get the doc objects, and build doc models from them
+	for foundDocument in documentRepository.getDocumentsByTopic(topic.id):
+		models.append(getModel(foundDocument))
 
-    # make a summary of the topic cluster
-    summary = summarize(models)
-    if summary is not None:
-        summaryFileName = summaryOutputPath + "/" + transformedTopicId + ".OURS"
-        summaryFile = open(summaryFileName, 'w')
-        summaryFile.write(summary)
-        summaryFile.close()
+	# make a summary of the topic cluster
+	summary = summarize(models)
+	if summary is not None:
+		summaryFileName = summaryOutputPath + "/" + transformedTopicId + ".OURS"
+		summaryFile = open(summaryFileName, 'w')
+		summaryFile.write(summary)
+		summaryFile.close()
 
-    print topic.category + " : " + topic.title + " : building summary for " + str(len(models)) + " models"
-    print summary
+	print topic.category + " : " + topic.title + " : building summary for " + str(len(models)) + " models"
+	print summary
 
-    # run rouge evaluator
-    evaluation = evaluate(transformedTopicId)
-    evaluationFileName = evaluationOutputPath + "/" + topic.docsetAId
-    evaluationFile = open(evaluationFileName, 'w')
-    evaluationFile.write(evaluation)
-    evaluationFile.close()
+	# run rouge evaluator
+	evaluation = evaluate(transformedTopicId)
+	evaluationFileName = evaluationOutputPath + "/" + topic.docsetAId
+	evaluationFile = open(evaluationFileName, 'w')
+	evaluationFile.write(evaluation)
+	evaluationFile.close()

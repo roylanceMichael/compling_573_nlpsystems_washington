@@ -33,46 +33,44 @@ namePattern = re.compile("<DOCNO> (.+) </DOCNO>")
 # write the first ten lines to a file
 ##############################################################
 def writeBuffer(docName, docBuffer):
-    docFileName = args.outputPath[0] + "/" + docName + ".First10.txt"
-    sentences = nltk.tokenize.sent_tokenize(docBuffer)
+	docFileName = args.outputPath[0] + "/" + docName + ".First10.txt"
+	sentences = nltk.tokenize.sent_tokenize(docBuffer)
 
-    numSentences = min([9, len(sentences)-1])
+	numSentences = min([9, len(sentences) - 1])
 
-    if numSentences == 0:
-        return
+	if numSentences == 0:
+		return
 
-    outFile = open(docFileName, "w")
+	outFile = open(docFileName, "w")
 
-    for i in range(0, numSentences):
-        sentence = sentences[i].replace("\n", "").strip()
-        outFile.write(sentence + "\n")
+	for i in range(0, numSentences):
+		sentence = sentences[i].replace("\n", "").strip()
+		outFile.write(sentence + "\n")
 
-    outFile.close()
+	outFile.close()
+
 
 ##############################################################
 # get data from each <DOC> element
 ##############################################################
 def extract(fileName):
-    file = open(fileName, 'r')
-    docBuffer = ""
-    docName = ""
-    for line in file:
-        if line == "</DOC>\n":
-            writeBuffer(docName, docBuffer)
-            docBuffer = ""
-            docName = ""
-        else:
-            result = namePattern.findall(line)
-            if len(result) != 0:
-                docName = result[0]
-            elif line == "<P>\n":
-                line = file.next()
-                while line != "</P>\n":
-                    docBuffer += " " + line
-                    line = file.next()
-
-
-
+	file = open(fileName, 'r')
+	docBuffer = ""
+	docName = ""
+	for line in file:
+		if line == "</DOC>\n":
+			writeBuffer(docName, docBuffer)
+			docBuffer = ""
+			docName = ""
+		else:
+			result = namePattern.findall(line)
+			if len(result) != 0:
+				docName = result[0]
+			elif line == "<P>\n":
+				line = file.next()
+				while line != "</P>\n":
+					docBuffer += " " + line
+					line = file.next()
 
 
 ##############################################################
@@ -81,5 +79,5 @@ def extract(fileName):
 # main loop
 files = glob.glob(args.inputPath[0])
 for filePath in files:
-    extract(filePath)
+	extract(filePath)
 

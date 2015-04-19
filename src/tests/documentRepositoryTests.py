@@ -19,6 +19,7 @@ import extract.documentRepository
 
 rootFolder = "../doc/"
 
+
 class DocumentRepositoryTests(unittest.TestCase):
 	def test_simpleTopicGet(self):
 		# arrange
@@ -68,22 +69,22 @@ class DocumentRepositoryTests(unittest.TestCase):
 		documentId = "NYT19980601.0001"
 		xmlFileLocation = "../doc/Documents/devtest/GuidedSumm10_test_topics.xml"
 		topics = extract.topicReader.Topic.factoryMultiple(xmlFileLocation)
-		docRepo =extract.documentRepository.DocumentRepository(rootFolder, rootFolder, topics)
+		docRepo = extract.documentRepository.DocumentRepository(rootFolder, rootFolder, topics)
 
 		# act
 		foundDocument = docRepo.getDocument(documentId)
 
 		# assert
-		self.assertTrue(foundDocument != None )
-		self.assertTrue(foundDocument.docNo.strip() == "NYT19980601.0001" )
-		self.assertTrue(foundDocument.docType.strip() == "NEWS STORY" )
-		self.assertTrue(foundDocument.dateTime.strip() == "1998-06-01 00:02" )
+		self.assertTrue(foundDocument != None)
+		self.assertTrue(foundDocument.docNo.strip() == "NYT19980601.0001")
+		self.assertTrue(foundDocument.docType.strip() == "NEWS STORY")
+		self.assertTrue(foundDocument.dateTime.strip() == "1998-06-01 00:02")
 		self.assertTrue(foundDocument.header.strip() == """A7753 &Cx1f; taf-z
-u a &Cx13;  &Cx11;  BC-OBIT-LENIHAN-NYT &LR;      06-01 0290""" )
-		self.assertTrue(foundDocument.slug.strip() == "BC-OBIT-LENIHAN-NYT" )
+u a &Cx13;  &Cx11;  BC-OBIT-LENIHAN-NYT &LR;      06-01 0290""")
+		self.assertTrue(foundDocument.slug.strip() == "BC-OBIT-LENIHAN-NYT")
 		self.assertTrue(foundDocument.headline.strip() == """KENNETH J. LENIHAN, SOCIOLOGIST WHO STUDIED CAUSES OF RECIDIVISM,
-DIES AT 69""" )
-		self.assertTrue(foundDocument.slug.strip() == "BC-OBIT-LENIHAN-NYT" )
+DIES AT 69""")
+		self.assertTrue(foundDocument.slug.strip() == "BC-OBIT-LENIHAN-NYT")
 		self.assertTrue(len(foundDocument.paragraphs) == 7)
 		self.assertTrue(foundDocument.paragraphs[0].strip() == """NEW YORK _ Kenneth Joseph Lenihan, a New York research
 sociologist who helped refine the scientific methods used in

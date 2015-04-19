@@ -10,6 +10,7 @@ headlineKey = "HEADLINE"
 pKey = "P"
 bodyKey = "BODY"
 
+
 class DocumentIndexer:
 	def __init__(self):
 		"""
@@ -99,7 +100,7 @@ class DocumentIndexer:
 					if lastTag in currentObject:
 						currentObject[lastTag].append(workspace)
 					else:
-						currentObject[lastTag] = [ workspace ]
+						currentObject[lastTag] = [workspace]
 
 				currentTag = ""
 				workspace = ""

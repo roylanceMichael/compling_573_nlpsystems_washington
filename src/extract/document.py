@@ -9,6 +9,8 @@ trailerKey = "TRAILER"
 headlineKey = "HEADLINE"
 pKey = "P"
 bodyKey = "BODY"
+textKey = "TEXT"
+
 
 class Document:
 	def __init__(self):
@@ -48,6 +50,8 @@ class Document:
 		""" % (self.docNo, self.dateTime, self.header, self.slug, self.headline, self.trailer, self.body, paragraphText)
 
 	@staticmethod
+
+
 	def build(objectDictionary):
 		"""
 			build the document object given a dictionary with string keys and array of strings values: { 'key', [ 'first', 'second' ]}
@@ -85,6 +89,9 @@ class Document:
 
 		if pKey in objectDictionary:
 			for item in objectDictionary[pKey]:
+				newDocument.paragraphs.append(item)
+		elif textKey in objectDictionary:
+			for item in objectDictionary[textKey]:
 				newDocument.paragraphs.append(item)
 
 		if bodyKey in objectDictionary:
@@ -173,7 +180,7 @@ class Document:
 					if lastTag in currentObject:
 						currentObject[lastTag].append(workspace)
 					else:
-						currentObject[lastTag] = [ workspace ]
+						currentObject[lastTag] = [workspace]
 
 				currentTag = ""
 				workspace = ""

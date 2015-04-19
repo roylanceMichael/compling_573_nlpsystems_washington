@@ -69,6 +69,7 @@ NYT-06-01-98 0002EDT &QL;
 </DOC>
 """
 
+
 class DocumentTests(unittest.TestCase):
 	def test_parseSingleDocument(self):
 		# arrange
@@ -76,15 +77,15 @@ class DocumentTests(unittest.TestCase):
 		foundDocument = extract.document.Document.factory(docXml)
 
 		# assert
-		self.assertTrue(foundDocument.docNo.strip() == "NYT19980601.0001" )
-		self.assertTrue(foundDocument.docType.strip() == "NEWS STORY" )
-		self.assertTrue(foundDocument.dateTime.strip() == "1998-06-01 00:02" )
+		self.assertTrue(foundDocument.docNo.strip() == "NYT19980601.0001")
+		self.assertTrue(foundDocument.docType.strip() == "NEWS STORY")
+		self.assertTrue(foundDocument.dateTime.strip() == "1998-06-01 00:02")
 		self.assertTrue(foundDocument.header.strip() == """A7753 &Cx1f; taf-z
-u a &Cx13;  &Cx11;  BC-OBIT-LENIHAN-NYT &LR;      06-01 0290""" )
-		self.assertTrue(foundDocument.slug.strip() == "BC-OBIT-LENIHAN-NYT" )
+u a &Cx13;  &Cx11;  BC-OBIT-LENIHAN-NYT &LR;      06-01 0290""")
+		self.assertTrue(foundDocument.slug.strip() == "BC-OBIT-LENIHAN-NYT")
 		self.assertTrue(foundDocument.headline.strip() == """KENNETH J. LENIHAN, SOCIOLOGIST WHO STUDIED CAUSES OF RECIDIVISM,
-DIES AT 69""" )
-		self.assertTrue(foundDocument.slug.strip() == "BC-OBIT-LENIHAN-NYT" )
+DIES AT 69""")
+		self.assertTrue(foundDocument.slug.strip() == "BC-OBIT-LENIHAN-NYT")
 		self.assertTrue(len(foundDocument.paragraphs) == 7)
 		self.assertTrue(foundDocument.paragraphs[0].strip() == """NEW YORK _ Kenneth Joseph Lenihan, a New York research
 sociologist who helped refine the scientific methods used in
@@ -127,15 +128,15 @@ three grandchildren.""")
 			break
 
 		# assert
-		self.assertTrue(foundDocument.docNo.strip() == "NYT19980601.0001" )
-		self.assertTrue(foundDocument.docType.strip() == "NEWS STORY" )
-		self.assertTrue(foundDocument.dateTime.strip() == "1998-06-01 00:02" )
+		self.assertTrue(foundDocument.docNo.strip() == "NYT19980601.0001")
+		self.assertTrue(foundDocument.docType.strip() == "NEWS STORY")
+		self.assertTrue(foundDocument.dateTime.strip() == "1998-06-01 00:02")
 		self.assertTrue(foundDocument.header.strip() == """A7753 &Cx1f; taf-z
-u a &Cx13;  &Cx11;  BC-OBIT-LENIHAN-NYT &LR;      06-01 0290""" )
-		self.assertTrue(foundDocument.slug.strip() == "BC-OBIT-LENIHAN-NYT" )
+u a &Cx13;  &Cx11;  BC-OBIT-LENIHAN-NYT &LR;      06-01 0290""")
+		self.assertTrue(foundDocument.slug.strip() == "BC-OBIT-LENIHAN-NYT")
 		self.assertTrue(foundDocument.headline.strip() == """KENNETH J. LENIHAN, SOCIOLOGIST WHO STUDIED CAUSES OF RECIDIVISM,
-DIES AT 69""" )
-		self.assertTrue(foundDocument.slug.strip() == "BC-OBIT-LENIHAN-NYT" )
+DIES AT 69""")
+		self.assertTrue(foundDocument.slug.strip() == "BC-OBIT-LENIHAN-NYT")
 		self.assertTrue(len(foundDocument.paragraphs) == 7)
 		self.assertTrue(foundDocument.paragraphs[0].strip() == """NEW YORK _ Kenneth Joseph Lenihan, a New York research
 sociologist who helped refine the scientific methods used in

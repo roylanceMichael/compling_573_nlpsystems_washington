@@ -35,6 +35,7 @@ import extract.topicReader
 </topic>
 """
 
+
 class TopicReaderTests(unittest.TestCase):
 	def test_parseFromFile(self):
 		# arrange
@@ -48,17 +49,17 @@ class TopicReaderTests(unittest.TestCase):
 			break
 
 		# assert
-		self.assertTrue( foundTopic != None )
-		self.assertTrue( foundTopic.id.strip() ==  "D1001A" )
-		self.assertTrue( foundTopic.category.strip() ==  "2" )
-		self.assertTrue( foundTopic.title.strip() ==  "Columbine Massacre" )
-		self.assertTrue( foundTopic.docsetAId.strip() ==  "D1001A-A" )
-		self.assertTrue( foundTopic.docsetBId.strip() ==  "D1001A-B" )
-		self.assertTrue( len(foundTopic.docsetA) ==  10 )
-		self.assertTrue( len(foundTopic.docsetB) ==  10 )
-		self.assertTrue( foundTopic.docsetA[0] ==  "APW19990421.0284" )
-		self.assertTrue( foundTopic.docsetA[3] ==  "NYT19990423.0262" )
-		self.assertTrue( foundTopic.docsetA[9] ==  "APW19990428.0297" )
-		self.assertTrue( foundTopic.docsetB[0] ==  "APW19990502.0104" )
-		self.assertTrue( foundTopic.docsetB[3] ==  "APW19990503.0260" )
-		self.assertTrue( foundTopic.docsetB[9] ==  "APW19990511.0210" )
+		self.assertTrue(foundTopic != None)
+		self.assertTrue(foundTopic.id.strip() == "D1001A")
+		self.assertTrue(foundTopic.category.strip() == "2")
+		self.assertTrue(foundTopic.title.strip() == "Columbine Massacre")
+		self.assertTrue(foundTopic.docsetAId.strip() == "D1001A-A")
+		self.assertTrue(foundTopic.docsetBId.strip() == "D1001A-B")
+		self.assertTrue(len(foundTopic.docsetA) == 10)
+		self.assertTrue(len(foundTopic.docsetB) == 10)
+		self.assertTrue(foundTopic.docsetA[0] == "APW19990421.0284")
+		self.assertTrue(foundTopic.docsetA[3] == "NYT19990423.0262")
+		self.assertTrue(foundTopic.docsetA[9] == "APW19990428.0297")
+		self.assertTrue(foundTopic.docsetB[0] == "APW19990502.0104")
+		self.assertTrue(foundTopic.docsetB[3] == "APW19990503.0260")
+		self.assertTrue(foundTopic.docsetB[9] == "APW19990511.0210")

@@ -5,6 +5,7 @@ from os import listdir
 
 topicQuery = ".//topic"
 
+
 class Topic:
 	def __init__(self):
 		"""
@@ -19,19 +20,19 @@ class Topic:
 		self.docsetB = []
 
 	def __str__(self):
-			"""
-				simple tostring method, used for the developer to see what the object looks like (need to cleanse single quotes)
-			"""
+		"""
+			simple tostring method, used for the developer to see what the object looks like (need to cleanse single quotes)
+		"""
 
-			docsetAText = ""
-			for item in self.docsetA:
-				docsetAText += item + ","
+		docsetAText = ""
+		for item in self.docsetA:
+			docsetAText += item + ","
 
-			docsetBText = ""
-			for item in self.docsetB:
-				docsetBText += item + ","
+		docsetBText = ""
+		for item in self.docsetB:
+			docsetBText += item + ","
 
-			return """
+		return """
 			{
 				id: '%s',
 				category: '%s',
@@ -63,7 +64,7 @@ class Topic:
 
 	@staticmethod
 	def factoryMultiple(fileName):
-		elementDictionary = { "title" : Topic.handleTitle, "docsetA": Topic.handleDocsetA, "docsetB":Topic.handleDocsetB  }
+		elementDictionary = {"title": Topic.handleTitle, "docsetA": Topic.handleDocsetA, "docsetB": Topic.handleDocsetB}
 
 		xmlDocument = ET.parse(fileName)
 
@@ -79,6 +80,6 @@ class Topic:
 
 			for subElement in element:
 				if subElement.tag != None and subElement.tag in elementDictionary:
-					elementDictionary[subElement.tag](newTopic,subElement)
+					elementDictionary[subElement.tag](newTopic, subElement)
 
 			yield newTopic

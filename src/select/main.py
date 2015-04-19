@@ -9,8 +9,8 @@ whiteSpaceRegex = "[\s]+"
 
 maxInsertCount = 1000
 
-def parseRecords(filePath):	
-	
+
+def parseRecords(filePath):
 	for obj in document.Document.factoryMultiple(filePath, True, False):
 		if obj:
 			return obj
@@ -19,9 +19,8 @@ def parseRecords(filePath):
 
 
 def main():
-		
 	doc_m = doc_model.Doc_Model(parseRecords("doc/nyt/1998/19980601_NYT"))
-	
+
 	limit = 300
 	current = 0
 	for s in first_n([doc_m]):
@@ -30,7 +29,7 @@ def main():
 		if current > limit:
 			break
 		print(sentence)
-	
+
 
 if __name__ == '__main__':
-    main()
+	main()

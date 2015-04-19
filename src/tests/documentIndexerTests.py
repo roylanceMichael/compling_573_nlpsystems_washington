@@ -4,6 +4,7 @@ import extract.document
 
 rootFolder = "../doc/"
 
+
 class DocumentIndexerTests(unittest.TestCase):
 	def test_simpleTopicGet(self):
 		# arrange
@@ -16,6 +17,6 @@ class DocumentIndexerTests(unittest.TestCase):
 			break
 
 		# assert
-		foundDocument =extract.document.Document.factoryFromIndexer(foundDocumentIndexer)
+		foundDocument = extract.document.Document.factoryFromIndexer(foundDocumentIndexer)
 
 		self.assertTrue(foundDocument != None)
