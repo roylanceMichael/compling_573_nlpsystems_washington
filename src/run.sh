@@ -30,4 +30,4 @@ fi
 
 
 
-python2.7 summarizer.py --doc-input-path $firstCorporaPath --doc-input-path2 $secondCorporaPath --topic-xml $topicXmlFile --output-path $outputPath --gold-standard-summary-path modelSummaryPath --rouge-path $rougePath
+python2.7 summarizer.py --doc-input-path $firstCorporaPath --doc-input-path2 $secondCorporaPath --topic-xml $topicXmlFile --output-path $outputPath --gold-standard-summary-path $modelSummaryPath --rouge-path $rougePath

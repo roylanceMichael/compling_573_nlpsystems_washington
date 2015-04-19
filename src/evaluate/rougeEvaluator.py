@@ -21,6 +21,7 @@ class RougeEvaluator():
 
         globString = self.modelSummaryDir + '/' + topicId + '.M.100.*'
         modelFiles = glob.glob(globString)
+
         for modelFile in modelFiles:
             shutil.copy(modelFile, modelTempDirName)
 
