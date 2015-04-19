@@ -77,22 +77,22 @@ for topic in extract.topicReader.Topic.factoryMultiple(args.topicXml):
 documentRepository = extract.documentRepository.DocumentRepository(args.docInputPath, args.docInputPath2, topics)
 
 for topic in topics:
-    # # let's get all the documents associated with this topic
-    # models = list()
-    # # get the doc objects, and build doc models from them
-    # for foundDocument in documentRepository.getDocumentsByTopic(topic.id):
-    #     models.append(getModel(foundDocument))
-    #
-    # # make a summary of the topic cluster
-    # summary = summarize(models)
-    # if summary is not None:
-    #     summaryFileName = args.summaryOutputPath + "/" + topic.docsetAId + ".OURS"
-    #     summaryFile = open(summaryFileName, 'w')
-    #     summaryFile.write(summary)
-    #     summaryFile.close()
-    #
-    # print topic.category + " : " + topic.title + " : building summary for " + str(len(models)) + " models"
-    # print summary
+    # let's get all the documents associated with this topic
+    models = list()
+    # get the doc objects, and build doc models from them
+    for foundDocument in documentRepository.getDocumentsByTopic(topic.id):
+        models.append(getModel(foundDocument))
+
+    # make a summary of the topic cluster
+    summary = summarize(models)
+    if summary is not None:
+        summaryFileName = args.summaryOutputPath + "/" + topic.docsetAId + ".OURS"
+        summaryFile = open(summaryFileName, 'w')
+        summaryFile.write(summary)
+        summaryFile.close()
+
+    print topic.category + " : " + topic.title + " : building summary for " + str(len(models)) + " models"
+    print summary
 
     # run rouge evaluator
     evaluation = rouge.evaluate(topic.docsetAId)
