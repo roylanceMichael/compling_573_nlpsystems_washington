@@ -32,4 +32,4 @@ if [ -z "$7" ]; then
 fi
 
 
-python2.7 summarizer.py --doc-input-path $firstCorporaPath --doc-input-path2 $secondCorporaPath --topic-xml $topicXmlFile --summary-output-path $summaryOutputPath --gold-standard-summary-path modelSummaryPath --rouge-path $rougePath --evaluation-output-path evalOutputPath
+python summarizer.py --doc-input-path $firstCorporaPath --doc-input-path2 $secondCorporaPath --topic-xml $topicXmlFile --summary-output-path $summaryOutputPath --gold-standard-summary-path modelSummaryPath --rouge-path $rougePath --evaluation-output-path evalOutputPath
