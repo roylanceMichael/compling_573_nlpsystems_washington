@@ -27,11 +27,11 @@ def main():
 	print("sentence")
 	print(txt[0])
 	print("chunk")
-	print(txt[0][1])
+	print(txt[0][0])
 	print("word")
-	print(txt[0][1][0])
+	print(txt[0][0][0])
 	print("stem")
-	print(txt[0][1][0].stem)
+	print(txt[0][0][0].stem)
 	
 
 if __name__ == '__main__':
