@@ -53,12 +53,12 @@ class DocumentRepository:
         docNumber = docId[12:16]
 
         #### HACK!  special name weirdness for XIN documents.  they have a weird folder name  ####
-        firstFolderNameHack = folderName
-        if folderName == 'xiw':
-            firstFolderNameHack = 'xie'
+        fileNameHack = folderName.upper()
+        if folderName == 'xie':
+            fileNameHack = 'XIN'
 
         # does our file exist?
-        fileName = filePathTemplate % (self.rootDocumentFolder, firstFolderNameHack, year, year, fileId, folderName.upper())
+        fileName = filePathTemplate % (self.rootDocumentFolder, folderName, year, year, fileId, fileNameHack)
         globbedFileName = glob.glob(fileName + '*')[0]
         return globbedFileName
 
