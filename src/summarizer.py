@@ -26,16 +26,18 @@ parser = argparse.ArgumentParser(description='Basic Document Summarizer.')
 parser.add_argument('--doc-input-path', help='Path to data files', dest='docInputPath')
 parser.add_argument('--doc-input-path2', help='Path to secondary data files', dest='docInputPath2')
 parser.add_argument('--topic-xml', help='Path to topic xml file', dest='topicXml')
-parser.add_argument('--summary-output-path', help='Path to our generated summaries', dest='summaryOutputPath')
+parser.add_argument('--output-path', help='Path to our output', dest='outputPath')
 parser.add_argument('--rouge-path', help='Path to rouge', dest='rougePath')
 parser.add_argument('--gold-standard-summary-path', help='Path to gold standard summaries', dest='goldStandardSummaryPath')
-parser.add_argument('--evaluation-output-path', help='Path to save evaluations', dest='evaluationOutputPath')
 args = parser.parse_args()
 
 ##############################################################
 # global variables
 ##############################################################
-rouge = RougeEvaluator(args.rougePath, args.goldStandardSummaryPath, args.summaryOutputPath)
+summaryOutputPath = "../outputs/systemSummaries"
+evaluationOutputPath = "../outputs/evaluations"
+modelSummaryCachePath = "../outputs/modelSummaryCache"
+rouge = RougeEvaluator(args.rougePath, args.goldStandardSummaryPath, summaryOutputPath, modelSummaryCachePath)
 
 ##############################################################
 # send the data to the model generator
@@ -57,11 +59,8 @@ def summarize(docModels):
 ##############################################################
 # evaluate our summary with rouge
 ##############################################################
-def evaluate(summary):
-    #evaluator = RougeEvaluator(args.rougePath, args.summaryOutputPath,
-    #                           args.goldStandardSummaryPath, args.evaluationOutputPath)
-    #return evaluator.evaluate(summary)
-    return "testEvaluation"
+def evaluate(topicID):
+    return rouge.evaluate(topicID)
 
 
 ##############################################################
@@ -84,9 +83,10 @@ for topic in topics:
         models.append(getModel(foundDocument))
 
     # make a summary of the topic cluster
+    transformedTopicId = topic.docsetAId[:-3] + '-A'
     summary = summarize(models)
     if summary is not None:
-        summaryFileName = args.summaryOutputPath + "/" + topic.docsetAId + ".OURS"
+        summaryFileName = summaryOutputPath + "/" + transformedTopicId + ".OURS"
         summaryFile = open(summaryFileName, 'w')
         summaryFile.write(summary)
         summaryFile.close()
@@ -95,6 +95,6 @@ for topic in topics:
     print summary
 
     # run rouge evaluator
-    evaluation = rouge.evaluate(topic.docsetAId)
-    evaluationFileName = args.evaluationOutputPath + "/" + topic.docsetAId
+    evaluation = evaluate(transformedTopicId)
+    evaluationFileName = evaluationOutputPath + "/" + topic.docsetAId
 
