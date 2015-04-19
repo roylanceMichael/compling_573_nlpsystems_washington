@@ -26,7 +26,7 @@ class RougeEvaluator():
             shutil.copy(modelFile, modelTempDirName)
 
         abspath = os.path.abspath(self.rougeDir)
-        rouge = Rouge155(abspath, ' -e /opt/dropbox/14-15/573/code/ROUGE/data -a -n 4 -x -c 95 -r 1000 -f A -p 0.5 -t 0 -l 100 -s -d')
+        rouge = Rouge155(abspath, '-e /opt/dropbox/14-15/573/code/ROUGE/data -a -n 4 -x -c 95 -r 1000 -f A -p 0.5 -t 0 -l 100 -s -d')
         rouge.system_filename_pattern = '(' + topicId + ').OURS'
         rouge.model_filename_pattern = '#ID#.M.100.[A-Z].[A-Z]'
         rouge.system_dir = os.path.abspath(self.systemSummaryDir)
