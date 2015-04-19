@@ -14,43 +14,44 @@ __author__ = 'thomas'
 
 """
 
-import glob
 import argparse
 from evaluate.rougeEvaluator import RougeEvaluator
 import extract
 import extract.topicReader
 import extract.documentRepository
-from extract import document
+import model.docModel
 
 # get parser args and set up global variables
 parser = argparse.ArgumentParser(description='Basic Document Summarizer.')
 parser.add_argument('--doc-input-path', help='Path to data files', dest='docInputPath')
 parser.add_argument('--doc-input-path2', help='Path to secondary data files', dest='docInputPath2')
 parser.add_argument('--topic-xml', help='Path to topic xml file', dest='topicXml')
+parser.add_argument('--summary-output-path', help='Path to our generated summaries', dest='summaryOutputPath')
 parser.add_argument('--rouge-path', help='Path to rouge', dest='rougePath')
 parser.add_argument('--gold-standard-summary-path', help='Path to gold standard summaries', dest='goldStandardSummaryPath')
-parser.add_argument('--summaryOutputPath', help='Path to our generated summaries', dest='summaryOutputPath')
 parser.add_argument('--evaluation-output-path', help='Path to save evaluations', dest='evaluationOutputPath')
 args = parser.parse_args()
-
-
 
 ##############################################################
 # global variables
 ##############################################################
-
+rouge = RougeEvaluator(args.rougePath, args.goldStandardSummaryPath, args.summaryOutputPath)
 
 ##############################################################
 # send the data to the model generator
 ##############################################################
 def getModel(docData):
-    return [docData.docNo, docData.paragraphs[0]]
+    return model.docModel.DocModel(docData)
+
 
 ##############################################################
 # summarize
 ##############################################################
-def summarize(docModel):
-    return docModel
+def summarize(docModels):
+    summary = ""
+    for docModel in docModels:
+        summary += docModel.body[0].full + "\n"
+    return summary
 
 
 ##############################################################
@@ -71,18 +72,29 @@ def evaluate(summary):
 # go through each topic
 topics = []
 for topic in extract.topicReader.Topic.factoryMultiple(args.topicXml):
-  topics.append(topic)
+    topics.append(topic)
 
 documentRepository = extract.documentRepository.DocumentRepository(args.docInputPath, args.docInputPath2, topics)
 
 for topic in topics:
-  # let's get all the documents associated with this topic
-  allSummarizedModels = []
-  for foundDocument in documentRepository.getDocumentsByTopic(topic.id):
-    initialModel = getModel(foundDocument)
-    summarizeModel = summarize(initialModel)
-    if summarizeModel != None:
-      allSummarizedModels.append(summarizeModel)
+    # let's get all the documents associated with this topic
+    models = list()
+    # get the doc objects, and build doc models from them
+    for foundDocument in documentRepository.getDocumentsByTopic(topic.id):
+        models.append(getModel(foundDocument))
 
-  print topic.category + " : " + topic.title +  " : building summary for " + str(len(allSummarizedModels)) + " models"
-  print "this is when we will print out a summarization of the models"
+    # make a summary of the topic cluster
+    summary = summarize(models)
+    if summary is not None:
+        summaryFileName = args.summaryOutputPath + "/" + topic.docsetAId + ".OURS"
+        summaryFile = open(summaryFileName, 'w')
+        summaryFile.write(summary)
+        summaryFile.close()
+
+    print topic.category + " : " + topic.title + " : building summary for " + str(len(models)) + " models"
+    print summary
+
+    # run rouge evaluator
+    evaluation = rouge.evaluate(topic.docsetAId)
+    evaluationFileName = args.evaluationOutputPath + "/" + topic.docsetAId
+
