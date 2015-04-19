@@ -1,22 +1,24 @@
 __author__ = 'thomas'
 
+from pyrouge import Rouge155
+import os
 
 class RougeEvaluator():
-    def __init__(self):
-        self.rougeDirectory = rougeDirectory
-        self.systemDir = systemDir
-        self.modelDir = modelDir
+    def __init__(self, rougeDir, modelSummaryDir, systemSummaryDir):
+        self.rougeDir = rougeDir
+        self.systemSummaryDir = systemSummaryDir
+        self.modelSummaryDir = modelSummaryDir
 
-    def evaluate(self, givenSummary):
-        from pyrouge import Rouge155
 
-        rouge = Rouge155("/home/thomas/projects/clms/ling573/src/RELEASE-1.5.5")
-        rouge.system_dir = '/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/outputs/nltkCheaterSummaries'
-        rouge.model_dir = '/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/outputs/goldStandardSummaries'
-        rouge.system_filename_pattern = '(\w+).Frequency.txt'
-        rouge.model_filename_pattern = '#ID#.First10.txt'
+    def evaluate(self, topicId, ):
+        # rouge = Rouge155("/home/thomas/projects/clms/ling573/src/RELEASE-1.5.5")
+        rouge = Rouge155(self.rougeDir)
+        rouge.system_dir = os.path.abspath(self.systemSummaryDir)
+        rouge.model_dir = os.path.abspath(self.modelSummaryDir)
+        rouge.system_filename_pattern = '(' + topicId + ').M.100.[A-Z].[A-Z]'
+        rouge.model_filename_pattern = '#ID#.OURS'
         output = rouge.convert_and_evaluate()
-        print(output)
+        print output
         return output
 
         #output_dict = rouge.output_to_dict(output)

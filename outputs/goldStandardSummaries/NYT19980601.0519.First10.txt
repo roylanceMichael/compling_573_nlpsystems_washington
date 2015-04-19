@@ -1,9 +1,0 @@
-The Year 2000 problem stems from a shortcut used by computer programmers in the 1960s and '70s to store only the last two digits of a year _ ``74'' instead of ``1974,'' for example.
-It could cause computers to read January 1, 2000 as January 1, 1900, which in turn could bollix accounting, payroll, tax and customer billing records, inventories and supplier relations.
-``We feel this is a very serious issue,'' said Dan Hill, director of the Small Business Administration's office of technology in Washington, D.C. ``Every small business should address it.''
-&UR;  &LR;    There are plenty of organizations _ including the SBA, Microsoft, the Federal Reserve Bank of San Francisco and a host of technology-service providers _ that are eager to help.
-But businesses must make the first move, by seeking that help.
-A new study sponsored by Wells Fargo Bank found that 82 percent of all small businesses are ``at risk'' for Year 2000-related problems, yet fewer than a third are taking the matter seriously enough to act.
-Many small businesses believe the problem can't affect them if their computers are relatively new and they recently bought programs off the shelf from established vendors such as Microsoft.
-It's true that most modern hardware and software come free of Year 2000 (Y2K) problems.
-But even these computer systems can become contaminated, Hill warns, ``if you've modified your software _ for example by bringing in a file you had before that was not Y2K-compliant.''
