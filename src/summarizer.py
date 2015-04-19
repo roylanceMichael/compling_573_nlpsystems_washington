@@ -43,7 +43,7 @@ rouge = RougeEvaluator(args.rougePath, args.goldStandardSummaryPath, summaryOutp
 # send the data to the model generator
 ##############################################################
 def getModel(docData):
-    return model.docModel.DocModel(docData)
+    return model.docModel.Doc_Model(docData)
 
 
 ##############################################################
