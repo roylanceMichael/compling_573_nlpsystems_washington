@@ -95,9 +95,8 @@ class DocumentRepository:
             fileName = self.buildTrainFileName(docId)
 
         for foundDocument in document.Document.factoryMultiple(fileName, True, False):
-            self.fileIdDictionary[foundDocument.docNo.strip()] = foundDocument
-
-        if cleansedDocId in self.fileIdDictionary:
-            return self.fileIdDictionary[cleansedDocId]
-
+            if cleansedDocId == foundDocument.docNo.strip():
+                self.fileIdDictionary[foundDocument.docNo.strip()] = foundDocument
+                return foundDocument
+            
         return None
