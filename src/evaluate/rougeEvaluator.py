@@ -4,6 +4,7 @@ from pyrouge import Rouge155
 import os
 import shutil
 import glob
+import re
 
 
 class RougeEvaluator():
@@ -12,6 +13,15 @@ class RougeEvaluator():
 		self.systemSummaryDir = systemSummaryDir
 		self.modelSummaryDir = modelSummaryDir
 		self.modelSummaryCachePath = modelSummaryCachePath
+
+	# this is because ROUGE doesn't appreciate non-utf8 characters
+	def sanitizingCopy(self, inputFileName, outputFileName):
+		outputFile = open(outputFileName, 'w')
+		inputFile = open(inputFileName, 'r')
+		for line in inputFile:
+			outputFile.write(re.sub(r'[^\x00-\x7F]', ' ', line))
+		outputFile.close()
+		inputFile.close()
 
 	def evaluate(self, topicId):
 		modelTempDirName = self.modelSummaryCachePath + '/' + topicId
@@ -24,7 +34,7 @@ class RougeEvaluator():
 		modelFiles = glob.glob(globString)
 
 		for modelFile in modelFiles:
-			shutil.copy(modelFile, modelTempDirName)
+			self.sanitizingCopy(modelFile, modelFile.replace(self.modelSummaryDir, modelTempDirName))
 
 		abspath = os.path.abspath(self.rougeDir)
 		rouge = Rouge155(abspath,
