@@ -161,14 +161,14 @@ class Document:
 
                 if tagStackLen > 0:
                     lastTag = tagStack[tagStackLen - 1]
-                    if lastTag in currentObject:
-                        currentObject[lastTag].append(workspace)
-                    else:
-                        currentObject[lastTag] = [workspace]
-
                     # check if we found the docno
                     if lastTag == docNoKey and workspace.strip() == docNo:
                         foundDocNo = True
+
+                    if lastTag in currentObject and foundDocNo:
+                        currentObject[lastTag].append(workspace)
+                    elif foundDocNo:
+                        currentObject[lastTag] = [workspace]
 
                 currentTag = ""
                 workspace = ""
