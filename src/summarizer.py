@@ -19,7 +19,7 @@ from evaluate.rougeEvaluator import RougeEvaluator
 import extract
 import extract.topicReader
 import extract.documentRepository
-import model.doc_model
+import model.docModel
 
 # get parser args and set up global variables
 parser = argparse.ArgumentParser(description='Basic Document Summarizer.')
@@ -83,13 +83,16 @@ documentRepository = extract.documentRepository.DocumentRepository(args.docInput
 
 for topic in topics:
     transformedTopicId = topic.docsetAId[:-3] + '-A'
+    print "processing topicId: " + transformedTopicId
     # let's get all the documents associated with this topic
     models = list()
     # get the doc objects, and build doc models from them
     for foundDocument in documentRepository.getDocumentsByTopic(topic.id):
+        print "processing docNo: " + foundDocument.docNo
         models.append(getModel(foundDocument))
 
     # make a summary of the topic cluster
+    print topic.category + " : " + topic.title + " : building summary for " + str(len(models)) + " models"
     summary = summarize(models)
     if summary is not None:
         summaryFileName = summaryOutputPath + "/" + transformedTopicId + ".OURS"
@@ -97,13 +100,12 @@ for topic in topics:
         summaryFile.write(summary)
         summaryFile.close()
 
-    print topic.category + " : " + topic.title + " : building summary for " + str(len(models)) + " models"
     print summary
 
     # run rouge evaluator
+    print "running the rouge evaluator"
     evaluation = evaluate(transformedTopicId)
     evaluationFileName = evaluationOutputPath + "/" + topic.docsetAId
     evaluationFile = open(evaluationFileName, 'w')
     evaluationFile.write(evaluation)
     evaluationFile.close()
-
