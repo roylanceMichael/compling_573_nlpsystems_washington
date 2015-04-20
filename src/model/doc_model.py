@@ -15,109 +15,118 @@ chunker = nltk.RegexpParser(chunking_grammar)
 
 nltk_v2 = nltk.__version__[0] == '2'
 
-#implements comparisons based on .parent and .position_in_parent
+# implements comparisons based on .parent and .position_in_parent
 class ParentCompare:
-	def __lt__(self, other):
-		if self.parent == other.parent:
-			return self.position_in_parent < other.position_in_parent
-		return self.parent < other.parent
+    def __lt__(self, other):
+        if self.parent == other.parent:
+            return self.position_in_parent < other.position_in_parent
+        return self.parent < other.parent
 
-	def __le__(self, other):
-		if self.parent == other.parent:
-			return self.position_in_parent < + other.position_in_parent
-		return self.parent <= other.parent
+    def __le__(self, other):
+        if self.parent == other.parent:
+            return self.position_in_parent < + other.position_in_parent
+        return self.parent <= other.parent
 
-	def __gt__(self, other):
-		return not self <= other
+    def __gt__(self, other):
+        return not self <= other
 
-	def __ge__(self, other):
-		return not self < other
+    def __ge__(self, other):
+        return not self < other
 
-	def __eq__(self, other):
-		if self.parent == other.parent:
-			return self.position_in_parent == other.position_in_parent
-		return False
+    def __eq__(self, other):
+        if self.parent == other.parent:
+            return self.position_in_parent == other.position_in_parent
+        return False
 
-	def __ne__(self, other):
-		return not self == other
+    def __ne__(self, other):
+        return not self == other
 
 
 class Text(list, ParentCompare):
-	def __init__(self, in_string, parent, position_in_parent):
-		self.parent, self.position_in_parent = parent, position_in_parent
-		self.full = in_string.strip()
-		sentences = sentence_breaker.tokenize(self.full)
-		list.__init__(self, (Sentence(sentences[x], self, x) for x in range(len(sentences))))
+    def __init__(self, in_string, parent, position_in_parent):
+        self.parent, self.position_in_parent = parent, position_in_parent
+        self.full = in_string.strip()
+        sentences = sentence_breaker.tokenize(self.full)
 
-	def __str__(self):
-		return self.full
+        # most articles start with a city and date followed by an underscore or --
+        # the sentence breaker will just treat it as part of the first sentence
+        if len(sentences) > 0:
+            if " -- " in sentences[0]:
+                sentences[0] = sentences[0].partition(" -- ")[2]
+            elif " _ " in sentences[0]:
+                sentences[0] = sentences[0].partition(" _ ")[2]
+
+        list.__init__(self, (Sentence(sentences[x], self, x) for x in range(len(sentences))))
+
+    def __str__(self):
+        return self.full
 
 
 class Sentence(list, ParentCompare):
-	def __init__(self, in_string, parent, position_in_parent):
-		self.parent, self.position_in_parent = parent, position_in_parent
-		self.full = in_string
+    def __init__(self, in_string, parent, position_in_parent):
+        self.parent, self.position_in_parent = parent, position_in_parent
+        self.full = in_string
 
-		# at this level we need to deside if we are doing full parsing or just chunking
-		# I'll assume chunking for now because we need at least full NPs to figure out coreference
-		# for now just assume every word is its own chunk
+        # at this level we need to deside if we are doing full parsing or just chunking
+        # I'll assume chunking for now because we need at least full NPs to figure out coreference
+        # for now just assume every word is its own chunk
 
-		tokenized = list(x for x in nltk.pos_tag(word_tokenize(self.full)) if len(x[0]) > 0)
+        tokenized = list(x for x in nltk.pos_tag(word_tokenize(self.full)) if len(x[0]) > 0)
 
-		self.tree = chunker.parse(tokenized)
-		#print(self.tree)
+        self.tree = chunker.parse(tokenized)
+        #print(self.tree)
 
-		list.__init__(self, (Chunk(self.tree[t], self, t) for t in range(len(self.tree))))
+        list.__init__(self, (Chunk(self.tree[t], self, t) for t in range(len(self.tree))))
 
-	def __str__(self):
-		return self.full
+    def __str__(self):
+        return self.full
 
 
 class Chunk(list, ParentCompare):
-	def __init__(self, tree, parent, position_in_parent):
-		self.parent, self.position_in_parent = parent, position_in_parent
+    def __init__(self, tree, parent, position_in_parent):
+        self.parent, self.position_in_parent = parent, position_in_parent
 
-		if isinstance(tree, Tree):
+        if isinstance(tree, Tree):
 
-			if nltk_v2:
-				self.tag = tree.node  #nltk 2 version
-			else:
-				self.tag = tree.label()
-			list.__init__(self, (Word(tree[x][0], tree[x][1], self, x) for x in range(len(tree))))
-			self.full = " ".join(w.full for w in self)
-		else:
-			self.full, self.tag = tree
-			list.__init__(self, [Word(self.full, self.tag, self, 0)])
+            if nltk_v2:
+                self.tag = tree.node  #nltk 2 version
+            else:
+                self.tag = tree.label()
+            list.__init__(self, (Word(tree[x][0], tree[x][1], self, x) for x in range(len(tree))))
+            self.full = " ".join(w.full for w in self)
+        else:
+            self.full, self.tag = tree
+            list.__init__(self, [Word(self.full, self.tag, self, 0)])
 
-		# coreference will occure at this level
+        # coreference will occure at this level
 
-	def __str__(self):
-		return self.full
+    def __str__(self):
+        return self.full
 
 
 class Word(ParentCompare):
-	def __init__(self, in_string, tag, parent, position_in_parent):
-		self.parent, self.position_in_parent = parent, position_in_parent
-		self.full = in_string
-		#if len(in_string) == 0:
-		#	print(parent.parent.tree)
-		self.tag = tag
-		self.stem = stemmer(in_string)
+    def __init__(self, in_string, tag, parent, position_in_parent):
+        self.parent, self.position_in_parent = parent, position_in_parent
+        self.full = in_string
+        #if len(in_string) == 0:
+        #	print(parent.parent.tree)
+        self.tag = tag
+        self.stem = stemmer(in_string)
 
-	def __str__(self):
-		return self.full
+    def __str__(self):
+        return self.full
 
 
 class Doc_Model:
-	def __init__(self, doc):
-		self.docNo = doc.docNo
-		self.dateTime = doc.dateTime
+    def __init__(self, doc):
+        self.docNo = doc.docNo
+        self.dateTime = doc.dateTime
 
-		self.header = Text(doc.header, self, -4)
-		self.slug = Text(doc.slug, self, -3)
-		self.headline = Text(doc.headline, self, -2)
-		self.trailer = Text(doc.trailer, self, -1)
-		self.body = Text(doc.body, self, 0)
-		self.paragraphs = [Text(doc.paragraphs[x], self, x + 1) for x in range(len(doc.paragraphs))]
+        self.header = Text(doc.header, self, -4)
+        self.slug = Text(doc.slug, self, -3)
+        self.headline = Text(doc.headline, self, -2)
+        self.trailer = Text(doc.trailer, self, -1)
+        self.body = Text(doc.body, self, 0)
+        self.paragraphs = [Text(doc.paragraphs[x], self, x + 1) for x in range(len(doc.paragraphs))]
 
 
