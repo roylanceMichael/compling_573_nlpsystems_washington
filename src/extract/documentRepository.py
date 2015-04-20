@@ -85,7 +85,7 @@ class DocumentRepository:
         cleansedDocId = docId.strip()
 
         if cleansedDocId in self.fileIdDictionary:
-            return document.Document.factoryFromIndexer(self.fileIdDictionary[cleansedDocId])
+            return self.fileIdDictionary[cleansedDocId]
 
         # first, find folder
         fileName = ""
@@ -94,10 +94,10 @@ class DocumentRepository:
         else:
             fileName = self.buildTrainFileName(docId)
 
-        for foundDocument in documentIndexer.DocumentIndexer.factoryMultiple(fileName):
+        for foundDocument in document.Document.factoryMultiple(fileName, True, False):
             self.fileIdDictionary[foundDocument.docNo.strip()] = foundDocument
 
         if cleansedDocId in self.fileIdDictionary:
-            return document.Document.factoryFromIndexer(self.fileIdDictionary[cleansedDocId])
+            return self.fileIdDictionary[cleansedDocId]
 
         return None
