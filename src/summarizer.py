@@ -20,6 +20,7 @@ import extract
 import extract.topicReader
 import extract.documentRepository
 import model.docModel
+import model.doc_model
 
 # get parser args and set up global variables
 parser = argparse.ArgumentParser(description='Basic Document Summarizer.')
@@ -44,20 +45,22 @@ rouge = RougeEvaluator(args.rougePath, args.goldStandardSummaryPath, summaryOutp
 # send the data to the model generator
 ##############################################################
 def getModel(docData):
-	return model.docModel.DocModel(docData)
+    return model.doc_model.Doc_Model(docData)
 
 
 ##############################################################
 # summarize
 ##############################################################
 def summarize(docModels):
-	summary = ""
-	for docModel in docModels:
-		try:
-			summary += docModel.body[0].full + "\n"
-		except IndexError:
-			pass  # no summary for this doc
-	return summary
+    summary = ""
+    for docModel in docModels:
+        if len(docModel.paragraphs) != 0 and len(docModel.paragraphs[0]):
+            summary += docModel.paragraphs[0][0].full + "\n"
+        else:
+            print("empty document?")
+            print(docModel.docNo)
+            print(docModel.headline)
+    return summary
 
 
 ##############################################################
@@ -80,27 +83,30 @@ for topic in extract.topicReader.Topic.factoryMultiple(args.topicXml):
 documentRepository = extract.documentRepository.DocumentRepository(args.docInputPath, args.docInputPath2, topics)
 
 for topic in topics:
-	transformedTopicId = topic.docsetAId[:-3] + '-A'
-	# let's get all the documents associated with this topic
-	models = list()
-	# get the doc objects, and build doc models from them
-	for foundDocument in documentRepository.getDocumentsByTopic(topic.id):
-		models.append(getModel(foundDocument))
+    transformedTopicId = topic.docsetAId[:-3] + '-A'
+    print "processing topicId: " + transformedTopicId
+    # let's get all the documents associated with this topic
+    models = list()
+    # get the doc objects, and build doc models from them
+    for foundDocument in documentRepository.getDocumentsByTopic(topic.id):
+        print "processing docNo: " + foundDocument.docNo
+        models.append(getModel(foundDocument))
 
-	# make a summary of the topic cluster
-	summary = summarize(models)
-	if summary is not None:
-		summaryFileName = summaryOutputPath + "/" + transformedTopicId + ".OURS"
-		summaryFile = open(summaryFileName, 'w')
-		summaryFile.write(summary)
-		summaryFile.close()
+    # make a summary of the topic cluster
+    print topic.category + " : " + topic.title + " : building summary for " + str(len(models)) + " models"
+    summary = summarize(models)
+    if summary is not None:
+        summaryFileName = summaryOutputPath + "/" + transformedTopicId + ".OURS"
+        summaryFile = open(summaryFileName, 'w')
+        summaryFile.write(summary)
+        summaryFile.close()
 
-	print topic.category + " : " + topic.title + " : building summary for " + str(len(models)) + " models"
-	print summary
+    print summary
 
-	# run rouge evaluator
-	evaluation = evaluate(transformedTopicId)
-	evaluationFileName = evaluationOutputPath + "/" + topic.docsetAId
-	evaluationFile = open(evaluationFileName, 'w')
-	evaluationFile.write(evaluation)
-	evaluationFile.close()
+    # run rouge evaluator
+    print "running the rouge evaluator"
+    evaluation = evaluate(transformedTopicId)
+    evaluationFileName = evaluationOutputPath + "/" + topic.docsetAId
+    evaluationFile = open(evaluationFileName, 'w')
+    evaluationFile.write(evaluation)
+    evaluationFile.close()
