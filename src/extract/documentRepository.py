@@ -1,7 +1,5 @@
-import os.path
-import document
-import documentIndexer
 import glob
+import document
 
 filePathTemplate = "%s%s/%s/%s%s_%s"
 trainingFilePathTemplate = "%s/%s/%s_%s%s.xml"
@@ -94,9 +92,8 @@ class DocumentRepository:
         else:
             fileName = self.buildTrainFileName(docId)
 
-        for foundDocument in document.Document.factoryMultiple(fileName, True, False):
-            if cleansedDocId == foundDocument.docNo.strip():
-                self.fileIdDictionary[foundDocument.docNo.strip()] = foundDocument
-                return foundDocument
-            
-        return None
+        foundDocument = document.Document.factoryForSpecificDocNo(fileName, cleansedDocId)
+        if foundDocument != None:
+            self.fileIdDictionary[foundDocument.docNo.strip()] = foundDocument
+
+        return foundDocument
