@@ -49,4 +49,4 @@ class RougeEvaluator():
 		return output
 
 		# output_dict = rouge.output_to_dict(output)
-		#print(output_dict)
+		# print(output_dict)
