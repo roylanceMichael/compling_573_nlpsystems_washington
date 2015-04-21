@@ -98,7 +98,7 @@ class Chunk(list, ParentCompare):
             self.full, self.tag = tree
             list.__init__(self, [Word(self.full, self.tag, self, 0)])
 
-        # coreference will occure at this level
+        # coreference will occur at this level
 
     def __str__(self):
         return self.full

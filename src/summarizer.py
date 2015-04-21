@@ -91,8 +91,8 @@ for topic in topics:
     for foundDocument in documentRepository.getDocumentsByTopic(topic.id):
         print "processing docNo: " + foundDocument.docNo
         convertedModel = getModel(foundDocument)
-        updatedCorefModel = coreference.rules.Rules.updateDocumentWithCoreferences(convertedModel)
-        models.append(updatedCorefModel)
+        # updatedCorefModel = coreference.rules.Rules.updateDocumentWithCoreferences(convertedModel)
+        models.append(convertedModel)
 
     # make a summary of the topic cluster
     print topic.category + " : " + topic.title + " : building summary for " + str(len(models)) + " models"
@@ -106,10 +106,12 @@ for topic in topics:
     print summary
 
     # run rouge evaluator
-    continue
+
     print "running the rouge evaluator"
     evaluation = evaluate(transformedTopicId)
+    print evaluation
     evaluationFileName = evaluationOutputPath + "/" + topic.docsetAId
+    print evaluationFileName
     evaluationFile = open(evaluationFileName, 'w')
     evaluationFile.write(evaluation)
     evaluationFile.close()

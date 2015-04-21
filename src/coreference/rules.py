@@ -1,94 +1,144 @@
 __author__ = 'mroylance'
-import operator
+import collections
+import npModel
 
+nounPhraseKey = "NP"
+i = "i"
+me = "me"
+it = "it"
 
-class Rules:
-    # this will determine if the np's match in number
-    # give higher weight to npModel2 being a pronoun
-    def __init__(self):
-        pass
+pronounTypes = {"PRP": None, "PRP$": None, "WP": None, "WP$": None}
+badWords = ["a", "an", "the", "of"]
 
-    # generic rules
-    def articleRule(self, npModel):
-        return False
+# this will determine if the np's match in number
+# give higher weight to npModel2 being a pronoun
+# generic rules
+def articleRule(npModel):
+    return False
 
-    def appositiveRule(self, npModel, sentIdx, sentences):
-        return False
+def appositiveRule(npModel, sentIdx, sentences):
+    return False
 
-    def wordMatchingRule(self, npModel, sentIdx, sentences):
-        return False
+def wordMatchingRule(npModel, sentIdx, sentences):
+    return False
 
-    # comparison rules
-    def matchPlurality(self, npModel1, npModel2):
-        return False
+# comparison rules
+def matchPlurality(npModel1, npModel2):
+    return False
 
-    def matchGender(self, npModel1, npModel2):
-        return False
+def matchGender(npModel1, npModel2):
+    return False
 
-    def properNamesRule(self, npModel1, npModel2):
-        return False
+def properNamesRule(npModel1, npModel2):
+    return False
 
-    def pronounTypesRule(self, npModel1, npModel2):
-        return False
+def pronounTypesRule(npModel1, npModel2):
+    return False
 
-    def mismatchWordsRule(self, npModel1, npModel2):
-        return False
+def mismatchWordsRule(npModel1, npModel2):
+    return False
 
-    def headNounsDifferRule(self, npModel1, npModel2):
-        return False
+def headNounsDifferRule(npModel1, npModel2):
+    return False
 
-    def subsumeRule(self, npModel1, npModel2):
-        return False
+def subsumeRule(npModel1, npModel2):
+    firstNp = str(npModel1).lower().strip()
+    secondNp = str(npModel2).lower().strip()
 
-    def iMeRule(self, npModel1, npModel2):
-        return False
+    if len(firstNp) <= 1 or len(secondNp) <= 1:
+        return 0
 
-    def specialThisRule(self, npModel1, npModel2):
-        return False
+    if firstNp == it and secondNp == it:
+        return -9999
 
-    def findCorrectAntecedent(self, npModel, previousNps, sentences):
-        # right now, just going to find the first np in the preceding sentence
-        # get last noun phrase before current one
-        scoringDict = {}
+    if npModel1.tag not in pronounTypes or npModel2.tag not in pronounTypes:
+        return 0
 
-        for previousNp in previousNps:
-            subsumeScore = self.subsume(npModel, previousNp)
-            reverseSubsumeScore = self.subsume(previousNp, npModel)
+    for badWord in badWords:
+        if badWord in firstNp or badWord in secondNp:
+            return 0
 
-            # we don't need to compare anymore if this is true
-            # mismatch words score
-            score1 = self.mismatchWords(npModel, previousNp) * 10
-            #head noun differ score
-            score2 = self.headNounsDiffer(npModel, previousNp)
-            #difference in position score, testing out heavy emphasis on it...
-            score3 = (npModel.position - previousNp.position).abs.to_f / 5000
-            #pronoun score
-            score4 = self.pronounTypes(npModel, previousNp)
-            #plurality score
-            #shouldn't this be ? 0 : 999? or maybe i don't understand ruby's ternary op's-ben
-            #oh i see, your doing a change from greatest to least weighted np matching
-            score5 = self.matchPlurality(npModel, previousNp)
-            #proper names score
-            score6 = self.properNames(npModel, previousNp)
-            #gender score
-            score7 = self.matchGender(npModel, previousNp)
-            #article score
-            score8 = self.articleRule(previousNp)
-            #special this rule
-            specialThisScore = self.specialThisRule(npModel, previousNp)
+    if firstNp in secondNp:
+        return -9999
+    return 0
 
-            totalScore = score1 + score2 + score3 + score4 + score5 + score6 + score7 + score8
+def iMeRule(npModel1, npModel2):
+    norm1 = str(npModel1).lower().strip()
+    norm2 = str(npModel2).lower().strip()
 
-            totalScore = totalScore + subsumeScore
-            totalScore = totalScore + reverseSubsumeScore
-            totalScore = totalScore + self.imerule(npModel, previousNp)
-            totalScore = totalScore + specialThisScore
+    if (norm1 == me and norm2 == i) or (norm1 == i and norm2 == me):
+        return -9999
 
-            scoringDict[previousNp] = totalScore
+    return False
 
-        sortedDict = sorted(scoringDict.items(), key=operator.itemgetter(1))
-        return sortedDict[len(sortedDict) - 1]
+# not implementing for now
+def specialThisRule(npModel1, npModel2):
+    return 0
 
-    @staticmethod
-    def updateDocumentWithCoreferences(docModel):
-        return docModel
+def findCorrectAntecedent(npModel, previousNps, sentences):
+    # right now, just going to find the first np in the preceding sentence
+    # get last noun phrase before current one
+    scoringDict = {}
+
+    distance = 0
+    for previousNp in previousNps:
+        distance += 1
+
+        subsumeScore = subsumeRule(npModel, previousNp)
+        reverseSubsumeScore = subsumeRule(previousNp, npModel)
+
+        # we don't need to compare anymore if this is true
+        # mismatch words score
+        score1 = mismatchWordsRule(npModel, previousNp) * 10
+        # head noun differ score
+        score2 = headNounsDifferRule(npModel, previousNp)
+        # difference in position score, testing out heavy emphasis on it...
+        score3 = distance / float(5000)
+        # pronoun score
+        score4 = pronounTypesRule(npModel, previousNp)
+        # plurality score
+        score5 = matchPlurality(npModel, previousNp)
+        # proper names score
+        score6 = properNamesRule(npModel, previousNp)
+        # gender score
+        score7 = matchGender(npModel, previousNp)
+        # article score
+        score8 = articleRule(previousNp)
+        # special this rule
+        specialThisScore = specialThisRule(npModel, previousNp)
+
+        totalScore = score1 + score2 + score3 + score4 + score5 + score6 + score7 + score8
+
+        totalScore = totalScore + subsumeScore
+        totalScore = totalScore + reverseSubsumeScore
+        totalScore = totalScore + iMeRule(npModel, previousNp)
+        totalScore = totalScore + specialThisScore
+
+        scoringDict[totalScore] = previousNp
+
+    od = collections.OrderedDict(sorted(scoringDict.items()))
+    for item in od.items():
+        if item[0] > 0:
+            return None
+        return item[1]
+    return None
+
+def updateDocumentWithCoreferences(docModel):
+    previousItems = []
+    sentences = []
+    coreferencePairs = []
+
+    for paragraph in docModel.paragraphs:
+        for sentence in paragraph:
+            for chunk in sentence:
+                np = npModel.NpModel(chunk)
+
+                if np.tag == nounPhraseKey:
+                    result = findCorrectAntecedent(np, previousItems, sentences)
+                    if result != None:
+                        coreferencePairs.append((np, result))
+
+                previousItems.insert(0, np)
+            sentences.insert(0, sentence)
+
+    return coreferencePairs
