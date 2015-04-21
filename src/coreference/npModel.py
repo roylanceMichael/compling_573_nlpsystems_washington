@@ -1,4 +1,5 @@
 import re
+import os
 
 # this area will be where constant strings will exist
 nominative = ["i", "he", "she", "we", "they"]
@@ -32,6 +33,23 @@ articleCheckingDict = {aRegex:aArticle, anRegex:anArticle, theRegex:theArticle, 
 
 capRegex = "[A-Z]"
 
+male = "MALE"
+female = "FEMALE"
+unknown = "UNKNOWN"
+
+maleNamesFile = "maleNames.txt"
+maleNames = []
+if os.path.isfile(maleNamesFile):
+    with open(maleNamesFile) as f:
+        name = f.readline()
+        while name:
+            maleNames.append(name)
+            name = f.readline()
+
+malePronouns ={"\b[Hh]e\b": None, "\b[Hh]is\b": None, "\b[Hh]imself\b": None, "\b[Hh]im\b": None}
+femalePronouns = {"\b[Ss]he\b": None,"\b[Hh]er\b": None, "\b[Hh]erself\b": None, "\b[Hh]ers\b": None}
+itPronoun = "\b[Ii]t\b"
+
 
 class NpModel:
     def __init__(self, chunk):
@@ -44,6 +62,8 @@ class NpModel:
         self.plurality = self.getPlurality()
         self.article = self.getArticle()
         self.properName = self.getProperName()
+        self.gender = self.getGender()
+        self.headNoun = self.getHeadNoun()
 
     def getPronounType(self):
         for key in pronounCheckingDict:
@@ -83,3 +103,25 @@ class NpModel:
                 return False
 
         return True
+
+    def getGender(self):
+        for word in self.splitWords:
+            if word.upper() in maleNames:
+                return male
+
+            for malePronoun in malePronouns:
+                if re.match(malePronoun, word):
+                    return male
+
+            for femalePronoun in femalePronouns:
+                if re.match(femalePronoun, word):
+                    return female
+
+            if re.match(itPronoun, word):
+                return unknown
+
+        return unknown
+
+    def getHeadNoun(self):
+        return self.splitWords[len(self.splitWords)-1]
+
