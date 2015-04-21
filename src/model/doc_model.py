@@ -8,7 +8,7 @@ from collections import defaultdict
 import string
 from datetime import datetime
 
-import src.extract.document
+import extract.document as document
 
 sentence_breaker = nltk.data.load('tokenizers/punkt/english.pickle')
 stemmer = PorterStemmer().stem
@@ -146,17 +146,12 @@ class Doc_Model:
 
             self.paragraphs = [Text(tab_split[x], self, x + 1) for x in range(len(tab_split))]
 
-        # compute the term frequencies of all words in paragraphs
-        # assuming we should use the quarry version of tf if we are using it
-        # to rank sentences
-        self.termFreq = defaultdict(lambda: 0.5)
+        # compute the basic term frequencies of all words in paragraphs
+        # for use in building cluster-wide quarry term frequency
+        self.termFreq = defaultdict(lambda: 0)
         for word in self.words():
             if word.full not in stopWords:
-                self.termFreq[word.full] = 1 + self.termFreq.get(word.full, 0.0)
-
-        maxFreq = max(self.termFreq.items(), key = lambda x: x[1] )[1]
-        for w in self.termFreq.keys():
-            self.termFreq[w] = (self.termFreq[w] / maxFreq) + 0.5
+                self.termFreq[word.full] += 1
 
     def __lt__(self, other):
         return isinstance(other, Doc_Model) and self.dateTime < other.dateTime
@@ -194,3 +189,41 @@ class Cluster(list):
         else:
             list.__init__(self, sorted(doclist))
 
+        # cluster-wide term frequency
+        # assuming we should use the quarry version of tf if we are using it
+        # to rank sentences
+
+        self.termFreq = defaultdict(lambda: 0.5)
+        for doc in self:
+            for w,f in doc.termFreq.items():
+                self.termFreq[w] = f + self.termFreq.get(w, 0.0)
+
+        maxFreq = max(self.termFreq.items(), key=lambda x: x[1])[1]
+
+        for w in self.termFreq.keys():
+            self.termFreq[w] = 0.5 + 0.5 * ( self.termFreq[w] / maxFreq )
+
+
+def main():
+    doc = document.Document.factoryMultiple("/corpora/LDC/LDC02T31/apw/1998/19980601_APW_ENG", True, False).next()
+    doc_m = Doc_Model(doc)
+
+    print("date")
+    print(doc_m.dateTime)
+
+    txt = doc_m.paragraphs[0]
+    print("text")
+    print(txt)
+    print("sentence")
+    print(txt[0])
+    print("chunk")
+    print(txt[0][0])
+    print("word")
+    print(txt[0][0][0])
+    print("stem")
+    print(txt[0][0][0].stem)
+    print("word term frequency")
+    print(doc_m.termFreq[txt[0][0][0].full])
+
+if __name__ == '__main__':
+    main()
