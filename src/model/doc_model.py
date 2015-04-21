@@ -3,6 +3,9 @@ import nltk.data
 from nltk.tree import Tree
 from nltk.tokenize import word_tokenize
 from nltk.stem.porter import *
+from nltk.corpus import stopwords
+from collections import defaultdict
+import string
 # from nltk.stem.snowball import SnowballStemmer
 
 sentence_breaker = nltk.data.load('tokenizers/punkt/english.pickle')
@@ -12,6 +15,8 @@ chunking_grammar = r"""
       {<NNP>+}                # chunk sequences of proper nouns
 """
 chunker = nltk.RegexpParser(chunking_grammar)
+
+stopWords = set(stopwords.words('english')) | set(string.punctuation)
 
 nltk_v2 = nltk.__version__[0] == '2'
 
@@ -136,4 +141,31 @@ class Doc_Model:
 
             self.paragraphs = [Text(tab_split[x], self, x + 1) for x in range(len(tab_split))]
 
+        # compute the term frequencies of all words in paragraphs
+        # assuming we should use the quarry version of tf if we are using it
+        # to rank sentences
+        self.termFreq = defaultdict(lambda: 0.5)
+        for word in self.words():
+            if word.full not in stopWords:
+                self.termFreq[word.full] = 1 + self.termFreq.get(word.full, 0.0)
+
+        maxFreq = max(self.termFreq.items(), key = lambda x: x[1] )[1]
+        for w in self.termFreq.keys():
+            self.termFreq[w] = (self.termFreq[w] / maxFreq) + 0.5
+
+
+    def sentences(self):
+        for p in self.paragraphs:
+            for s in p:
+                yield s
+
+    def chunks(self):
+        for s in self.sentences():
+            for c in s:
+                yield c
+
+    def words(self):
+        for c in self.chunks():
+            for w in c:
+                yield w
 
