@@ -19,7 +19,6 @@ from evaluate.rougeEvaluator import RougeEvaluator
 import extract
 import extract.topicReader
 import extract.documentRepository
-import model.docModel
 import model.doc_model
 
 # get parser args and set up global variables
