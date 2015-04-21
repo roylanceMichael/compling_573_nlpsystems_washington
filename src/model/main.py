@@ -16,6 +16,9 @@ def parseRecords(filePath):
 def main():
     doc_m = doc_model.Doc_Model(parseRecords("/corpora/LDC/LDC02T31/apw/1998/19980601_APW_ENG"))
 
+    print("date")
+    print(doc_m.dateTime)
+
     txt = doc_m.paragraphs[0]
     print("text")
     print(txt)

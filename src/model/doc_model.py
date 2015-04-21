@@ -6,7 +6,9 @@ from nltk.stem.porter import *
 from nltk.corpus import stopwords
 from collections import defaultdict
 import string
-# from nltk.stem.snowball import SnowballStemmer
+from datetime import datetime
+
+import src.extract.document
 
 sentence_breaker = nltk.data.load('tokenizers/punkt/english.pickle')
 stemmer = PorterStemmer().stem
@@ -125,7 +127,10 @@ class Word(ParentCompare):
 class Doc_Model:
     def __init__(self, doc):
         self.docNo = doc.docNo
-        self.dateTime = doc.dateTime
+        if doc.dateTime.count(":") == 2:
+            self.dateTime = datetime.strptime( doc.dateTime.strip(), "%Y-%m-%d %H:%M:%S" )
+        else:
+            self.dateTime = datetime.strptime( doc.dateTime.strip(), "%Y-%m-%d %H:%M" )
 
         self.header = Text(doc.header, self, -4)
         self.slug = Text(doc.slug, self, -3)
@@ -153,6 +158,18 @@ class Doc_Model:
         for w in self.termFreq.keys():
             self.termFreq[w] = (self.termFreq[w] / maxFreq) + 0.5
 
+    def __lt__(self, other):
+        return isinstance(other, Doc_Model) and self.dateTime < other.dateTime
+
+    def __le__(self, other):
+        return isinstance(other, Doc_Model) and self.dateTime <= other.dateTime
+
+    def __gt__(self, other):
+        return not self <= other
+
+    def __ge__(self, other):
+        return not self < other
+
 
     def sentences(self):
         for p in self.paragraphs:
@@ -168,4 +185,12 @@ class Doc_Model:
         for c in self.chunks():
             for w in c:
                 yield w
+
+
+class Cluster(list):
+    def __init__(self, doclist):
+        if isinstance(doclist[0], src.extract.document.Document):
+            list.__init__(self, sorted(Doc_Model(x) for x in doclist) )
+        else:
+            list.__init__(self, sorted(doclist))
 
