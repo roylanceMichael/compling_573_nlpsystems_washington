@@ -19,6 +19,7 @@ from evaluate.rougeEvaluator import RougeEvaluator
 import extract
 import extract.topicReader
 import extract.documentRepository
+import coreference.rules
 import model.doc_model
 
 # get parser args and set up global variables
@@ -89,7 +90,9 @@ for topic in topics:
     # get the doc objects, and build doc models from them
     for foundDocument in documentRepository.getDocumentsByTopic(topic.id):
         print "processing docNo: " + foundDocument.docNo
-        models.append(getModel(foundDocument))
+        convertedModel = getModel(foundDocument)
+        updatedCorefModel = coreference.rules.Rules.updateDocumentWithCoreferences(convertedModel)
+        models.append(updatedCorefModel)
 
     # make a summary of the topic cluster
     print topic.category + " : " + topic.title + " : building summary for " + str(len(models)) + " models"
@@ -103,6 +106,7 @@ for topic in topics:
     print summary
 
     # run rouge evaluator
+    continue
     print "running the rouge evaluator"
     evaluation = evaluate(transformedTopicId)
     evaluationFileName = evaluationOutputPath + "/" + topic.docsetAId
