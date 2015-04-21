@@ -127,10 +127,16 @@ class Word(ParentCompare):
 class Doc_Model:
     def __init__(self, doc):
         self.docNo = doc.docNo
-        if doc.dateTime.count(":") == 2:
-            self.dateTime = datetime.strptime( doc.dateTime.strip(), "%Y-%m-%d %H:%M:%S" )
-        else:
-            self.dateTime = datetime.strptime( doc.dateTime.strip(), "%Y-%m-%d %H:%M" )
+        timeFormat = "%Y-%m-%d"
+        if "/" in doc.dateTime:
+            timeFormat = "%m/%d/%Y"
+        colonCount = doc.dateTime.count(":")
+        if colonCount == 2:
+            timeFormat += " %H:%M:%S"
+        elif colonCount == 1:
+            timeFormat += " %H:%M"
+
+        self.dateTime = datetime.strptime( doc.dateTime.strip(), timeFormat )
 
         self.header = Text(doc.header, self, -4)
         self.slug = Text(doc.slug, self, -3)
