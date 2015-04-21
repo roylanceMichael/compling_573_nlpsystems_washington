@@ -4,9 +4,6 @@ import re
 import src.extract.document as document
 from os import listdir
 
-whiteSpaceRegex = "[\s]+"
-
-maxInsertCount = 1000
 
 
 def parseRecords(filePath):
@@ -18,7 +15,7 @@ def parseRecords(filePath):
 
 
 def main():
-	doc_m = doc_model.Doc_Model(parseRecords("doc/nyt/1998/19980601_NYT"))
+	doc_m = doc_model.Doc_Model(parseRecords("/corpora/LDC/LDC02T31/apw/1998/19980601_APW_ENG"))
 
 	txt = doc_m.paragraphs[0]
 	print("text")
