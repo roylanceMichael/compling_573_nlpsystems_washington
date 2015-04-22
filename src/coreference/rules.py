@@ -215,6 +215,8 @@ def updateDocumentWithCoreferences(docModel):
             for chunk in sentence:
                 np = npModel.NpModel(chunk)
 
+                print str(np) + " -> " + np.tag
+
                 if np.tag == nounPhraseKey or np.tag in pronounTypes:
                     result = findCorrectAntecedent(np, previousItems, sentences)
                     if result is not None:
