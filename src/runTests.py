@@ -3,10 +3,11 @@
 import unittest
 
 testModules = [
-	'tests.documentTests',
-	'tests.topicReaderTests',
-	'tests.documentRepositoryTests',
-	'tests.documentIndexerTests',
+	#'tests.documentTests',
+	#'tests.topicReaderTests',
+	#'tests.documentRepositoryTests',
+	#'tests.documentIndexerTests',
+    'tests.coreferenceTests',
 ]
 
 suite = unittest.TestSuite()
