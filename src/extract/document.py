@@ -10,6 +10,7 @@ headlineKey = "HEADLINE"
 pKey = "P"
 bodyKey = "BODY"
 textKey = "TEXT"
+docKey = "DOC"
 
 
 class Document:
@@ -99,19 +100,37 @@ class Document:
 		return newDocument
 
 	@staticmethod
-	def returnCharsFromDocument(filePath):
+	def returnCharsFromDocument(filePath, seekToId):
 		"""
 			return the characters from a document
 		"""
-		if os.path.isfile(filePath):
-			with open(filePath) as f:
-				while True:
-					c = f.read(1)
 
-					if not c:
-						return
+		docFile = open(filePath, 'r')
 
-					yield c
+		if seekToId is not None:
+			pos = 0
+			line = ""
+			while seekToId not in line:
+				prevpos = pos
+				pos = docFile.tell()
+				line = docFile.readline()
+
+			if seekToId in line:
+				if docNoKey in line:
+					offset = prevpos - docFile.tell()
+				else:
+					offset = pos - docFile.tell()
+				docFile.seek(offset, 1)
+			else:
+				raise IOError("Could not find topic " + seekToId +  " in file " + filePath)
+
+		while True:
+			c = docFile.read(1)
+
+			if not c:
+				return
+
+			yield c
 
 	@staticmethod
 	def returnCharsFromString(largeString):
@@ -154,7 +173,8 @@ class Document:
 
 		foundDocNo = False
 
-		for c in charMethod(input):
+		for c in charMethod(input, docNo):
+			# print c,
 			if c == "<":
 				seenOpeningTag = True
 				tagStackLen = len(tagStack)
@@ -179,7 +199,11 @@ class Document:
 				if seenClosingXml and len(tagStack) > 0:
 					tagStack.pop()
 				else:
-					tagStack.append(currentTag)
+					if currentTag[:4] == "DOC " and docNo in currentTag:
+						foundDocNo = True
+						tagStack.append("DOC")
+					else:
+						tagStack.append(currentTag)
 
 				seenOpeningTag = False
 				seenClosingXml = False

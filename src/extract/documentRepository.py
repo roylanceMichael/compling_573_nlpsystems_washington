@@ -3,7 +3,7 @@ import document
 import os
 import pickle
 
-filePathTemplate = "%s%s/%s/%s%s_%s"
+filePathTemplate = "%s/%s/%s/%s%s_%s"
 trainingFilePathTemplate = "%s/%s/%s_%s%s.xml"
 
 
@@ -72,9 +72,11 @@ class DocumentRepository:
 		fileName = filePathTemplate % (self.rootDocumentFolder, folderName, year, year, fileId, fileNameHack)
 		globFileNameArray = glob.glob(fileName + "*")
 
-		if len(globFileNameArray) > 0:
+		if len(globFileNameArray) > 0 and os.path.exists(globFileNameArray[0]):
 			return globFileNameArray[0]
-		return fileName
+		else:
+			raise IOError('Error opening file:' + fileName)
+
 
 	def buildTrainFileName(self, docId):
 		# first, find folder
@@ -96,6 +98,7 @@ class DocumentRepository:
 		cleansedDocId = docId.strip()
 
 		if cleansedDocId in self.fileIdDictionary:
+			print "reading document from cache: docId=" + cleansedDocId
 			return self.fileIdDictionary[cleansedDocId]
 
 		# first, find folder
@@ -107,7 +110,7 @@ class DocumentRepository:
 
 		print "reading document: filename=" + fileName + ", docId=" + cleansedDocId
 		foundDocument = document.Document.factoryForSpecificDocNo(fileName, cleansedDocId)
-		if foundDocument != None:
-			self.fileIdDictionary[foundDocument.docNo.strip()] = foundDocument
+		if foundDocument is not None:
+			self.fileIdDictionary[cleansedDocId] = foundDocument
 
 		return foundDocument
