@@ -1,5 +1,5 @@
 __author__ = 'mroylance'
 
-class ChunkCluster:
+class KMeans:
     def __init__(self):
         pass
