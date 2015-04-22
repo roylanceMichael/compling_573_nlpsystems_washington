@@ -62,4 +62,7 @@ class CoreferenceTests(unittest.TestCase):
         pairs = coreference.rules.updateDocumentWithCoreferences(docModel)
 
         # assert
+        for pair in pairs:
+            print str(pair[0]) + " -> " + str(pair[1])
+
         self.assertTrue(True)
