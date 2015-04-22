@@ -3,6 +3,7 @@ from nltk.corpus import stopwords
 from collections import defaultdict
 import string
 from math import log10
+import cPickle as pickle
 
 stopWords = set(stopwords.words('english')) | set(string.punctuation)
 
@@ -26,9 +27,24 @@ def generateIDF():
 
     return idf
 
-idf = generateIDF()
+
+def saveIDF(d):
+    defaultValue = d.default_factory()
+    print(defaultValue)
+    d.default_factory = None
+    pickle.dump((d,defaultValue), open("model/idf.dat", "wb"))
+
+def loadIDF():
+    d, defaultValue = pickle.load(open("model/idf.dat", "rb"))
+    d.default_factory = lambda: defaultValue
+    return d
+
+idf = loadIDF()
 
 if __name__ == '__main__':
+    #saveIDF(generateIDF())
+    idf = loadIDF()
+
     testWords = ["oil", "john", "president", "ivosnjkfe"]
     for word in testWords:
         print(word + ": " + str(idf[word]))
