@@ -125,3 +125,6 @@ class NpModel:
     def getHeadNoun(self):
         return self.splitWords[len(self.splitWords)-1]
 
+    def __str__(self):
+        return self.normalizedPhrase
+
