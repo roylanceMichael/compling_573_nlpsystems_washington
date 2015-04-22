@@ -3,7 +3,7 @@
 import unittest
 
 testModules = [  # 'tests.documentTests',  #'tests.topicReaderTests',  #'tests.documentRepositoryTests',
-				 #'tests.documentIndexerTests',
+				 # 'tests.documentIndexerTests',
 				 'tests.coreferenceTests',
 				 ]
 

@@ -1,5 +1,5 @@
-
 wordLimit = 100
+
 
 def simple_realize(sentences):
 	realized = ""
