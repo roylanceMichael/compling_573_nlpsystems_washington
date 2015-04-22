@@ -2,13 +2,10 @@
 # http://stackoverflow.com/questions/1732438/how-to-run-all-python-unit-tests-in-a-directory - thank you!
 import unittest
 
-testModules = [
-	#'tests.documentTests',
-	#'tests.topicReaderTests',
-	#'tests.documentRepositoryTests',
-	#'tests.documentIndexerTests',
-    'tests.coreferenceTests',
-]
+testModules = [  # 'tests.documentTests',  #'tests.topicReaderTests',  #'tests.documentRepositoryTests',
+				 #'tests.documentIndexerTests',
+				 'tests.coreferenceTests',
+				 ]
 
 suite = unittest.TestSuite()
 

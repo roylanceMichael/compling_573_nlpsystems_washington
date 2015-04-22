@@ -53,16 +53,16 @@ NYT-06-01-98 0002EDT &QL;
 
 
 class CoreferenceTests(unittest.TestCase):
-    def test_parseSingleDocument(self):
-        # arrange
-        foundDocument = extract.document.Document.factory(docXml)
-        docModel = model.doc_model.Doc_Model(foundDocument)
+	def test_parseSingleDocument(self):
+		# arrange
+		foundDocument = extract.document.Document.factory(docXml)
+		docModel = model.doc_model.Doc_Model(foundDocument)
 
-        # act
-        pairs = coreference.rules.updateDocumentWithCoreferences(docModel)
+		# act
+		pairs = coreference.rules.updateDocumentWithCoreferences(docModel)
 
-        # assert
-        for pair in pairs:
-            print str(pair[0]) + " -> " + str(pair[1])
+		# assert
+		for pair in pairs:
+			print str(pair[0]) + " -> " + str(pair[1])
 
-        self.assertTrue(True)
+		self.assertTrue(True)

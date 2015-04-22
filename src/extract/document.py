@@ -122,7 +122,7 @@ class Document:
 					offset = pos - docFile.tell()
 				docFile.seek(offset, 1)
 			else:
-				raise IOError("Could not find topic " + seekToId +  " in file " + filePath)
+				raise IOError("Could not find topic " + seekToId + " in file " + filePath)
 
 		while True:
 			c = docFile.read(1)
