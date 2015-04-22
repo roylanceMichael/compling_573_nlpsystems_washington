@@ -36,9 +36,10 @@ args = parser.parse_args()
 ##############################################################
 # global variables
 ##############################################################
-summaryOutputPath = "../outputs/systemSummaries"
-evaluationOutputPath = "../outputs/evaluations"
-modelSummaryCachePath = "../outputs/modelSummaryCache"
+summaryOutputPath = args.outputPath
+evaluationOutputPath = "../results"
+modelSummaryCachePath = "../cache/modelSummaryCache"
+documentCachePath = "../cache/documentCache"
 rouge = RougeEvaluator(args.rougePath, args.goldStandardSummaryPath, summaryOutputPath, modelSummaryCachePath)
 
 ##############################################################
@@ -81,6 +82,23 @@ for topic in extract.topicReader.Topic.factoryMultiple(args.topicXml):
 	topics.append(topic)
 
 documentRepository = extract.documentRepository.DocumentRepository(args.docInputPath, args.docInputPath2, topics)
+
+# load the cached docs
+documentRepository.readFileIdDictionaryFromFileCache(documentCachePath)
+
+# load and cache the docs if they are not loaded.  just get them if they are.
+for topic in topics:
+	transformedTopicId = topic.docsetAId[:-3] + '-A'
+	print "caching topicId: " + transformedTopicId
+	# let's get all the documents associated with this topic
+
+	# get the doc objects, and build doc models from them
+	for foundDocument in documentRepository.getDocumentsByTopic(topic.id):
+		#print "caching document: " + foundDocument.docNo
+		pass
+
+# recache documents for later
+documentRepository.writefileIdDictionaryToFileCache(documentCachePath)
 
 for topic in topics:
     transformedTopicId = topic.docsetAId[:-3] + '-A'
