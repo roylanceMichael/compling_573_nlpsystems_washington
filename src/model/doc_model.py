@@ -15,7 +15,7 @@ sentence_breaker = nltk.data.load('tokenizers/punkt/english.pickle')
 stemmer = PorterStemmer().stem
 chunking_grammar = r"""
   NP: {<DT|PP\$>?<JJ>*<NN>}   # chunk determiner/possessive, adjectives and nouns
-      {<NNP>+}                # chunk sequences of proper nouns
+      {<NNP|NNPS|NNS|NP>+}                # chunk sequences of proper nouns
 """
 chunker = nltk.RegexpParser(chunking_grammar)
 
