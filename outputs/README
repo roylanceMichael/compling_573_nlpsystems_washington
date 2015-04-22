@@ -1,9 +1,1 @@
-Gold Standard Summaries are in /goldStandardSummaries
-and they have the form:
-doc name:  name.A.001.txt
-
-where "A" is first-10 method of summarizing.
-
-other gold standards for the same doc will have the form "name.B.001.txt" etc.
-
-this crappy convention is to remain in keeping with rouge evaluation.
+This directory is for system summaries

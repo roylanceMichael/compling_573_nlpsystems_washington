@@ -1,5 +1,7 @@
 import glob
 import document
+import os
+import pickle
 
 filePathTemplate = "%s%s/%s/%s%s_%s"
 trainingFilePathTemplate = "%s/%s/%s_%s%s.xml"
@@ -16,6 +18,17 @@ class DocumentRepository:
 
 		for topic in topics:
 			self.topics[topic.id] = topic
+
+	def writefileIdDictionaryToFileCache(self, cachePath):
+		pickleFileName = os.path.join(cachePath, "pickleFile")
+		pickleFile = open(pickleFileName, 'w')
+		pickle.dump(self.fileIdDictionary, pickleFile, pickle.HIGHEST_PROTOCOL)
+
+	def readFileIdDictionaryFromFileCache(self, cachePath):
+		pickleFileName = os.path.join(cachePath, "pickleFile")
+		if os.path.exists(pickleFileName):
+			pickleFile = open(pickleFileName, 'r')
+			self.fileIdDictionary = pickle.load(pickleFile)
 
 	def getDocumentsGroupedByTopic(self, useDocsetA=True):
 		for key in self.topics:
@@ -92,6 +105,7 @@ class DocumentRepository:
 		else:
 			fileName = self.buildTrainFileName(docId)
 
+		print "reading document: filename=" + fileName + ", docId=" + cleansedDocId
 		foundDocument = document.Document.factoryForSpecificDocNo(fileName, cleansedDocId)
 		if foundDocument != None:
 			self.fileIdDictionary[foundDocument.docNo.strip()] = foundDocument
