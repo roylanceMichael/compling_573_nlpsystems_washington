@@ -37,9 +37,9 @@ def cosine2(sentencePair, vocab=None):
 class DenseGraph(list):
     def __init__(self, sentences, simMeasure):
         self.sentences = sentences if isinstance(sentences, list) else list(sentences)
-        sNum = len(self.sentences)
+        self._sNum = len(self.sentences)
         list.__init__(self)
-        for x in range(sNum):
+        for x in range(self._sNum):
             row = list()
             for y in range(x):
                 row.append( simMeasure((self.sentences[x], self.sentences[y])) )
@@ -54,11 +54,43 @@ class DenseGraph(list):
             return self[sID0][sID1]
         return self[sID1][sID0]
 
+    def setSim(self, sID0, sID1, value):
+        if sID0 > sID1:
+            self[sID0][sID1] = value
+        else:
+            [sID1][sID0] = value
+
+    def makeNeg(self, sID0, sID1):
+        #print(( sID0, sID1))
+        #print(sID0 > sID1)
+        if sID0 > sID1:
+            if self[sID0][sID1] > 0:
+                self[sID0][sID1] *= -1
+        elif self[sID1][sID0] > 0:
+            self[sID1][sID0] *= -1
+
+    # returns the sentence most similar to everything else,
+    # then turns its sim scores with everything negative
+    def pullMax(self):
+        id = max(
+            (
+                sum( self.getSim(x, y) for y in range(self._sNum) ),
+                x
+            ) for x in range(self._sNum)
+        )[1]
+
+        for y in range(self._sNum):
+            self.makeNeg(id, y)
+
+        return id
+
 if __name__ == '__main__':
-    testSentences = ("Test sentence one.", "This is test sentence two.", "Here is the final sentence.")
+    testSentences = ("Test sentence one.", "This is test sentence two.", "Sentence three.", "Here is the final sentence.")
     testSentences = tuple(Sentence(s, None, 0) for s in testSentences)
     simMeasure = lambda s: cosine2(s)
     graph = DenseGraph(testSentences, simMeasure)
     print(graph)
     print(graph.getSim(0,2))
     print(graph.getSim(2,0))
+    print(graph.pullMax())
+    print(graph.pullMax())
