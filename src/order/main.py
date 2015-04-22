@@ -3,7 +3,7 @@ import json
 import re
 import src.extract.document as document
 from src.select.first_n import first_n
-from in_order import in_order
+from order import in_order
 from os import listdir
 
 whiteSpaceRegex = "[\s]+"

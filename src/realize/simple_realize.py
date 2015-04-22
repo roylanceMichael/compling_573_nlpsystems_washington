@@ -1,7 +1,7 @@
-import src.model.doc_model as doc_model
 
+wordLimit = 100
 
-def simple_realize(sentences, char_limit):
+def simple_realize(sentences):
 	realized = ""
 	first_sentence = True
 	current = 0
@@ -9,12 +9,12 @@ def simple_realize(sentences, char_limit):
 		sentence = s.full.replace("\n", " ")
 
 		if not first_sentence:
-			sentence = " " + sentence
+			sentence = "\n" + sentence
 		else:
 			first_sentence = False
 
-		current += len(sentence)
-		if current > char_limit:
+		current += sentence.wordNum
+		if current > wordLimit:
 			break
 		realized += sentence
 
