@@ -19,7 +19,6 @@ chunking_grammar = r"""
 """
 chunker = nltk.RegexpParser(chunking_grammar)
 
-stopWords = set(stopwords.words('english')) | set(string.punctuation)
 
 nltk_v2 = nltk.__version__[0] == '2'
 
@@ -89,6 +88,11 @@ class Sentence(list, ParentCompare):
     def __str__(self):
         return self.full
 
+    def words(self):
+        for c in self:
+            for w in c:
+                yield w
+
 
 class Chunk(list, ParentCompare):
     def __init__(self, tree, parent, position_in_parent):
@@ -157,7 +161,7 @@ class Doc_Model:
         # for use in building cluster-wide quarry term frequency
         self.termFreq = defaultdict(lambda: 0)
         for word in self.words():
-            if word.full not in stopWords:
+            if word.full not in idf.stopWords:
                 self.termFreq[word.full] += 1
 
     def __lt__(self, other):
