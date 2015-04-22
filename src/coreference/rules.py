@@ -8,9 +8,11 @@ i = "i"
 me = "me"
 it = "it"
 
-pronounTypes = {"PRP": None, "PRP$": None, "WP": None, "WP$": None}
+pronounTypes = {"PRP": None, "PRP$": None}
 badWords = ["a", "an", "the", "of"]
 badWordsForWordMatching = ["a", "an", "the", "of", "these", "mr", "mr.", "mrs", "mrs."]
+
+wordsToIgnoreMatching = [ badWordsForWordMatching, npModel.nominative, npModel.accusative, npModel.possessive, npModel.reflexive, npModel.ambiguous ]
 
 # this will determine if the np's match in number
 # give higher weight to npModel2 being a pronoun
@@ -21,17 +23,25 @@ def articleRule(npModel):
 def appositiveRule(npModel, sentIdx, sentences):
     return 0
 
+def ignoreWordForMatching(word):
+
+    for list in wordsToIgnoreMatching:
+        if word in list:
+            return True
+
+    return False
+
 def wordMatchingRule(npModel1, npModel2):
     # do we have an exact match?
 
     if editDistance.perform(npModel1.normalizedPhrase, npModel2.normalizedPhrase) < 2:
-        return -999
+        return -10
     else:
         for splitWord in npModel1.splitWords:
-            if splitWord in badWordsForWordMatching:
+            if ignoreWordForMatching(splitWord):
                 continue
             for otherSplitWord in npModel2.splitWords:
-                if otherSplitWord in badWordsForWordMatching:
+                if ignoreWordForMatching(otherSplitWord):
                     continue
 
                 if editDistance.perform(splitWord, otherSplitWord) < 2:
@@ -73,14 +83,11 @@ def mismatchWordsRule(npModel1, npModel2):
     firstWords = npModel1.splitWords
     secondWords = npModel2.splitWords
 
-    largerCollection = None
-    smallerCollection = None
+    largerCollection = firstWords
+    smallerCollection = secondWords
     if len(firstWords) < len(secondWords):
         largerCollection = secondWords
         smallerCollection = firstWords
-    else:
-        largerCollection = firstWords
-        smallerCollection = secondWords
 
     mismatchCount = 0
 
@@ -166,27 +173,37 @@ def findCorrectAntecedent(npModel, previousNps, sentences):
         score7 = matchGender(npModel, previousNp)
         # article score
         score8 = articleRule(previousNp)
-        # wordmatching rule
+        # word matching rule
         score9 = wordMatchingRule(npModel, previousNp)
         # special this rule
         specialThisScore = specialThisRule(npModel, previousNp)
 
         totalScore = score1 + score2 + score3 + score4 + score5 + score6 + score7 + score8 + score9
 
-        totalScore = totalScore + subsumeScore
-        totalScore = totalScore + reverseSubsumeScore
-        totalScore = totalScore + iMeRule(npModel, previousNp)
-        totalScore = totalScore + specialThisScore
+        totalScore += subsumeScore
+        totalScore += reverseSubsumeScore
+        totalScore += iMeRule(npModel, previousNp)
+        totalScore += specialThisScore
 
-        print str(npModel) + " => " + str(previousNp) + ":" + str(totalScore)
         scoringDict[totalScore] = previousNp
 
     od = collections.OrderedDict(sorted(scoringDict.items()))
+
+    # printResults(npModel, od)
+
     for item in od.items():
         if item[0] > 0:
             return None
         return item[1]
     return None
+
+def printResults(npModel, results):
+    total = 0
+    for item in results.items():
+        total += 1
+        if total > 3:
+            break
+        print str(npModel) + " => " + str(item[1]) + ":" + str(item[0])
 
 def updateDocumentWithCoreferences(docModel):
     previousItems = []
@@ -198,7 +215,7 @@ def updateDocumentWithCoreferences(docModel):
             for chunk in sentence:
                 np = npModel.NpModel(chunk)
 
-                if np.tag == nounPhraseKey:
+                if np.tag == nounPhraseKey or np.tag in pronounTypes:
                     result = findCorrectAntecedent(np, previousItems, sentences)
                     if result is not None:
                         coreferencePairs.append((np, result))
