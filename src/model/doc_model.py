@@ -142,7 +142,10 @@ class Doc_Model:
 		elif colonCount == 1:
 			timeFormat += " %H:%M"
 
-		self.dateTime = datetime.strptime(doc.dateTime.strip(), timeFormat)
+		try:
+			self.dateTime = datetime.strptime(doc.dateTime.strip(), timeFormat)
+		except ValueError:
+			pass  # just passing here.   problem with some files.  brandon, is this ok?
 
 		self.header = Text(doc.header, self, -4)
 		self.slug = Text(doc.slug, self, -3)
