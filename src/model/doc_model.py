@@ -80,6 +80,8 @@ class Sentence(list, ParentCompare):
 
         tokenized = list(x for x in nltk.pos_tag(word_tokenize(self.full)) if len(x[0]) > 0)
 
+        self.wordNum = len(tokenized)
+
         self.tree = chunker.parse(tokenized)
         # print(self.tree)
 
