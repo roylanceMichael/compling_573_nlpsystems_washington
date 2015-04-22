@@ -84,10 +84,20 @@ class DenseGraph(list):
 
         return id
 
+
+def matrixSelect(cluster, wordCount):
+    matrix = DenseGraph(cluster.sentences(), cosine2)
+    count = 0
+    while count < wordCount:
+        s = matrix.pullMax()
+        yield s
+        count += s.wordNum
+
+
 if __name__ == '__main__':
     testSentences = ("Test sentence one.", "This is test sentence two.", "Sentence three.", "Here is the final sentence.")
     testSentences = tuple(Sentence(s, None, 0) for s in testSentences)
-    simMeasure = lambda s: cosine2(s)
+    simMeasure = cosine2
     graph = DenseGraph(testSentences, simMeasure)
     print(graph)
     print(graph.getSim(0,2))

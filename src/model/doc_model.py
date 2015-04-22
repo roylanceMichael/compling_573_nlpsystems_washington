@@ -196,7 +196,9 @@ class Doc_Model:
 
 
 class Cluster(list):
-    def __init__(self, doclist):
+    def __init__(self, doclist, catagory, title):
+        self.catagory, self.title = catagory, title
+
         if isinstance(doclist[0], document.Document):
             list.__init__(self, sorted(Doc_Model(x) for x in doclist))
         else:
