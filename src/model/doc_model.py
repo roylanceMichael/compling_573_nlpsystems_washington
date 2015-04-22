@@ -223,6 +223,21 @@ class Cluster(list):
     def getQueryTFIDF(self, word):
         return self.getQueryTF(word) * idf.idf[word]
 
+    def sentences(self):
+        for doc in self:
+            for s in doc.sentences():
+                yield s
+
+    def chunks(self):
+        for doc in self:
+            for c in doc.chunks():
+                yield c
+
+    def words(self):
+        for doc in self:
+            for w in doc.words():
+                yield w
+
 
 def main():
     doc = document.Document.factoryMultiple("/corpora/LDC/LDC02T31/apw/1998/19980601_APW_ENG", True, False).next()

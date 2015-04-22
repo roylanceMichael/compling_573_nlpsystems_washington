@@ -19,7 +19,6 @@ def cosine2(sentencePair, vocab=None):
 
             counts[word][i] += 1
 
-    print(counts)
     magnitudes = [0.0, 0.0]
     dotProd = 0.0
     for value in counts.values():
@@ -35,7 +34,31 @@ def cosine2(sentencePair, vocab=None):
 
     return dotProd**2 / (magnitudes[0] * magnitudes[1])
 
+class DenseGraph(list):
+    def __init__(self, sentences, simMeasure):
+        self.sentences = sentences if isinstance(sentences, list) else list(sentences)
+        sNum = len(self.sentences)
+        list.__init__(self)
+        for x in range(sNum):
+            row = list()
+            for y in range(x):
+                row.append( simMeasure((self.sentences[x], self.sentences[y])) )
+            row.append(1.0)
+            self.append(row)
+
+    def __str__(self):
+        return list.__str__(self)
+
+    def getSim(self, sID0, sID1):
+        if sID0 > sID1:
+            return self[sID0][sID1]
+        return self[sID1][sID0]
+
 if __name__ == '__main__':
-    testSentences = ("Test sentence one.", "This is test sentence two.")
+    testSentences = ("Test sentence one.", "This is test sentence two.", "Here is the final sentence.")
     testSentences = tuple(Sentence(s, None, 0) for s in testSentences)
-    print(cosine2(testSentences))
+    simMeasure = lambda s: cosine2(s)
+    graph = DenseGraph(testSentences, simMeasure)
+    print(graph)
+    print(graph.getSim(0,2))
+    print(graph.getSim(2,0))
