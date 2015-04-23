@@ -21,6 +21,7 @@ import extract.topicReader
 import extract.documentRepository
 import coreference.rules
 import model.doc_model
+import kmeans.kMeans
 from selection.first_n import first_n
 from order.order import in_order
 from realize.simple_realize import simple_realize
@@ -33,7 +34,7 @@ parser.add_argument('--topic-xml', help='Path to topic xml file', dest='topicXml
 parser.add_argument('--output-path', help='Path to our output', dest='outputPath')
 parser.add_argument('--rouge-path', help='Path to rouge', dest='rougePath')
 parser.add_argument('--gold-standard-summary-path', help='Path to gold standard summaries',
-					dest='goldStandardSummaryPath')
+                    dest='goldStandardSummaryPath')
 args = parser.parse_args()
 
 ##############################################################
@@ -49,7 +50,7 @@ rouge = RougeEvaluator(args.rougePath, args.goldStandardSummaryPath, summaryOutp
 # send the data to the model generator
 ##############################################################
 def getModel(docData):
-	return model.doc_model.Doc_Model(docData)
+    return model.doc_model.Doc_Model(docData)
 
 
 ##############################################################
@@ -57,15 +58,37 @@ def getModel(docData):
 ##############################################################
 def summarize(docModels):
 
-    return simple_realize( in_order( first_n(docModels) ) )
+    #return simple_realize( in_order( first_n(docModels) ) )
 
+    summary = ""
+    kMeansInstance = kmeans.kMeans.KMeans(docModels)
+
+    maxCount = 6
+    number = 0
+    for topParagraph in kMeansInstance.buildDistances():
+        if number > maxCount:
+            break
+
+        summary += str(topParagraph[0])
+        number += 1
+
+    return summary
 
 
 ##############################################################
 # evaluate our summary with rouge
 ##############################################################
 def evaluate():
-	return rouge.evaluate()
+    return rouge.evaluate()
+
+
+##############################################################
+# print out models
+##############################################################
+def printSummary(docModels):
+    for docModel in docModels:
+        for paragraph in docModel.paragraphs:
+            print str(paragraph)
 
 
 ##############################################################
@@ -76,7 +99,7 @@ def evaluate():
 # go through each topic
 topics = []
 for topic in extract.topicReader.Topic.factoryMultiple(args.topicXml):
-	topics.append(topic)
+    topics.append(topic)
 
 documentRepository = extract.documentRepository.DocumentRepository(args.docInputPath, args.docInputPath2, topics)
 
@@ -88,47 +111,47 @@ rouge.cacheModelSummaries(topics)
 
 # load and cache the docs if they are not loaded.  just get them if they are.
 for topic in topics:
-	transformedTopicId = topic.docsetAId[:-3] + '-A'
-	print "caching topicId: " + transformedTopicId
-	# let's get all the documents associated with this topic
+    transformedTopicId = topic.docsetAId[:-3] + '-A'
+    print "caching topicId: " + transformedTopicId
+    # let's get all the documents associated with this topic
 
-	# get the doc objects, and build doc models from them
-	for foundDocument in documentRepository.getDocumentsByTopic(topic.id):
-		# print "caching document: " + foundDocument.docNo
-		pass
+    # get the doc objects, and build doc models from them
+    for foundDocument in documentRepository.getDocumentsByTopic(topic.id):
+        # print "caching document: " + foundDocument.docNo
+        pass
 
 # recache documents for later
 documentRepository.writefileIdDictionaryToFileCache(documentCachePath)
 
 for topic in topics:
-	transformedTopicId = topic.docsetAId[:-3] + '-A'
-	print "processing topicId: " + transformedTopicId
-	# let's get all the documents associated with this topic
-	models = list()
-	# get the doc objects, and build doc models from them
-	for foundDocument in documentRepository.getDocumentsByTopic(topic.id):
-		print "processing docNo: " + foundDocument.docNo
-		convertedModel = getModel(foundDocument)
-		# updatedCorefModel = coreference.rules.Rules.updateDocumentWithCoreferences(convertedModel)
-		models.append(convertedModel)
+    transformedTopicId = topic.docsetAId[:-3] + '-A'
+    print "processing topicId: " + transformedTopicId
+    # let's get all the documents associated with this topic
+    models = list()
+    # get the doc objects, and build doc models from them
+    for foundDocument in documentRepository.getDocumentsByTopic(topic.id):
+        print "processing docNo: " + foundDocument.docNo
+        convertedModel = getModel(foundDocument)
+        # updatedCorefModel = coreference.rules.Rules.updateDocumentWithCoreferences(convertedModel)
+        models.append(convertedModel)
 
-	# make a summary of the topic cluster
-	print topic.category + " : " + topic.title + " : building summary for " + str(len(models)) + " models"
-	summary = summarize(models)
-	if summary is not None:
-		summaryFileName = summaryOutputPath + "/" + transformedTopicId + ".OURS"
-		summaryFile = open(summaryFileName, 'w')
-		summaryFile.write(summary)
-		summaryFile.close()
+    # make a summary of the topic cluster
+    print topic.category + " : " + topic.title + " : building summary for " + str(len(models)) + " models"
+    summary = summarize(models)
+    if summary is not None:
+        summaryFileName = summaryOutputPath + "/" + transformedTopicId + ".OURS"
+        summaryFile = open(summaryFileName, 'w')
+        summaryFile.write(summary)
+        summaryFile.close()
 
-	print summary
+    print summary
+    print "----------"
 
-# run rouge evaluator
-print "running the rouge evaluator"
-evaluation = evaluate()
-print evaluation
-evaluationFileName = evaluationOutputPath + "/FinalEvaluation.txt"
-print evaluationFileName
-evaluationFile = open(evaluationFileName, 'w')
-evaluationFile.write(evaluation)
-evaluationFile.close()
+    print "running the rouge evaluator"
+    evaluation = evaluate()
+    print evaluation
+    evaluationFileName = evaluationOutputPath + "/FinalEvaluation.txt"
+    print evaluationFileName
+    evaluationFile = open(evaluationFileName, 'w')
+    evaluationFile.write(evaluation)
+    evaluationFile.close()
