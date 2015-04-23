@@ -1,6 +1,7 @@
 __author__ = 'mroylance'
 import uuid
 import math
+nounPhraseKey = "NP"
 
 
 class ParagraphCluster:
@@ -13,7 +14,8 @@ class ParagraphCluster:
         chunkDict = {}
         for sentence in self.paragraph:
             for chunk in sentence:
-                chunkDict[str(chunk).lower()] = None
+                if chunk.tag == nounPhraseKey:
+                    chunkDict[str(chunk).lower()] = None
         return chunkDict
 
     def distance(self, otherParagraph):
