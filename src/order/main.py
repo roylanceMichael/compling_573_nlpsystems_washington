@@ -2,7 +2,7 @@ import src.model.doc_model as doc_model
 import json
 import re
 import src.extract.document as document
-from src.select.first_n import first_n
+from src.selection.first_n import first_n
 from order import in_order
 from os import listdir
 

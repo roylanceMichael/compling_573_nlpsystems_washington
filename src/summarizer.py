@@ -23,6 +23,9 @@ import coreference.rules
 import model.doc_model
 import kmeans.kMeans
 import summarization.initialSummarizer
+from selection.first_n import first_n
+from order.order import in_order
+from realize.simple_realize import simple_realize
 
 # get parser args and set up global variables
 parser = argparse.ArgumentParser(description='Basic Document Summarizer.')
@@ -60,7 +63,38 @@ def summarize(docModels):
     for topSentence in initialSummarizer.getBestSentences():
         summary += topSentence
 
+def kMeansSentences(docModels, maxCount):
+
+    number = 0
+    kMeansInstance = kmeans.kMeans.KMeans(docModels)
+    for topParagraph in kMeansInstance.buildDistances():
+        if number > maxCount:
+            break
+        for sentence in topParagraph[0]:
+            yield sentence
+
+        number += 1
+
+def summarize(docModels):
+
+    #return simple_realize( in_order( first_n(docModels) ) )
+
+    maxCount = 6
+    return simple_realize( in_order( kMeansSentences(docModels, maxCount) ) )
+
+    """
+    maxCount = 6
+    number = 0
+    for topParagraph in kMeansInstance.buildDistances():
+        if number > maxCount:
+            break
+
+        summary += str(topParagraph[0])
+        number += 1
+
     return summary
+
+    """
 
 
 ##############################################################
