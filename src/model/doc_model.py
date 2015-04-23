@@ -1,15 +1,15 @@
+from collections import defaultdict
+from datetime import datetime
+
 import nltk
 import nltk.data
 from nltk.tree import Tree
 from nltk.tokenize import word_tokenize
 from nltk.stem.porter import *
-from nltk.corpus import stopwords
-from collections import defaultdict
-import string
-from datetime import datetime
 
 import extract.document as document
-import idf
+from model import idf
+
 
 sentence_breaker = nltk.data.load('tokenizers/punkt/english.pickle')
 stemmer = PorterStemmer().stem
@@ -75,6 +75,7 @@ class Sentence(list, ParentCompare):
 	def __init__(self, in_string, parent, position_in_parent):
 		ParentCompare.__init__(self, parent, position_in_parent)
 		self.full = in_string
+		self.simple = in_string.replace('\n', '')
 
 		# at this level we need to deside if we are doing full parsing or just chunking
 		# I'll assume chunking for now because we need at least full NPs to figure out coreference
@@ -155,6 +156,7 @@ class Doc_Model:
 		self.headline = Text(doc.headline, self, -2)
 		self.trailer = Text(doc.trailer, self, -1)
 		self.body = Text(doc.body, self, 0)
+
 		if len(doc.paragraphs) > 1:
 			self.paragraphs = [Text(doc.paragraphs[x], self, x + 1) for x in range(len(doc.paragraphs))]
 		else:
@@ -183,11 +185,18 @@ class Doc_Model:
 	def __ge__(self, other):
 		return not self < other
 
-
 	def sentences(self):
 		for p in self.paragraphs:
 			for s in p:
 				yield s
+
+	# this is a helper method for getting a list of all the sentences in the model
+	def cleanSentences(self):
+		sentences = []
+		for p in self.paragraphs:
+			for s in p:
+				sentences.append(s.simple)
+		return sentences
 
 	def chunks(self):
 		for s in self.sentences():

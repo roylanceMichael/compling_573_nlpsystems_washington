@@ -15,17 +15,21 @@ __author__ = 'thomas'
 """
 
 import argparse
+
 from evaluate.rougeEvaluator import RougeEvaluator
 import extract
 import extract.topicReader
 import extract.documentRepository
-import coreference.rules
+import model.idf
 import model.doc_model
 import kmeans.kMeans
 import summarization.initialSummarizer
-from selection.first_n import first_n
 from order.order import in_order
 from realize.simple_realize import simple_realize
+from summarization.initialSummarizer import InitialSummarizer
+
+
+
 
 # get parser args and set up global variables
 parser = argparse.ArgumentParser(description='Basic Document Summarizer.')
@@ -45,7 +49,11 @@ summaryOutputPath = args.outputPath
 evaluationOutputPath = "../results"
 modelSummaryCachePath = "../cache/modelSummaryCache"
 documentCachePath = "../cache/documentCache"
+idfCachePath = "../cache/idfCache"
+
 rouge = RougeEvaluator(args.rougePath, args.goldStandardSummaryPath, summaryOutputPath, modelSummaryCachePath)
+idf = model.idf.Idf(idfCachePath)
+
 
 ##############################################################
 # send the data to the model generator
@@ -59,9 +67,8 @@ def getModel(docData):
 ##############################################################
 def summarize(docModels):
     summary = ""
-    initialSummarizer = summarization.initialSummarizer.InitialSummarizer(docModels, True, True, True, True)
-    for topSentence in initialSummarizer.getBestSentences():
-        summary += topSentence
+    initialSummarizer = InitialSummarizer(docModels, idf, False, False, True, True, False)
+    return initialSummarizer.getBestSentences()
 
 def kMeansSentences(docModels, maxCount):
 
@@ -75,26 +82,6 @@ def kMeansSentences(docModels, maxCount):
 
         number += 1
 
-def summarize(docModels):
-
-    #return simple_realize( in_order( first_n(docModels) ) )
-
-    maxCount = 6
-    return simple_realize( in_order( kMeansSentences(docModels, maxCount) ) )
-
-    """
-    maxCount = 6
-    number = 0
-    for topParagraph in kMeansInstance.buildDistances():
-        if number > maxCount:
-            break
-
-        summary += str(topParagraph[0])
-        number += 1
-
-    return summary
-
-    """
 
 
 ##############################################################
@@ -130,6 +117,7 @@ documentRepository.readFileIdDictionaryFromFileCache(documentCachePath)
 
 # cache the model summaries
 rouge.cacheModelSummaries(topics)
+
 
 # load and cache the docs if they are not loaded.  just get them if they are.
 for topic in topics:

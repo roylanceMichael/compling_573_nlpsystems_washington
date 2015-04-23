@@ -1,8 +1,5 @@
 from collections import defaultdict
 
-from nltk.corpus import stopwords
-import string
-
 from model.doc_model import Sentence
 from model.idf import stopWords
 
