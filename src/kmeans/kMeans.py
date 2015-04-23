@@ -22,13 +22,13 @@ class KMeans:
                 if paragraphId == otherParagraphId:
                     continue
 
-            otherParagraph = paragraphs[otherParagraphId]
-            tupleDistance = paragraph.distance(otherParagraph)
+                otherParagraph = paragraphs[otherParagraphId]
+                tupleDistance = paragraph.distance(otherParagraph)
 
-            if distancePairs.has_key(paragraph.uniqueId):
-                distancePairs[paragraphId] += tupleDistance
-            else:
-                distancePairs[paragraphId] = tupleDistance
+                if distancePairs.has_key(paragraph.uniqueId):
+                    distancePairs[paragraphId] += tupleDistance
+                else:
+                    distancePairs[paragraphId] = tupleDistance
 
         # which distancePairs have the highest score?
         for tupleResult in sorted(distancePairs.items(), key=operator.itemgetter(1), reverse=True):

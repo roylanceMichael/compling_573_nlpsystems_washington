@@ -17,14 +17,14 @@ class ParagraphCluster:
         return chunkDict
 
     def distance(self, otherParagraph):
-        # x1 * x2 / x1^2 + x2^2
         sameTotal = 0
 
         for otherChunk in otherParagraph.chunkDict:
-            if otherChunk not in self.chunkDict:
+            if otherChunk in self.chunkDict:
                 sameTotal += 1
 
-        sameTotal -= math.fabs(len(self.chunkDict) - len(otherParagraph.chunkDict)) / 2
+        # todo: work out better
+        # sameTotal -= math.fabs (len(self.chunkDict) - len(otherParagraph.chunkDict))
 
         return sameTotal
 

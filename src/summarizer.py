@@ -57,7 +57,7 @@ def summarize(docModels):
     summary = ""
     kMeansInstance = kmeans.kMeans.KMeans(docModels)
 
-    maxCount = 8
+    maxCount = 6
     number = 0
     for topParagraph in kMeansInstance.buildDistances():
         if number > maxCount:
@@ -140,6 +140,7 @@ for topic in topics:
 
     print summary
     print "----------"
+
     print "running the rouge evaluator"
     evaluation = evaluate()
     print evaluation
