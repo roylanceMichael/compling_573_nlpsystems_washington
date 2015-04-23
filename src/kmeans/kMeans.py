@@ -9,7 +9,7 @@ class KMeans:
         self.docModels = docModels
 
     def buildDistances(self):
-        paragraphs = {}
+        paragraphs = { }
         for docModel in self.docModels:
             for paragraph in docModel.paragraphs:
                 newParagraph = paragraphCluster.ParagraphCluster(paragraph)
@@ -26,14 +26,14 @@ class KMeans:
             tupleDistance = paragraph.distance(otherParagraph)
 
             if distancePairs.has_key(paragraph.uniqueId):
-                distancePairs[paragraph.uniqueId] += tupleDistance
+                distancePairs[paragraphId] += tupleDistance
             else:
-                distancePairs[paragraph.uniqueId] = tupleDistance
+                distancePairs[paragraphId] = tupleDistance
 
         # which distancePairs have the highest score?
-        od = collections.OrderedDict(sorted(distancePairs.items(), key=operator.itemgetter(1), reverse=True))
-
-        for item in od:
-            yield (paragraphs[item].paragraph, od[item])
+        for tupleResult in sorted(distancePairs.items(), key=operator.itemgetter(1), reverse=True):
+            paragraph = paragraphs[tupleResult[0]]
+            score = tupleResult[1]
+            yield (paragraph.paragraph, score)
 
 

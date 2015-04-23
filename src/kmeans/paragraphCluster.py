@@ -7,7 +7,7 @@ class ParagraphCluster:
     def __init__(self, paragraph):
         self.paragraph = paragraph
         self.chunkDict = self.buildChunkDict()
-        self.uniqueId = uuid.uuid1()
+        self.uniqueId = str(uuid.uuid1())
 
     def buildChunkDict(self):
         chunkDict = {}
@@ -21,7 +21,7 @@ class ParagraphCluster:
         sameTotal = 0
 
         for otherChunk in otherParagraph.chunkDict:
-            if otherChunk not in self.chunkDict: # and feature in self.tr.keptFeatures:
+            if otherChunk not in self.chunkDict:
                 sameTotal += 1
 
         sameTotal -= math.fabs(len(self.chunkDict) - len(otherParagraph.chunkDict)) / 2
