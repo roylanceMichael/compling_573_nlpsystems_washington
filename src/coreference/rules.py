@@ -51,14 +51,13 @@ def wordMatchingRule(npModel1, npModel2):
 					return -10
 	return 0
 
-
 # comparison rules
 def matchPlurality(npModel1, npModel2):
 	if npModel1.plurality and npModel2.plurality and npModel2.pronounType != npModel.nonePronounType:
 		return -999
 	if npModel1.plurality and npModel2.plurality:
 		return -999
-	return 0
+	return 20000
 
 
 def matchGender(npModel1, npModel2):
@@ -230,14 +229,14 @@ def updateDocumentWithCoreferences(docModel):
 			for chunk in sentence:
 				np = npModel.NpModel(chunk)
 
-				print str(np) + " -> " + np.tag
-
-				if np.tag == nounPhraseKey or np.tag in pronounTypes:
+				if np.tag in pronounTypes:
 					result = findCorrectAntecedent(np, previousItems, sentences)
 					if result is not None:
 						coreferencePairs.append((np, result))
 
+				if np.tag in pronounTypes or np.tag == nounPhraseKey:
 					previousItems.insert(0, np)
+
 			sentences.insert(0, sentence)
 
 	return coreferencePairs
