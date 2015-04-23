@@ -21,6 +21,9 @@ import extract.topicReader
 import extract.documentRepository
 import coreference.rules
 import model.doc_model
+from selection.first_n import first_n
+from order.order import in_order
+from realize.simple_realize import simple_realize
 
 # get parser args and set up global variables
 parser = argparse.ArgumentParser(description='Basic Document Summarizer.')
@@ -53,15 +56,9 @@ def getModel(docData):
 # summarize
 ##############################################################
 def summarize(docModels):
-	summary = ""
-	for docModel in docModels:
-		if len(docModel.paragraphs) != 0 and len(docModel.paragraphs[0]):
-			summary += docModel.paragraphs[0][0].full + "\n"
-		else:
-			print("empty document?")
-			print(docModel.docNo)
-			print(docModel.headline)
-	return summary
+
+    return simple_realize( in_order( first_n(docModels) ) )
+
 
 
 ##############################################################

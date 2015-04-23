@@ -13,7 +13,7 @@ def simple_realize(sentences):
 		else:
 			first_sentence = False
 
-		current += sentence.wordNum
+		current += s.wordNum
 		if current > wordLimit:
 			break
 		realized += sentence

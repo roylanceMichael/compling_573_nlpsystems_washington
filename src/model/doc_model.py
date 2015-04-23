@@ -23,6 +23,9 @@ nltk_v2 = nltk.__version__[0] == '2'
 
 # implements comparisons based on .parent and .position_in_parent
 class ParentCompare:
+    def __init__(self, parent, position_in_parent):
+        self.parent, self.position_in_parent = parent, position_in_parent
+
 	def __lt__(self, other):
 		if self.parent == other.parent:
 			return self.position_in_parent < other.position_in_parent
@@ -30,7 +33,7 @@ class ParentCompare:
 
 	def __le__(self, other):
 		if self.parent == other.parent:
-			return self.position_in_parent < + other.position_in_parent
+			return self.position_in_parent <= other.position_in_parent
 		return self.parent <= other.parent
 
 	def __gt__(self, other):
@@ -50,7 +53,7 @@ class ParentCompare:
 
 class Text(list, ParentCompare):
 	def __init__(self, in_string, parent, position_in_parent):
-		self.parent, self.position_in_parent = parent, position_in_parent
+		ParentCompare.__init__(self, parent, position_in_parent)
 		self.full = in_string.strip()
 		sentences = sentence_breaker.tokenize(self.full)
 
@@ -70,7 +73,7 @@ class Text(list, ParentCompare):
 
 class Sentence(list, ParentCompare):
 	def __init__(self, in_string, parent, position_in_parent):
-		self.parent, self.position_in_parent = parent, position_in_parent
+		ParentCompare.__init__(self, parent, position_in_parent)
 		self.full = in_string
 
 		# at this level we need to deside if we are doing full parsing or just chunking
@@ -97,7 +100,7 @@ class Sentence(list, ParentCompare):
 
 class Chunk(list, ParentCompare):
 	def __init__(self, tree, parent, position_in_parent):
-		self.parent, self.position_in_parent = parent, position_in_parent
+		ParentCompare.__init__(self, parent, position_in_parent)
 
 		if isinstance(tree, Tree):
 
@@ -119,7 +122,7 @@ class Chunk(list, ParentCompare):
 
 class Word(ParentCompare):
 	def __init__(self, in_string, tag, parent, position_in_parent):
-		self.parent, self.position_in_parent = parent, position_in_parent
+		ParentCompare.__init__(self, parent, position_in_parent)
 		self.full = in_string
 		# if len(in_string) == 0:
 		# print(parent.parent.tree)
