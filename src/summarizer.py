@@ -22,6 +22,7 @@ import extract.documentRepository
 import coreference.rules
 import model.doc_model
 import kmeans.kMeans
+import summarization.initialSummarizer
 
 # get parser args and set up global variables
 parser = argparse.ArgumentParser(description='Basic Document Summarizer.')
@@ -55,16 +56,9 @@ def getModel(docData):
 ##############################################################
 def summarize(docModels):
     summary = ""
-    kMeansInstance = kmeans.kMeans.KMeans(docModels)
-
-    maxCount = 6
-    number = 0
-    for topParagraph in kMeansInstance.buildDistances():
-        if number > maxCount:
-            break
-
-        summary += str(topParagraph[0])
-        number += 1
+    initialSummarizer = summarization.initialSummarizer.InitialSummarizer(docModels, True, True, True, True)
+    for topSentence in initialSummarizer.getBestSentences():
+        summary += topSentence
 
     return summary
 
