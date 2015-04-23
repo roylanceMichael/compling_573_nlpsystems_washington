@@ -21,6 +21,7 @@ import extract.topicReader
 import extract.documentRepository
 import coreference.rules
 import model.doc_model
+import kmeans.kMeans
 
 # get parser args and set up global variables
 parser = argparse.ArgumentParser(description='Basic Document Summarizer.')
@@ -53,15 +54,18 @@ def getModel(docData):
 # summarize
 ##############################################################
 def summarize(docModels):
-	summary = ""
-	for docModel in docModels:
-		if len(docModel.paragraphs) != 0 and len(docModel.paragraphs[0]):
-			summary += docModel.paragraphs[0][0].full + "\n"
-		else:
-			print("empty document?")
-			print(docModel.docNo)
-			print(docModel.headline)
-	return summary
+    summary = ""
+    kMeansInstance = kmeans.kMeans.KMeans(docModels)
+
+    maxCount = 5
+    number = 0
+    for topParagraph in kMeansInstance.buildDistances():
+        if number > maxCount:
+            break
+        summary += str(topParagraph[0])
+        number += 1
+
+    return summary
 
 
 ##############################################################

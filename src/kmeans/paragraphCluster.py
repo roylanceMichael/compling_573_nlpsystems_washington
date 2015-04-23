@@ -3,27 +3,28 @@ import uuid
 import math
 
 
-class SentenceCluster:
-    def __init__(self, sentence):
-        self.sentence = sentence
+class ParagraphCluster:
+    def __init__(self, paragraph):
+        self.paragraph = paragraph
         self.chunkDict = self.buildChunkDict()
         self.uniqueId = uuid.uuid1()
 
     def buildChunkDict(self):
         chunkDict = {}
-        for chunk in self.sentence:
-            chunkDict[str(chunk).lower()] = None
+        for sentence in self.paragraph:
+            for chunk in sentence:
+                chunkDict[str(chunk).lower()] = None
         return chunkDict
 
-    def distance(self, otherSentence):
+    def distance(self, otherParagraph):
         # x1 * x2 / x1^2 + x2^2
         sameTotal = 0
 
-        for otherChunk in otherSentence.chunkDict:
+        for otherChunk in otherParagraph.chunkDict:
             if otherChunk not in self.chunkDict: # and feature in self.tr.keptFeatures:
                 sameTotal += 1
 
-        sameTotal -= math.fabs(len(self.chunkDict) - len(otherSentence.chunkDict)) / 2
+        sameTotal -= math.fabs(len(self.chunkDict) - len(otherParagraph.chunkDict)) / 2
 
         return sameTotal
 

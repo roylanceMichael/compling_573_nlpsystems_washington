@@ -1,50 +1,39 @@
 __author__ = 'mroylance'
-import sentenceCluster
+import paragraphCluster
 import collections
 import operator
 
 
 class KMeans:
-    def __init__(self, docModel):
-        self.docModel = docModel
-        self.featureDict = self.buildFeatureSet()
-
-    def buildFeatureSet(self):
-        featureDict = {}
-        for paragraph in self.docModel.paragraphs:
-            for sentence in paragraph:
-                for chunk in sentence:
-                    # instantiate a feature dictionary
-                    featureDict[str(chunk).lower()] = None
-
-        return featureDict
+    def __init__(self, docModels):
+        self.docModels = docModels
 
     def buildDistances(self):
-        sentences = {}
-        for sentence in self.docModel.paragraphs:
-            newSentence = sentenceCluster.SentenceCluster(sentence)
-            sentences[newSentence.uniqueId] = newSentence
+        paragraphs = {}
+        for docModel in self.docModels:
+            for paragraph in docModel.paragraphs:
+                newParagraph = paragraphCluster.ParagraphCluster(paragraph)
+                paragraphs[newParagraph.uniqueId] = newParagraph
 
         distancePairs = { }
-        for sentenceId in sentences:
-            sentence = sentences[sentenceId]
-            for otherSentenceId in sentences:
-                if sentenceId == otherSentenceId:
+        for paragraphId in paragraphs:
+            paragraph = paragraphs[paragraphId]
+            for otherParagraphId in paragraphs:
+                if paragraphId == otherParagraphId:
                     continue
 
-            otherSentence = sentences[otherSentenceId]
-            tupleDistance = sentence.distance(otherSentence)
+            otherParagraph = paragraphs[otherParagraphId]
+            tupleDistance = paragraph.distance(otherParagraph)
 
-            if distancePairs.has_key(sentence.uniqueId):
-                distancePairs[sentence.uniqueId] += tupleDistance
+            if distancePairs.has_key(paragraph.uniqueId):
+                distancePairs[paragraph.uniqueId] += tupleDistance
             else:
-                distancePairs[sentence.uniqueId] = tupleDistance
+                distancePairs[paragraph.uniqueId] = tupleDistance
 
         # which distancePairs have the highest score?
         od = collections.OrderedDict(sorted(distancePairs.items(), key=operator.itemgetter(1), reverse=True))
 
-        # let's return 4
         for item in od:
-            yield (sentences[item].sentence, od[item])
+            yield (paragraphs[item].paragraph, od[item])
 
 
