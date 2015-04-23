@@ -57,17 +57,24 @@ def getModel(docData):
 # summarize
 ##############################################################
 
-def kMeansSentences(docModels):
+def kMeansSentences(docModels, maxCount):
+
+    number = 0
     kMeansInstance = kmeans.kMeans.KMeans(docModels)
     for topParagraph in kMeansInstance.buildDistances():
+        if number > maxCount:
+            break
         for sentence in topParagraph[0]:
             yield sentence
+
+        number += 1
 
 def summarize(docModels):
 
     #return simple_realize( in_order( first_n(docModels) ) )
 
-    return simple_realize( in_order( kMeansSentences(docModels) ) )
+    maxCount = 6
+    return simple_realize( in_order( kMeansSentences(docModels, maxCount) ) )
 
     """
     maxCount = 6
