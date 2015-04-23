@@ -6,7 +6,7 @@ def simple_realize(sentences):
 	first_sentence = True
 	current = 0
 	for s in sentences:
-		sentence = s.full.replace("\n", " ")
+		sentence = " ".join(s.full.split())
 
 		if not first_sentence:
 			sentence = "\n" + sentence
