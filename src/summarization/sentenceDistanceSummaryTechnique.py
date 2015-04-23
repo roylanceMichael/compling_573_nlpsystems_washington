@@ -11,6 +11,9 @@ class SentenceDistanceSummaryTechnique(SummaryTechnique):
 			d = 0
 			sentences = model.cleanSentences()
 			n = float(len(sentences) - 1)
-			for sentence in sentences:
-				self[sentence] = (n - d) / n
+			for sentence in sentences:  # there is an error here.
+				if n == 0:
+					self[sentence] = 0
+				else:
+					self[sentence] = (n - d) / n
 				d += 1
