@@ -34,63 +34,52 @@ def cosine2(sentencePair, vocab=None):
 
 
 class DenseGraph(list):
-	def __init__(self, sentences, simMeasure):
-		self.sentences = sentences if isinstance(sentences, list) else list(sentences)
-		self._sNum = len(self.sentences)
-		list.__init__(self)
-		for x in range(self._sNum):
-			row = list()
-			for y in range(x):
-				row.append(simMeasure((self.sentences[x], self.sentences[y])))
-			row.append(1.0)
-			self.append(row)
+    def __init__(self, sentences, simMeasure):
+        self.sentences = sentences if isinstance(sentences, list) else list(sentences)
+        self.remaining = set(range(len(self.sentences)))
+        self._sNum = len(self.sentences)
+        list.__init__(self)
+        for x in range(self._sNum):
+            row = list()
+            for y in range(x):
+                row.append(simMeasure((self.sentences[x], self.sentences[y])))
+            row.append(1.0)
+            self.append(row)
 
-	def __str__(self):
-		return list.__str__(self)
+    def __str__(self):
+        return list.__str__(self)
 
-	def getSim(self, sID0, sID1):
-		if sID0 > sID1:
-			return self[sID0][sID1]
-		return self[sID1][sID0]
+    def getsim(self, sID0, sID1):
+        if sID0 > sID1:
+            return self[sID0][sID1]
+        return self[sID1][sID0]
 
-	def setSim(self, sID0, sID1, value):
-		if sID0 > sID1:
-			self[sID0][sID1] = value
-		else:
-			[sID1][sID0] = value
+    def setsim(self, sID0, sID1, value):
+        if sID0 > sID1:
+            self[sID0][sID1] = value
+        else:
+            [sID1][sID0] = value
 
-	def makeNeg(self, sID0, sID1):
-		# print(( sID0, sID1))
-		#print(sID0 > sID1)
-		if sID0 > sID1:
-			if self[sID0][sID1] > 0:
-				self[sID0][sID1] *= -1
-		elif self[sID1][sID0] > 0:
-			self[sID1][sID0] *= -1
+    def makeneg(self, sID0, sID1):
+        # print(( sID0, sID1))
+        # print(sID0 > sID1)
+        if sID0 > sID1:
+            if self[sID0][sID1] > 0:
+                self[sID0][sID1] *= -1
+        elif self[sID1][sID0] > 0:
+            self[sID1][sID0] *= -1
 
-	# returns the sentence most similar to everything else,
-	# then turns its sim scores with everything negative
-	def pullMax(self):
-		id = max(
-			(
-				sum(self.getSim(x, y) for y in range(self._sNum)),
-				x
-			) for x in range(self._sNum)
-		)[1]
+    # returns the sentence most similar to everything else,
+    # then turns its sim scores with everything negative
+    def pullinorder(self):
+        while len(self.remaining) > 0:
+            sID = max(( sum(self.getsim(x, y) for y in range(self._sNum)), x ) for x in self.remaining)[1]
 
-		for y in range(self._sNum):
-			self.makeNeg(id, y)
+            for y in range(self._sNum):
+                self.makeneg(sID, y)
 
-		return id
-
-
-def matrixSelect(cluster, wordCount):
-	matrix = DenseGraph(cluster.sentences(), cosine2)
-	count = 0
-	while count < wordCount:
-		s = matrix.pullMax()
-		yield s
-		count += s.wordNum
+            yield self.sentences[sID]
+            self.remaining.remove(sID)
 
 
 if __name__ == '__main__':
@@ -100,7 +89,5 @@ if __name__ == '__main__':
 	simMeasure = cosine2
 	graph = DenseGraph(testSentences, simMeasure)
 	print(graph)
-	print(graph.getSim(0, 2))
-	print(graph.getSim(2, 0))
-	print(graph.pullMax())
-	print(graph.pullMax())
+	print(graph.getsim(0, 2))
+	print(graph.getsim(2, 0))
