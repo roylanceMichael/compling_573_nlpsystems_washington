@@ -22,7 +22,7 @@ import extract.topicReader
 import extract.documentRepository
 import model.idf
 import model.doc_model
-import kmeans.kMeans
+import npclustering.npClustering
 import summarization.initialSummarizer
 from order.order import in_order
 from realize.simple_realize import simple_realize
@@ -66,14 +66,13 @@ def getModel(docData):
 # summarize
 ##############################################################
 def summarize(docModels):
-    summary = ""
-    initialSummarizer = InitialSummarizer(docModels, idf, False, False, True, True, False)
+    initialSummarizer = InitialSummarizer(docModels, idf, False, False, True, True, True)
     return initialSummarizer.getBestSentences()
 
 def kMeansSentences(docModels, maxCount):
 
     number = 0
-    kMeansInstance = kmeans.kMeans.KMeans(docModels)
+    kMeansInstance = npclustering.npClustering.NpClustering(docModels)
     for topParagraph in kMeansInstance.buildDistances():
         if number > maxCount:
             break

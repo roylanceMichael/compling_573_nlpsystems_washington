@@ -102,6 +102,7 @@ class Sentence(list, ParentCompare):
 class Chunk(list, ParentCompare):
 	def __init__(self, tree, parent, position_in_parent):
 		ParentCompare.__init__(self, parent, position_in_parent)
+		self.anaphora = None
 
 		if isinstance(tree, Tree):
 
@@ -114,8 +115,6 @@ class Chunk(list, ParentCompare):
 		else:
 			self.full, self.tag = tree
 			list.__init__(self, [Word(self.full, self.tag, self, 0)])
-
-			# coreference will occure at this level
 
 	def __str__(self):
 		return self.full

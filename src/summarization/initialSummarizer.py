@@ -3,7 +3,7 @@ __author__ = 'mroylance'
 from summaryTechnique import SummaryTechnique
 from sentenceDistanceSummaryTechnique import SentenceDistanceSummaryTechnique
 from sentenceLengthSummaryTechnique import SentenceLengthSummaryTechnique
-from kMeansSummaryTechnique import KMeansSummaryTechnique
+from npClusteringTechnique import NpClusteringSummaryTechnique
 import operator
 
 class InitialSummarizer:
@@ -21,7 +21,7 @@ class InitialSummarizer:
 		self.techniques.append(self.sentenceDistance)
 		self.sentenceLength = SentenceLengthSummaryTechnique(trySentenceLength, 1.0, docModels)
 		self.techniques.append(self.sentenceLength)
-		self.npClustering = KMeansSummaryTechnique(tryNpClustering, 1.0, docModels)
+		self.npClustering = NpClusteringSummaryTechnique(tryNpClustering, 1.0, docModels)
 		self.techniques.append(self.npClustering)
 		self.summarize()
 

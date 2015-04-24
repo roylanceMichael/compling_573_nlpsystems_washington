@@ -1,7 +1,7 @@
 __author__ = 'thomas'
 
 from summaryTechnique import SummaryTechnique
-from kmeans.kMeans import KMeans
+from npclustering.npClustering import NpClustering
 
 
 class SentenceDistanceSummaryTechnique(SummaryTechnique):

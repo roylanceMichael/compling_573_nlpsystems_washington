@@ -63,6 +63,6 @@ class CoreferenceTests(unittest.TestCase):
 
 		# assert
 		for pair in pairs:
-			print str(pair[0]) + " -> " + str(pair[1])
+			print str(pair[1]) + " <- " + str(pair[0])
 
 		self.assertTrue(True)
