@@ -232,6 +232,7 @@ def updateDocumentWithCoreferences(docModel):
 				if np.tag in pronounTypes:
 					result = findCorrectAntecedent(np, previousItems, sentences)
 					if result is not None:
+						chunk.anaphora = result.chunk
 						coreferencePairs.append((np, result))
 
 				if np.tag in pronounTypes or np.tag == nounPhraseKey:
