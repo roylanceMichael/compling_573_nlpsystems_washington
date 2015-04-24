@@ -2,7 +2,7 @@ __author__ = 'mroylance'
 import unittest
 import extract.document
 import model.doc_model
-import kmeans.kMeans
+import npclustering.npClustering
 
 
 docXml = """
@@ -130,10 +130,10 @@ class KMeansTests(unittest.TestCase):
         docModel = model.doc_model.Doc_Model(foundDocument)
         otherDocModel = model.doc_model.Doc_Model(otherFoundDocument)
 
-        kMeans = kmeans.kMeans.KMeans([docModel, otherDocModel ])
+        kMeans = npclustering.npClustering.NpClustering([docModel, otherDocModel ])
 
         # act
-        highestParagraphs = kMeans.buildDistances()  # assert
+        highestParagraphs = kMeans.buildSentenceDistances()  # assert
         for paragraphResult in highestParagraphs:
             print "----------------"
             print str(paragraphResult[0]) + " " + str(paragraphResult[1])
