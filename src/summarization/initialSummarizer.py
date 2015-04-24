@@ -4,6 +4,8 @@ from summaryTechnique import SummaryTechnique
 from sentenceDistanceSummaryTechnique import SentenceDistanceSummaryTechnique
 from sentenceLengthSummaryTechnique import SentenceLengthSummaryTechnique
 from npClusteringTechnique import NpClusteringSummaryTechnique
+from matrixSummaryTechnique import MatrixSummaryTechnique
+
 import operator
 
 class InitialSummarizer:
@@ -13,9 +15,9 @@ class InitialSummarizer:
 		self.N = 10  # keep the top N sentences for each technique
 
 		self.techniques = list()
-		self.tfIdf = SummaryTechnique(tryTfIdf, 1.0, docModels)
-		self.techniques.append(self.tfIdf)
-		self.matrix = SummaryTechnique(tryMatrix, 1.0, docModels)
+		#self.tfIdf = SummaryTechnique(tryTfIdf, 1.0, docModels)
+		#self.techniques.append(self.tfIdf)
+		self.matrix = MatrixSummaryTechnique(tryMatrix, 1.0, docModels)
 		self.techniques.append(self.matrix)
 		self.sentenceDistance = SentenceDistanceSummaryTechnique(trySentenceDistance, 1.0, docModels)
 		self.techniques.append(self.sentenceDistance)
@@ -36,7 +38,7 @@ class InitialSummarizer:
 			for sentence in model.cleanSentences():
 				sum = 0.0
 				for technique in self.techniques:
-					sum += technique[sentence]
+					sum += technique[sentence]  # returns the score
 				aggregateSentences[sentence] = sum
 		sortedAggregateSentences = sorted(aggregateSentences.items(), key=operator.itemgetter(1), reverse=True)
 		topNSortedAggregateSentences = sortedAggregateSentences[:self.N]  # tuples here... convert to sentences

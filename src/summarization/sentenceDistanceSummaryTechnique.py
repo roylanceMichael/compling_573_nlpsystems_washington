@@ -13,7 +13,7 @@ class SentenceDistanceSummaryTechnique(SummaryTechnique):
 			n = float(len(sentences) - 1)
 			for sentence in sentences:  # there is an error here.
 				if n == 0:
-					self[sentence] = 0
+					self[sentence] = 1.0
 				else:
 					self[sentence] = (n - d) / n
 				d += 1

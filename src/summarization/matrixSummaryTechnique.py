@@ -1,9 +1,9 @@
-import similarity
+from selection import similarity
 import summarization.summaryTechnique
 from model.doc_model import Cluster, Sentence
 
 
-class matrixSummaryTechnique(summarization.summaryTechnique.SummaryTechnique):
+class MatrixSummaryTechnique(summarization.summaryTechnique.SummaryTechnique):
     def rankSentences(self):
         #testSentences = ("Test sentence one.", "This is test sentence two.", "Sentence three.", "Here is the final sentence.")
         #testSentences = tuple(Sentence(s, None, 0) for s in testSentences)
@@ -17,7 +17,7 @@ class matrixSummaryTechnique(summarization.summaryTechnique.SummaryTechnique):
 
 
 if __name__ == '__main__':
-    mst = matrixSummaryTechnique(True, 1.0, None)
+    mst = MatrixSummaryTechnique(True, 1.0, None)
     mst.rankSentences()
     print(mst)
 

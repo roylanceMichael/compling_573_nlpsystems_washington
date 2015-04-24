@@ -109,6 +109,7 @@ class Document:
 
 		if seekToId is not None:
 			pos = 0
+			prevpos = 0
 			line = ""
 			while seekToId not in line:
 				prevpos = pos
@@ -156,10 +157,11 @@ class Document:
 			index += 1
 
 	@staticmethod
-	def factoryForSpecificDocNo(input, docNo):
+	def factoryForSpecificDocNo(inputFileName, docNo):
 		"""
 			build 1 document given an input and doc number
 		"""
+
 		charMethod = Document.returnCharsFromDocument
 
 		tagStack = []
@@ -173,7 +175,7 @@ class Document:
 
 		foundDocNo = False
 
-		for c in charMethod(input, docNo):
+		for c in charMethod(inputFileName, docNo):
 			# print c,
 			if c == "<":
 				seenOpeningTag = True
@@ -202,6 +204,7 @@ class Document:
 					if currentTag[:4] == "DOC " and docNo in currentTag:
 						foundDocNo = True
 						tagStack.append("DOC")
+						currentObject[docNoKey] = [docNo]
 					else:
 						tagStack.append(currentTag)
 
