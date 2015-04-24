@@ -49,6 +49,7 @@ class NpClustering:
 				paragraphs[newParagraph.uniqueId] = newParagraph
 
 		distancePairs = {}
+		totalScore = float(0)
 		for paragraphId in paragraphs:
 			paragraph = paragraphs[paragraphId]
 			for otherParagraphId in paragraphs:
@@ -57,6 +58,7 @@ class NpClustering:
 
 				otherParagraph = paragraphs[otherParagraphId]
 				tupleDistance = paragraph.distance(otherParagraph)
+				totalScore += tupleDistance
 
 				if distancePairs.has_key(paragraph.uniqueId):
 					distancePairs[paragraphId] += tupleDistance
@@ -66,5 +68,5 @@ class NpClustering:
 		# which distancePairs have the highest score?
 		for tupleResult in sorted(distancePairs.items(), key=operator.itemgetter(1), reverse=True):
 			paragraph = paragraphs[tupleResult[0]]
-			score = tupleResult[1]
+			score = tupleResult[1] / totalScore
 			yield (paragraph.paragraph, score)
