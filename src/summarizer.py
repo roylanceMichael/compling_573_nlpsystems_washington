@@ -66,7 +66,7 @@ def getModel(docData):
 # summarize
 ##############################################################
 def summarize(docModels):
-    initialSummarizer = InitialSummarizer(docModels, idf, False, False, True, True, True)
+    initialSummarizer = InitialSummarizer(docModels, idf, True, True, True, True, True)
     return initialSummarizer.getBestSentences()
 
 def kMeansSentences(docModels, maxCount):
@@ -164,3 +164,4 @@ for topic in topics:
     evaluationFile = open(evaluationFileName, 'w')
     evaluationFile.write(evaluation)
     evaluationFile.close()
+

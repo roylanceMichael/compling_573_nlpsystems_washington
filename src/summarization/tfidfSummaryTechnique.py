@@ -11,10 +11,10 @@ class TfidfSummaryTechnique(SummaryTechnique):
 
     def rankSentences(self):
         scores = list()
-        sentences = [self.docCluster.sentences()]
+        sentences = list(self.docCluster.sentences())
         for sentence in sentences:
             current = 0.0
-            wordforms = [w.full.lower() for w in sentence.words()]
+            wordforms = list(w.lower for w in sentence.words())
             for word in wordforms:
                 if word not in stopWords:
                     current += self.docCluster.getTFIDF(word)

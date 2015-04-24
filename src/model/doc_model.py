@@ -124,6 +124,7 @@ class Word(ParentCompare):
 	def __init__(self, in_string, tag, parent, position_in_parent):
 		ParentCompare.__init__(self, parent, position_in_parent)
 		self.full = in_string
+		self.lower = in_string.lower()
 		# if len(in_string) == 0:
 		# print(parent.parent.tree)
 		self.tag = tag
@@ -210,7 +211,7 @@ class Doc_Model:
 
 class Cluster(list):
 	def __init__(self, doclist, catagory, title, idf):
-		self.catagory, self.title, self.idf = catagory, title, idf
+		self.catagory, self.title, self.idf = catagory, title, idf.loadIDF()
 
 		if isinstance(doclist[0], document.Document):
 			list.__init__(self, sorted(Doc_Model(x) for x in doclist))
@@ -232,13 +233,13 @@ class Cluster(list):
 		return self.termFreq[word]
 
 	def getTFIDF(self, word):
-		return self.getTF(word) * idf.idf[word]
+		return self.getTF(word) * self.idf[word]
 
 	def getQueryTF(self, word):
 		return 0.5 + 0.5 * ( self.termFreq[word] / self._maxFreq ) if word in self.termFreq else 0.5
 
 	def getQueryTFIDF(self, word):
-		return self.getQueryTF(word) * idf.idf[word]
+		return self.getQueryTF(word) * self.idf[word]
 
 	def sentences(self):
 		for doc in self:
