@@ -33,7 +33,16 @@ class InitialSummarizer:
 			if technique.enabled:
 				technique.rankSentences()
 
-	def getBestSentences(self):
+	def getBestSentences(self, w1=None, w2=None, w3=None, w4=None):
+		if w1 is not None:
+			self.matrix.weight = w1
+		if w2 is not None:
+			self.sentenceDistance.weight = w2
+		if w3 is not None:
+			self.sentenceLength.weight = w3
+		if w4 is not None:
+			self.npClustering.weight = w4
+
 		aggregateSentences = {}
 		for model in self.docModels:
 			for sentence in model.cleanSentences():

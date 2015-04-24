@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE TACtaskdata [
+
+<!-- ======================================================================
+      TAC 2010 Guided Summarization task data definition
+
+      Written 2010-06-18 by Karolina Owczarzak <karolina.owczarzak@nist.gov>
+     ====================================================================== -->
+
+    <!ELEMENT TACtaskdata  (topic+)           >
+    <!ELEMENT topic       (title, docsetA, docsetB) >
+    <!ELEMENT title       (#PCDATA)           >
+    <!ELEMENT docsetA     (doc+)              >
+    <!ELEMENT docsetB     (doc+)              >
+    <!ELEMENT doc          EMPTY              >		       
+
+    <!ATTLIST TACtaskdata
+                      year    CDATA              #REQUIRED
+		      track   (SUMMARIZATION)    #REQUIRED
+                      task    (GUIDED)           #REQUIRED
+		      dataset (SAMPLE|TEST)      #REQUIRED >
+
+    <!ATTLIST topic  id       ID    #REQUIRED 
+		     category CDATA #REQUIRED >
+
+    <!ATTLIST docsetA  id     ID    #REQUIRED >
+
+    <!ATTLIST docsetB  id     ID    #REQUIRED >
+
+    <!ATTLIST doc      id     CDATA #REQUIRED >   
+
+
+<!-- ====================================================================== -->
+]>
+
+<TACtaskdata year="2010" track="SUMMARIZATION" task="GUIDED"  dataset="TEST">
+
+
+<topic id = "D1038G" category = "1">
+
+	<title> Mt St Helens </title>
+
+	<docsetA id = "D1038G-A">
+		<doc id = "LTW_ENG_20041001.0122" />
+		<doc id = "XIN_ENG_20041001.0189" />
+		<doc id = "NYT_ENG_20041001.0279" />
+		<doc id = "APW_ENG_20041001.0415" />
+		<doc id = "AFP_ENG_20041001.0699" />
+		<doc id = "APW_ENG_20041002.0032" />
+		<doc id = "NYT_ENG_20041003.0001" />
+		<doc id = "APW_ENG_20041003.0028" />
+		<doc id = "NYT_ENG_20041003.0147" />
+		<doc id = "AFP_ENG_20041003.0398" />
+	</docsetA>
+
+	<docsetB id = "D1038G-B">
+		<doc id = "NYT_ENG_20041004.0031" />
+		<doc id = "AFP_ENG_20041004.0130" />
+		<doc id = "NYT_ENG_20041004.0282" />
+		<doc id = "NYT_ENG_20041004.0299" />
+		<doc id = "NYT_ENG_20041005.0035" />
+		<doc id = "LTW_ENG_20041005.0131" />
+		<doc id = "NYT_ENG_20041005.0231" />
+		<doc id = "LTW_ENG_20041006.0108" />
+		<doc id = "NYT_ENG_20041006.0255" />
+		<doc id = "AFP_ENG_20041006.0680" />
+	</docsetB>
+
+</topic>
+
+
+</TACtaskdata>

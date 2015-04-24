@@ -48,7 +48,7 @@ class RougeEvaluator():
 		rouge.model_dir = os.path.abspath(self.modelSummaryCachePath)
 
 		output = rouge.convert_and_evaluate()
-		print output
+		# print output
 		outputDict = rouge.output_to_dict(output)
 
 		return [output, outputDict]

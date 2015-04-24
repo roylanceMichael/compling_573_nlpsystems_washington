@@ -172,17 +172,18 @@ class Doc_Model:
 			if word.full not in idf.stopWords:
 				self.termFreq[word.full] += 1
 
-	def __lt__(self, other):
-		return isinstance(other, Doc_Model) and self.dateTime < other.dateTime
-
-	def __le__(self, other):
-		return isinstance(other, Doc_Model) and self.dateTime <= other.dateTime
-
-	def __gt__(self, other):
-		return not self <= other
-
-	def __ge__(self, other):
-		return not self < other
+	# brandon, I was getting errors here in running your matrix calc, so I had to comment.
+	# def __lt__(self, other):
+	# 	return isinstance(other, Doc_Model) and self < other
+	#
+	# def __le__(self, other):
+	# 	return isinstance(other, Doc_Model) and self <= other
+	#
+	# def __gt__(self, other):
+	# 	return isinstance(other, Doc_Model) and self > other
+	#
+	# def __ge__(self, other):
+	# 	return isinstance(other, Doc_Model) and self >= other
 
 	def sentences(self):
 		for p in self.paragraphs:
@@ -209,7 +210,7 @@ class Doc_Model:
 
 
 class Cluster(list):
-	def __init__(self, doclist, catagory, title):
+	def __init__(self, doclist, catagory="NO CATEGORY", title="NO TITLE"):
 		self.catagory, self.title = catagory, title
 
 		if isinstance(doclist[0], document.Document):

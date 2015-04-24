@@ -2,9 +2,12 @@ from collections import defaultdict
 
 from model.doc_model import Sentence
 from model.idf import stopWords
-
+import numpy
+from scipy import spatial
+import time
 
 def cosine2(sentencePair, vocab=None):
+	beg = time.time()
 	counts = defaultdict(lambda: [0, 0])
 
 	for i in (0, 1):
@@ -29,8 +32,33 @@ def cosine2(sentencePair, vocab=None):
 	for i in (0, 1):
 		if magnitudes[i] == 0.0:
 			return 0
+	cosSim = dotProd ** 2 / (magnitudes[0] * magnitudes[1])
+	end = time.time() - beg
+	return cosSim
 
-	return dotProd ** 2 / (magnitudes[0] * magnitudes[1])
+def	cosine2b(sentencePair):
+	beg = time.time()
+	counts = defaultdict(lambda: [0, 0])
+	vocab = []
+	#  make vectors:
+	for i in (0, 1):
+		for w in sentencePair[i].words():
+			word = w.full.lower()
+			if word in stopWords:
+				continue
+			counts[word][i] += 1
+			vocab.append(word)
+	s1 = numpy.zeros(len(vocab))
+	s2 = numpy.zeros(len(vocab))
+	i = 0
+	for word in vocab:
+		s1[i] = float(counts[word][0])
+		s2[i] = float(counts[word][1])
+		i += 1
+
+	cosSim = 1 - spatial.distance.cosine(s1, s2)
+	end = time.time() - beg
+	return cosSim
 
 
 class DenseGraph(list):
@@ -42,6 +70,8 @@ class DenseGraph(list):
 		for x in range(self._sNum):
 			row = list()
 			for y in range(x):
+				# s1 = cosine2((self.sentences[x], self.sentences[y]))
+				# s2 = cosine2b((self.sentences[x], self.sentences[y]))
 				row.append(simMeasure((self.sentences[x], self.sentences[y])))
 			row.append(1.0)
 			self.append(row)
@@ -86,7 +116,7 @@ if __name__ == '__main__':
 	testSentences = (
 	"Test sentence one.", "This is test sentence two.", "Sentence three.", "Here is the final sentence.")
 	testSentences = tuple(Sentence(s, None, 0) for s in testSentences)
-	simMeasure = cosine2
+	simMeasure = cosine2b
 	graph = DenseGraph(testSentences, simMeasure)
 	print(graph)
 	print(graph.getsim(0, 2))
