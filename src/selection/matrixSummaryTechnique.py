@@ -9,7 +9,7 @@ class matrixSummaryTechnique(summarization.summaryTechnique.SummaryTechnique):
         #testSentences = tuple(Sentence(s, None, 0) for s in testSentences)
         cluster = Cluster(self.docModels)
         matrix = similarity.DenseGraph(cluster.sentences(), similarity.cosine2)
-        step = self.weight / matrix._sNum
+        step = 1.0 / matrix._sNum
         rank = 0.0
         for s in matrix.pullinorder():
             self[s.simple] = 1.0 - (step * rank)
