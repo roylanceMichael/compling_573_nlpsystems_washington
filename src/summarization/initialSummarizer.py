@@ -8,6 +8,7 @@ from matrixSummaryTechnique import MatrixSummaryTechnique
 
 import operator
 
+
 class InitialSummarizer:
 	def __init__(self, docModels, idf, tryTfIdf, tryMatrix, trySentenceDistance, trySentenceLength, tryNpClustering):
 		self.docModels = docModels
@@ -15,7 +16,7 @@ class InitialSummarizer:
 		self.N = 10  # keep the top N sentences for each technique
 
 		self.techniques = list()
-		#self.tfIdf = SummaryTechnique(tryTfIdf, 1.0, docModels)
+		# self.tfIdf = SummaryTechnique(tryTfIdf, 1.0, docModels)
 		#self.techniques.append(self.tfIdf)
 		self.matrix = MatrixSummaryTechnique(tryMatrix, 1.0, docModels)
 		self.techniques.append(self.matrix)

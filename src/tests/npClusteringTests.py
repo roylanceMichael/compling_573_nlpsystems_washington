@@ -51,7 +51,6 @@ NYT-06-01-98 0002EDT &QL;
 </DOC>
 """
 
-
 otherDocXml = """
 <DOC>
 <DOCNO> NYT19980601.0001 </DOCNO>
@@ -121,21 +120,20 @@ NYT-06-01-98 0002EDT &QL;
 """
 
 
-
 class KMeansTests(unittest.TestCase):
-    def test_parseSingleDocument(self):
-        # arrange
-        foundDocument = extract.document.Document.factory(docXml)
-        otherFoundDocument = extract.document.Document.factory(otherDocXml)
-        docModel = model.doc_model.Doc_Model(foundDocument)
-        otherDocModel = model.doc_model.Doc_Model(otherFoundDocument)
+	def test_parseSingleDocument(self):
+		# arrange
+		foundDocument = extract.document.Document.factory(docXml)
+		otherFoundDocument = extract.document.Document.factory(otherDocXml)
+		docModel = model.doc_model.Doc_Model(foundDocument)
+		otherDocModel = model.doc_model.Doc_Model(otherFoundDocument)
 
-        kMeans = npclustering.npClustering.NpClustering([docModel, otherDocModel ])
+		kMeans = npclustering.npClustering.NpClustering([docModel, otherDocModel])
 
-        # act
-        highestParagraphs = kMeans.buildSentenceDistances()  # assert
-        for paragraphResult in highestParagraphs:
-            print "----------------"
-            print str(paragraphResult[0]) + " " + str(paragraphResult[1])
+		# act
+		highestParagraphs = kMeans.buildSentenceDistances()  # assert
+		for paragraphResult in highestParagraphs:
+			print "----------------"
+			print str(paragraphResult[0]) + " " + str(paragraphResult[1])
 
-        self.assertTrue(True)
+		self.assertTrue(True)

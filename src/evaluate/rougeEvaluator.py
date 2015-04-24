@@ -49,7 +49,9 @@ class RougeEvaluator():
 
 		output = rouge.convert_and_evaluate()
 		print output
-		return output
+		outputDict = rouge.output_to_dict(output)
+
+		return [output, outputDict]
 
 		# output_dict = rouge.output_to_dict(output)
 		# print(output_dict)

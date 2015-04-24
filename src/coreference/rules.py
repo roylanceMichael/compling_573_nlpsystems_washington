@@ -51,6 +51,7 @@ def wordMatchingRule(npModel1, npModel2):
 					return -10
 	return 0
 
+
 # comparison rules
 def matchPlurality(npModel1, npModel2):
 	if npModel1.plurality and npModel2.plurality and npModel2.pronounType != npModel.nonePronounType:

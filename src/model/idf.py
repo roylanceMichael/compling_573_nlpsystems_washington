@@ -9,6 +9,7 @@ import os
 
 stopWords = set(stopwords.words('english')) | set(string.punctuation)
 
+
 class Idf:
 	def __init__(self, idfDataFile):
 
@@ -49,8 +50,6 @@ class Idf:
 		d, defaultValue = pickle.load(open(self.idfDataFile, "rb"))
 		d.default_factory = lambda: defaultValue
 		return d
-
-
 
 
 if __name__ == '__main__':

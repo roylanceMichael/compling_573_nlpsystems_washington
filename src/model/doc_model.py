@@ -23,32 +23,32 @@ nltk_v2 = nltk.__version__[0] == '2'
 
 # implements comparisons based on .parent and .position_in_parent
 class ParentCompare:
-    def __init__(self, parent, position_in_parent):
-        self.parent, self.position_in_parent = parent, position_in_parent
+	def __init__(self, parent, position_in_parent):
+		self.parent, self.position_in_parent = parent, position_in_parent
 
-	def __lt__(self, other):
-		if self.parent == other.parent:
-			return self.position_in_parent < other.position_in_parent
-		return self.parent < other.parent
+		def __lt__(self, other):
+			if self.parent == other.parent:
+				return self.position_in_parent < other.position_in_parent
+			return self.parent < other.parent
 
-	def __le__(self, other):
-		if self.parent == other.parent:
-			return self.position_in_parent <= other.position_in_parent
-		return self.parent <= other.parent
+		def __le__(self, other):
+			if self.parent == other.parent:
+				return self.position_in_parent <= other.position_in_parent
+			return self.parent <= other.parent
 
-	def __gt__(self, other):
-		return not self <= other
+		def __gt__(self, other):
+			return not self <= other
 
-	def __ge__(self, other):
-		return not self < other
+		def __ge__(self, other):
+			return not self < other
 
-	def __eq__(self, other):
-		if self.parent == other.parent:
-			return self.position_in_parent == other.position_in_parent
-		return False
+		def __eq__(self, other):
+			if self.parent == other.parent:
+				return self.position_in_parent == other.position_in_parent
+			return False
 
-	def __ne__(self, other):
-		return not self == other
+		def __ne__(self, other):
+			return not self == other
 
 
 class Text(list, ParentCompare):

@@ -2,7 +2,7 @@ __author__ = 'thomas'
 
 
 # abstract class for calling a summary technique.  should generate a dictionary of all sentences like:
-#  {Sentence.simple, score}
+# {Sentence.simple, score}
 # score should be normalized from 0.0 to 1.0
 #
 # inherit from this class for new summary techniques.   Then just include the class in initialSummarizer.py
