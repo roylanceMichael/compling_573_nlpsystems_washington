@@ -149,7 +149,7 @@ evaluation = evaluationResults[0]
 evaluationDict = evaluationResults[1]
 
 print evaluation
-evaluationFileName = evaluationOutputPath + "/FinalEvaluation.txt"
+evaluationFileName = evaluationOutputPath + "/D2.results"
 print evaluationFileName
 evaluationFile = open(evaluationFileName, 'w')
 evaluationFile.write(evaluation)
