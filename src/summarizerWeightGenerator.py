@@ -130,7 +130,7 @@ def summarizeAndGetWeights(models, w1, w2, w3, w4, w5):
 	initialSummarizer = InitialSummarizer(models, idf, True, True, True, True, True)
 	summary = initialSummarizer.getBestSentences(w1, w2, w3, w4, w5)
 	if summary is not None:
-		summaryFileName = summaryOutputPath + "/" + transformedTopicId + ".OURS"
+		summaryFileName = summaryOutputPath + "/" + transformedTopicId
 		summaryFile = open(summaryFileName, 'w')
 		summaryFile.write(summary)
 		summaryFile.close()

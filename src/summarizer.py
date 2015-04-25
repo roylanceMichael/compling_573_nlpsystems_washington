@@ -135,7 +135,7 @@ for topic in topics:
 	print topic.category + " : " + topic.title + " : building summary for " + str(len(models)) + " models"
 	summary = summarize(models)
 	if summary is not None:
-		summaryFileName = summaryOutputPath + "/" + transformedTopicId
+		summaryFileName = summaryOutputPath + "/" + topic.id
 		summaryFile = open(summaryFileName, 'w')
 		summaryFile.write(summary)
 		summaryFile.close()
