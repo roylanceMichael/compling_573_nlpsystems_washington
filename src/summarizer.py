@@ -66,20 +66,8 @@ def getModel(docData):
 # summarize
 ##############################################################
 def summarize(docModels):
-	initialSummarizer = InitialSummarizer(docModels, idf, True, True, True, True, True)
+	initialSummarizer = InitialSummarizer(docModels, idf, True, False, False, False, False)
 	return initialSummarizer.getBestSentences(1.0, 0.0, 0.0, 0.0, 0.0)
-
-
-def kMeansSentences(docModels, maxCount):
-	number = 0
-	kMeansInstance = npclustering.npClustering.NpClustering(docModels)
-	for topParagraph in kMeansInstance.buildDistances():
-		if number > maxCount:
-			break
-		for sentence in topParagraph[0]:
-			yield sentence
-
-		number += 1
 
 
 ##############################################################
