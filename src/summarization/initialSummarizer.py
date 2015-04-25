@@ -59,8 +59,9 @@ class InitialSummarizer:
 					sum += technique[sentence]
 				aggregateSentences[sentence] = sum
 		sortedAggregateSentences = sorted(aggregateSentences.items(), key=operator.itemgetter(1), reverse=True)
-		topNSortedAggregateSentences = sortedAggregateSentences[:self.N]  # tuples here... convert to sentences
-		justTopNSentences = [seq[0] for seq in topNSortedAggregateSentences]
+		#topNSortedAggregateSentences = sortedAggregateSentences[:self.N]  # tuples here... convert to sentences
+		#justTopNSentences = [seq[0] for seq in topNSortedAggregateSentences]
+		justTopNSentences = [seq[0] for seq in sortedAggregateSentences]
 	
 		# maximum summary length is measured in words
 		summary = ""
@@ -70,7 +71,7 @@ class InitialSummarizer:
 			words = s.split()
 			currentWords += len(words)
 			if currentWords > self.wordCount:
-				break
+				continue
 			summary += " ".join(words)
 	
 		return summary.strip()
