@@ -68,11 +68,10 @@ class InitialSummarizer:
 		for s in justTopNSentences:
 			summary += "\n"
 			words = s.split()
-			for w in words:
-				summary += w + " "
-				currentWords += 1
-				if currentWords == self.wordCount:
-					return summary.strip()
+			currentWords += len(words)
+			if currentWords > self.wordCount:
+				break
+			summary += " ".join(words)
 	
 		return summary.strip()
 
