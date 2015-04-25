@@ -127,7 +127,7 @@ documentRepository.writefileIdDictionaryToFileCache(documentCachePath)
 
 def summarizeAndGetWeights(models, w1, w2, w3, w4):
 	# make a summary of the topic cluster
-	initialSummarizer = InitialSummarizer(models, idf, False, False, True, True, True)
+	initialSummarizer = InitialSummarizer(models, idf, False, True, True, True, True)
 	summary = initialSummarizer.getBestSentences(w1, w2, w3, w4)
 	if summary is not None:
 		summaryFileName = summaryOutputPath + "/" + transformedTopicId + ".OURS"
@@ -159,9 +159,9 @@ for topic in topics:
 
 	weightsMatrixArray = []
 
-	#resultsArray = summarizeAndGetWeights(models, 1.0, 0.0, 0.0, 0.0)
-	#print resultsArray
-	#weightsMatrixArray.append(resultsArray)
+	resultsArray = summarizeAndGetWeights(models, 1.0, 0.0, 0.0, 0.0)
+	print resultsArray
+	weightsMatrixArray.append(resultsArray)
 
 	resultsArray = summarizeAndGetWeights(models, 0.0, 1.0, 0.0, 0.0)
 	print resultsArray
@@ -176,22 +176,22 @@ for topic in topics:
 	weightsMatrixArray.append(resultsArray)
 
 	inc = 0.25
-	# w1 = 0.0
-	# while w1 <= 1.0:
-	w2 = 0.0
-	while w2 <= 1.1:
-		w3 = 0.0
-		while w3 <= 1.1:
-			w4 = 0.0
-			while w4 <= 1.1:
-				if not (w2 == 0.0 and w3 == 0.0 and w4 == 0.0):
-					resultsArray = summarizeAndGetWeights(models, 0.0, w2, w3, w4)
-					print resultsArray
-					weightsMatrixArray.append(resultsArray)
-				w4 += inc
-			w3 += inc
-		w2 += inc
-	#	w1 += inc
+	w1 = 0.0
+	while w1 <= 1.0:
+		w2 = 0.0
+		while w2 <= 1.1:
+			w3 = 0.0
+			while w3 <= 1.1:
+				w4 = 0.0
+				while w4 <= 1.1:
+					if not (w1 == 0.0 and w2 == 0.0 and w3 == 0.0 and w4 == 0.0):
+						resultsArray = summarizeAndGetWeights(models, 0.0, w2, w3, w4)
+						print resultsArray
+						weightsMatrixArray.append(resultsArray)
+					w4 += inc
+				w3 += inc
+			w2 += inc
+		w1 += inc
 
 
 	# get max average

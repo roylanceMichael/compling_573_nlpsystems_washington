@@ -25,10 +25,10 @@ if [ -z "$5" ]; then
 	modelSummaryPath="/opt/dropbox/14-15/573/Data/models/devtest"
 fi
 if [ -z "$6" ]; then
-	#rougePath="/opt/dropbox/14-15/573/code/ROUGE"
-	rougePath="../ROUGE"
+	rougePath="/opt/dropbox/14-15/573/code/ROUGE"
+	#rougePath="../ROUGE"
 fi
 
 
 
-python2.7 summarizerWeightGenerator.py --doc-input-path $firstCorporaPath --doc-input-path2 $secondCorporaPath --topic-xml $topicXmlFile --output-path $outputPath --gold-standard-summary-path $modelSummaryPath --rouge-path $rougePath 2>/dev/null
+python2.7 summarizerWeightGenerator.py --doc-input-path $firstCorporaPath --doc-input-path2 $secondCorporaPath --topic-xml $topicXmlFile --output-path $outputPath --gold-standard-summary-path $modelSummaryPath --rouge-path $rougePath
