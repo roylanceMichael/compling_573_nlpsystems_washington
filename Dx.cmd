@@ -3,7 +3,7 @@
 #  Author: Thomas Marsh
 #  Date: 4/2/2015
 #
-Executable = ../ling573.sh
+Executable = ./src/run.sh
 Universe   = vanilla
 getenv     = true
 transfer_executable = false
