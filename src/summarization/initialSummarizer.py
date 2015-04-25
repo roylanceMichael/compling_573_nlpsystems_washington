@@ -22,9 +22,9 @@ class InitialSummarizer:
 		self.docCluster = Cluster(docModels, "", "", idf)
 
 		self.techniques = list()
-		self.tfIdf = TfidfSummaryTechnique(tryTfIdf, 1.0, docModels)
+		self.tfIdf = TfidfSummaryTechnique(tryTfIdf, 1.0, docCluster)
 		self.techniques.append(self.tfIdf)
-		self.matrix = MatrixSummaryTechnique(tryMatrix, 1.0, docModels)
+		self.matrix = MatrixSummaryTechnique(tryMatrix, 1.0, docCluster)
 		self.techniques.append(self.matrix)
 		self.sentenceDistance = SentenceDistanceSummaryTechnique(trySentenceDistance, 1.0, docModels)
 		self.techniques.append(self.sentenceDistance)
