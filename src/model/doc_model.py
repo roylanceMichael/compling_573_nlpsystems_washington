@@ -75,7 +75,7 @@ class Sentence(list, ParentCompare):
 	def __init__(self, in_string, parent, position_in_parent):
 		ParentCompare.__init__(self, parent, position_in_parent)
 		self.full = in_string
-		self.simple = in_string.replace('\n', '')
+		self.simple = in_string.replace('\n', ' ')
 
 		# at this level we need to deside if we are doing full parsing or just chunking
 		# I'll assume chunking for now because we need at least full NPs to figure out coreference
