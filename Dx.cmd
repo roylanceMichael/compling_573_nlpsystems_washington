@@ -3,8 +3,8 @@
 #  Author: Thomas Marsh
 #  Date: 4/2/2015
 #
-initialdir = ./src
-Executable = ./src/run.sh
+initialdir = src
+Executable = run.sh
 Universe   = vanilla
 getenv     = true
 transfer_executable = false
