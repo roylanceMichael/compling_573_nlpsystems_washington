@@ -22,9 +22,9 @@ class InitialSummarizer:
 		self.docCluster = Cluster(docModels, "", "", idf)
 
 		self.techniques = list()
-		self.tfIdf = SummaryTechnique(tryTfIdf, 1.0, docModels)
+		self.tfIdf = TfidfSummaryTechnique(tryTfIdf, 1.0, docModels)
 		self.techniques.append(self.tfIdf)
-		self.matrix = SummaryTechnique(tryMatrix, 1.0, docModels)
+		self.matrix = MatrixSummaryTechnique(tryMatrix, 1.0, docModels)
 		self.techniques.append(self.matrix)
 		self.sentenceDistance = SentenceDistanceSummaryTechnique(trySentenceDistance, 1.0, docModels)
 		self.techniques.append(self.sentenceDistance)
@@ -39,17 +39,18 @@ class InitialSummarizer:
 			if technique.enabled:
 				technique.rankSentences()
 	
-	def getBestSentences(self, w1=None, w2=None, w3=None, w4=None):
+	def getBestSentences(self, w1=None, w2=None, w3=None, w4=None, w5=None):
 		if w1 is not None:
-			self.matrix.weight = w1
+			self.tfIdf.weight = w4
 		if w2 is not None:
-			self.sentenceDistance.weight = w2
+			self.matrix.weight = w1
 		if w3 is not None:
-			self.sentenceLength.weight = w3
+			self.sentenceDistance.weight = w2
 		if w4 is not None:
+			self.sentenceLength.weight = w3
+		if w5 is not None:
 			self.npClustering.weight = w4
-			
-			
+
 		aggregateSentences = {}
 		for model in self.docModels:
 			for sentence in model.cleanSentences():

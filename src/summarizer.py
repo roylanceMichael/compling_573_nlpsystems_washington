@@ -69,7 +69,7 @@ def getModel(docData):
 ##############################################################
 def summarize(docModels):
 	initialSummarizer = InitialSummarizer(docModels, idf, False, True, True, True, True)
-	return initialSummarizer.getBestSentences(1.0, 0.0, 0.0, 0.0)
+	return initialSummarizer.getBestSentences(1.0, 1.0, 0.0, 0.0, 0.0)
 
 
 def kMeansSentences(docModels, maxCount):
