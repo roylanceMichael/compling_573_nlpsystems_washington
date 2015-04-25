@@ -51,6 +51,10 @@ def	cosine2b(sentencePair):
 	s1 = numpy.zeros(len(vocab))
 	s2 = numpy.zeros(len(vocab))
 	i = 0
+
+	if len(vocab) == 0:
+		return 0.0
+
 	for word in vocab:
 		s1[i] = float(counts[word][0])
 		s2[i] = float(counts[word][1])
