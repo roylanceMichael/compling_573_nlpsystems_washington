@@ -23,32 +23,32 @@ nltk_v2 = nltk.__version__[0] == '2'
 
 # implements comparisons based on .parent and .position_in_parent
 class ParentCompare:
-	def __init__(self, parent, position_in_parent):
-		self.parent, self.position_in_parent = parent, position_in_parent
+    def __init__(self, parent, position_in_parent):
+        self.parent, self.position_in_parent = parent, position_in_parent
 
-		def __lt__(self, other):
-			if self.parent == other.parent:
-				return self.position_in_parent < other.position_in_parent
-			return self.parent < other.parent
+	def __lt__(self, other):
+		if self.parent == other.parent:
+			return self.position_in_parent < other.position_in_parent
+		return self.parent < other.parent
 
-		def __le__(self, other):
-			if self.parent == other.parent:
-				return self.position_in_parent <= other.position_in_parent
-			return self.parent <= other.parent
+	def __le__(self, other):
+		if self.parent == other.parent:
+			return self.position_in_parent <= other.position_in_parent
+		return self.parent <= other.parent
 
-		def __gt__(self, other):
-			return not self <= other
+	def __gt__(self, other):
+		return not self <= other
 
-		def __ge__(self, other):
-			return not self < other
+	def __ge__(self, other):
+		return not self < other
 
-		def __eq__(self, other):
-			if self.parent == other.parent:
-				return self.position_in_parent == other.position_in_parent
-			return False
+	def __eq__(self, other):
+		if self.parent == other.parent:
+			return self.position_in_parent == other.position_in_parent
+		return False
 
-		def __ne__(self, other):
-			return not self == other
+	def __ne__(self, other):
+		return not self == other
 
 
 class Text(list, ParentCompare):
@@ -124,6 +124,7 @@ class Word(ParentCompare):
 	def __init__(self, in_string, tag, parent, position_in_parent):
 		ParentCompare.__init__(self, parent, position_in_parent)
 		self.full = in_string
+		self.lower = in_string.lower()
 		# if len(in_string) == 0:
 		# print(parent.parent.tree)
 		self.tag = tag
@@ -148,7 +149,7 @@ class Doc_Model:
 		try:
 			self.dateTime = datetime.strptime(doc.dateTime.strip(), timeFormat)
 		except ValueError:
-			pass  # just passing here.   problem with some files.  brandon, is this ok?
+			self.dateTime = datetime.min
 
 		self.header = Text(doc.header, self, -4)
 		self.slug = Text(doc.slug, self, -3)
@@ -172,18 +173,17 @@ class Doc_Model:
 			if word.full not in idf.stopWords:
 				self.termFreq[word.full] += 1
 
-	# brandon, I was getting errors here in running your matrix calc, so I had to comment.
-	# def __lt__(self, other):
-	# 	return isinstance(other, Doc_Model) and self < other
-	#
-	# def __le__(self, other):
-	# 	return isinstance(other, Doc_Model) and self <= other
-	#
-	# def __gt__(self, other):
-	# 	return isinstance(other, Doc_Model) and self > other
-	#
-	# def __ge__(self, other):
-	# 	return isinstance(other, Doc_Model) and self >= other
+	def __lt__(self, other):
+		return isinstance(other, Doc_Model) and self.dateTime < other.dateTime
+
+	def __le__(self, other):
+		return isinstance(other, Doc_Model) and self.dateTime <= other.dateTime
+
+	def __gt__(self, other):
+		return not self <= other
+
+	def __ge__(self, other):
+		return not self < other
 
 	def sentences(self):
 		for p in self.paragraphs:
@@ -210,8 +210,8 @@ class Doc_Model:
 
 
 class Cluster(list):
-	def __init__(self, doclist, catagory="NO CATEGORY", title="NO TITLE"):
-		self.catagory, self.title = catagory, title
+	def __init__(self, doclist, catagory, title, idf):
+		self.catagory, self.title, self.idf = catagory, title, idf.loadIDF()
 
 		if isinstance(doclist[0], document.Document):
 			list.__init__(self, sorted(Doc_Model(x) for x in doclist))
@@ -233,13 +233,13 @@ class Cluster(list):
 		return self.termFreq[word]
 
 	def getTFIDF(self, word):
-		return self.getTF(word) * idf.idf[word]
+		return self.getTF(word) * self.idf[word]
 
 	def getQueryTF(self, word):
 		return 0.5 + 0.5 * ( self.termFreq[word] / self._maxFreq ) if word in self.termFreq else 0.5
 
 	def getQueryTFIDF(self, word):
-		return self.getQueryTF(word) * idf.idf[word]
+		return self.getQueryTF(word) * self.idf[word]
 
 	def sentences(self):
 		for doc in self:

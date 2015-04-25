@@ -12,7 +12,7 @@ def cosine2(sentencePair, vocab=None):
 
 	for i in (0, 1):
 		for w in sentencePair[i].words():
-			word = w.full.lower()
+			word = w.lower
 			if vocab and word not in vocab:
 				continue
 			elif word in stopWords:

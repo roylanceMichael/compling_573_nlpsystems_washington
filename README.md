@@ -1,3 +1,8 @@
+# Deliverable 2
+# Execution guidelines
+Submit the condor job with "condor_submit Dx.cmd"
+
+
 # Deliverable 1
 # Create and lay out your repository.
 This is demonstrated with the src, doc, outputs, and results folders
