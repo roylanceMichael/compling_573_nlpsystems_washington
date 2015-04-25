@@ -125,10 +125,10 @@ for topic in topics:
 documentRepository.writefileIdDictionaryToFileCache(documentCachePath)
 
 
-def summarizeAndGetWeights(models, w1, w2, w3, w4):
+def summarizeAndGetWeights(models, w1, w2, w3, w4, w5):
 	# make a summary of the topic cluster
-	initialSummarizer = InitialSummarizer(models, idf, False, True, True, True, True)
-	summary = initialSummarizer.getBestSentences(w1, w2, w3, w4)
+	initialSummarizer = InitialSummarizer(models, idf, True, True, True, True, True)
+	summary = initialSummarizer.getBestSentences(w1, w2, w3, w4, w5)
 	if summary is not None:
 		summaryFileName = summaryOutputPath + "/" + transformedTopicId + ".OURS"
 		summaryFile = open(summaryFileName, 'w')
@@ -141,7 +141,7 @@ def summarizeAndGetWeights(models, w1, w2, w3, w4):
 	rouge2recall = evaluationDict['rouge_2_recall']
 	rouge2fscore = evaluationDict['rouge_2_f_score']
 
-	return [w1, w2, w3, w4, rouge2precision, rouge2recall, rouge2fscore]
+	return [w1, w2, w3, w4, w5, rouge2precision, rouge2recall, rouge2fscore]
 
 
 for topic in topics:
@@ -159,46 +159,68 @@ for topic in topics:
 
 	weightsMatrixArray = []
 
-	resultsArray = summarizeAndGetWeights(models, 1.0, 0.0, 0.0, 0.0)
+
+
+	resultsArray = summarizeAndGetWeights(models, 1.0, 0.0, 0.0, 0.0, 0.0)
 	print resultsArray
 	weightsMatrixArray.append(resultsArray)
 
-	resultsArray = summarizeAndGetWeights(models, 0.0, 1.0, 0.0, 0.0)
+	resultsArray = summarizeAndGetWeights(models, 0.0, 1.0, 0.0, 0.0, 0.0)
 	print resultsArray
 	weightsMatrixArray.append(resultsArray)
 
-	resultsArray = summarizeAndGetWeights(models, 0.0, 0.0, 1.0, 0.0)
+	resultsArray = summarizeAndGetWeights(models, 0.0, 0.0, 1.0, 0.0, 0.0)
 	print resultsArray
 	weightsMatrixArray.append(resultsArray)
 
-	resultsArray = summarizeAndGetWeights(models, 0.0, 0.0, 0.0, 1.0)
+	resultsArray = summarizeAndGetWeights(models, 0.0, 0.0, 0.0, 1.0, 0.0)
 	print resultsArray
 	weightsMatrixArray.append(resultsArray)
 
-	inc = 0.25
-	w1 = 0.0
-	while w1 <= 1.0:
-		w2 = 0.0
-		while w2 <= 1.1:
-			w3 = 0.0
-			while w3 <= 1.1:
-				w4 = 0.0
-				while w4 <= 1.1:
-					if not (w1 == 0.0 and w2 == 0.0 and w3 == 0.0 and w4 == 0.0):
-						resultsArray = summarizeAndGetWeights(models, 0.0, w2, w3, w4)
-						print resultsArray
-						weightsMatrixArray.append(resultsArray)
-					w4 += inc
-				w3 += inc
-			w2 += inc
-		w1 += inc
+	resultsArray = summarizeAndGetWeights(models, 0.0, 0.0, 0.0, 0.0, 1.0)
+	print resultsArray
+	weightsMatrixArray.append(resultsArray)
+
+	resultsArray = summarizeAndGetWeights(models, 1.0, 1.0, 0.0, 0.0, 0.0)
+	print resultsArray
+	weightsMatrixArray.append(resultsArray)
+
+	resultsArray = summarizeAndGetWeights(models, 0.25, 1.0, 0.0, 0.0, 0.0)
+	print resultsArray
+	weightsMatrixArray.append(resultsArray)
+
+	resultsArray = summarizeAndGetWeights(models, 0.5, 1.0, 0.0, 0.0, 0.0)
+	print resultsArray
+	weightsMatrixArray.append(resultsArray)
+
+	resultsArray = summarizeAndGetWeights(models, 0.75, 1.0, 0.0, 0.0, 0.0)
+	print resultsArray
+	weightsMatrixArray.append(resultsArray)
+
+	# inc = 0.25
+	# w1 = 0.0
+	# while w1 <= 1.0:
+	# 	w2 = 0.0
+	# 	while w2 <= 1.1:
+	# 		w3 = 0.0
+	# 		while w3 <= 1.1:
+	# 			w4 = 0.0
+	# 			while w4 <= 1.1:
+	# 				if not (w1 == 0.0 and w2 == 0.0 and w3 == 0.0 and w4 == 0.0):
+	# 					resultsArray = summarizeAndGetWeights(models, 0.0, w2, w3, w4)
+	# 					print resultsArray
+	# 					weightsMatrixArray.append(resultsArray)
+	# 				w4 += inc
+	# 			w3 += inc
+	# 		w2 += inc
+	# 	w1 += inc
 
 
 	# get max average
 	max = 0.0
 	maxRow = None
 	for matrixRow in weightsMatrixArray:
-		sum = matrixRow[4] + matrixRow[5] + matrixRow[6]
+		sum = matrixRow[5] + matrixRow[6] + matrixRow[7]
 		ave = sum / 3.0
 		if ave > max:
 			max = ave

@@ -36,37 +36,36 @@
 <TACtaskdata year="2010" track="SUMMARIZATION" task="GUIDED"  dataset="TEST">
 
 
-<topic id = "D1038G" category = "1">
+<topic id = "D1041H" category = "4">
 
-	<title> Mt St Helens </title>
+	<title> Coral Reefs </title>
 
-	<docsetA id = "D1038G-A">
-		<doc id = "LTW_ENG_20041001.0122" />
-		<doc id = "XIN_ENG_20041001.0189" />
-		<doc id = "NYT_ENG_20041001.0279" />
-		<doc id = "APW_ENG_20041001.0415" />
-		<doc id = "AFP_ENG_20041001.0699" />
-		<doc id = "APW_ENG_20041002.0032" />
-		<doc id = "NYT_ENG_20041003.0001" />
-		<doc id = "APW_ENG_20041003.0028" />
-		<doc id = "NYT_ENG_20041003.0147" />
-		<doc id = "AFP_ENG_20041003.0398" />
+	<docsetA id = "D1041H-A">
+		<doc id = "CNA_ENG_20041015.0012" />
+		<doc id = "CNA_ENG_20041112.0016" />
+		<doc id = "AFP_ENG_20041119.0218" />
+		<doc id = "XIN_ENG_20041120.0003" />
+		<doc id = "APW_ENG_20041206.0403" />
+		<doc id = "LTW_ENG_20041212.0004" />
+		<doc id = "NYT_ENG_20041220.0228" />
+		<doc id = "LTW_ENG_20041227.0008" />
+		<doc id = "NYT_ENG_20041230.0220" />
+		<doc id = "AFP_ENG_20041230.0632" />
 	</docsetA>
 
-	<docsetB id = "D1038G-B">
-		<doc id = "NYT_ENG_20041004.0031" />
-		<doc id = "AFP_ENG_20041004.0130" />
-		<doc id = "NYT_ENG_20041004.0282" />
-		<doc id = "NYT_ENG_20041004.0299" />
-		<doc id = "NYT_ENG_20041005.0035" />
-		<doc id = "LTW_ENG_20041005.0131" />
-		<doc id = "NYT_ENG_20041005.0231" />
-		<doc id = "LTW_ENG_20041006.0108" />
-		<doc id = "NYT_ENG_20041006.0255" />
-		<doc id = "AFP_ENG_20041006.0680" />
+	<docsetB id = "D1041H-B">
+		<doc id = "AFP_ENG_20050105.0633" />
+		<doc id = "APW_ENG_20050106.1122" />
+		<doc id = "APW_ENG_20050107.0022" />
+		<doc id = "AFP_ENG_20050109.0308" />
+		<doc id = "CNA_ENG_20050113.0037" />
+		<doc id = "XIN_ENG_20050114.0074" />
+		<doc id = "AFP_ENG_20050115.0067" />
+		<doc id = "APW_ENG_20050116.0037" />
+		<doc id = "APW_ENG_20050120.0139" />
+		<doc id = "AFP_ENG_20050124.0014" />
 	</docsetB>
 
 </topic>
-
 
 </TACtaskdata>
