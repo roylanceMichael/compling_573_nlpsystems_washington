@@ -3,6 +3,7 @@
 #  Author: Thomas Marsh
 #  Date: 4/2/2015
 #
+initialdir = ./src
 Executable = ./src/run.sh
 Universe   = vanilla
 getenv     = true
