@@ -41,15 +41,15 @@ class InitialSummarizer:
 	
 	def getBestSentences(self, w1=None, w2=None, w3=None, w4=None, w5=None):
 		if w1 is not None:
-			self.tfIdf.weight = w4
+			self.tfIdf.weight = w1
 		if w2 is not None:
-			self.matrix.weight = w1
+			self.matrix.weight = w2
 		if w3 is not None:
-			self.sentenceDistance.weight = w2
+			self.sentenceDistance.weight = w3
 		if w4 is not None:
-			self.sentenceLength.weight = w3
+			self.sentenceLength.weight = w4
 		if w5 is not None:
-			self.npClustering.weight = w4
+			self.npClustering.weight = w5
 
 		aggregateSentences = {}
 		for model in self.docModels:
