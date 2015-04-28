@@ -1,7 +1,7 @@
 <ROUGE-EVAL version="1.55">
     <EVAL ID="1">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -16,8 +16,8 @@
     </EVAL>
 
     <EVAL ID="2">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -32,8 +32,8 @@
     </EVAL>
 
     <EVAL ID="3">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -48,8 +48,8 @@
     </EVAL>
 
     <EVAL ID="4">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -64,8 +64,8 @@
     </EVAL>
 
     <EVAL ID="5">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -80,8 +80,8 @@
     </EVAL>
 
     <EVAL ID="6">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -96,8 +96,8 @@
     </EVAL>
 
     <EVAL ID="7">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -112,8 +112,8 @@
     </EVAL>
 
     <EVAL ID="8">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -128,8 +128,8 @@
     </EVAL>
 
     <EVAL ID="9">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -144,8 +144,8 @@
     </EVAL>
 
     <EVAL ID="10">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -160,8 +160,8 @@
     </EVAL>
 
     <EVAL ID="11">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -176,8 +176,8 @@
     </EVAL>
 
     <EVAL ID="12">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -192,8 +192,8 @@
     </EVAL>
 
     <EVAL ID="13">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -208,8 +208,8 @@
     </EVAL>
 
     <EVAL ID="14">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -224,8 +224,8 @@
     </EVAL>
 
     <EVAL ID="15">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -240,8 +240,8 @@
     </EVAL>
 
     <EVAL ID="16">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -256,8 +256,8 @@
     </EVAL>
 
     <EVAL ID="17">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -272,8 +272,8 @@
     </EVAL>
 
     <EVAL ID="18">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -288,8 +288,8 @@
     </EVAL>
 
     <EVAL ID="19">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -304,8 +304,8 @@
     </EVAL>
 
     <EVAL ID="20">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -320,8 +320,8 @@
     </EVAL>
 
     <EVAL ID="21">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -336,8 +336,8 @@
     </EVAL>
 
     <EVAL ID="22">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -352,8 +352,8 @@
     </EVAL>
 
     <EVAL ID="23">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -368,8 +368,8 @@
     </EVAL>
 
     <EVAL ID="24">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -384,8 +384,8 @@
     </EVAL>
 
     <EVAL ID="25">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -400,8 +400,8 @@
     </EVAL>
 
     <EVAL ID="26">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -416,8 +416,8 @@
     </EVAL>
 
     <EVAL ID="27">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -432,8 +432,8 @@
     </EVAL>
 
     <EVAL ID="28">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -448,8 +448,8 @@
     </EVAL>
 
     <EVAL ID="29">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -464,8 +464,8 @@
     </EVAL>
 
     <EVAL ID="30">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -480,8 +480,8 @@
     </EVAL>
 
     <EVAL ID="31">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -496,8 +496,8 @@
     </EVAL>
 
     <EVAL ID="32">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -512,8 +512,8 @@
     </EVAL>
 
     <EVAL ID="33">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -528,8 +528,8 @@
     </EVAL>
 
     <EVAL ID="34">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -544,8 +544,8 @@
     </EVAL>
 
     <EVAL ID="35">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -560,8 +560,8 @@
     </EVAL>
 
     <EVAL ID="36">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -576,8 +576,8 @@
     </EVAL>
 
     <EVAL ID="37">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -592,8 +592,8 @@
     </EVAL>
 
     <EVAL ID="38">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -608,8 +608,8 @@
     </EVAL>
 
     <EVAL ID="39">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -624,8 +624,8 @@
     </EVAL>
 
     <EVAL ID="40">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -640,8 +640,8 @@
     </EVAL>
 
     <EVAL ID="41">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -656,8 +656,8 @@
     </EVAL>
 
     <EVAL ID="42">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -672,8 +672,8 @@
     </EVAL>
 
     <EVAL ID="43">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -688,8 +688,8 @@
     </EVAL>
 
     <EVAL ID="44">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -704,8 +704,8 @@
     </EVAL>
 
     <EVAL ID="45">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
@@ -720,8 +720,8 @@
     </EVAL>
 
     <EVAL ID="46">
-        <MODEL-ROOT>/tmp/tmpC2XG3D/model</MODEL-ROOT>
-        <PEER-ROOT>/tmp/tmpC2XG3D/system</PEER-ROOT>
+        <MODEL-ROOT>/opt/dropbox/14-15/573/Data/models/devtest</MODEL-ROOT>
+        <PEER-ROOT>/home2/sugarork/ling573/compling_573_nlpsystems_washington/outputs</PEER-ROOT>
         <INPUT-FORMAT TYPE="SPL">
         </INPUT-FORMAT>
         <PEERS>
