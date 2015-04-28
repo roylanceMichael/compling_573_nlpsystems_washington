@@ -22,15 +22,15 @@ class InitialSummarizer:
 		self.docCluster = Cluster(docModels, "", "", idf)
 
 		self.techniques = list()
-		self.tfIdf = TfidfSummaryTechnique(tryTfIdf, 1.0, self.docCluster)
+		self.tfIdf = TfidfSummaryTechnique(tryTfIdf, 1.0, self.docCluster, "tf-idf")
 		self.techniques.append(self.tfIdf)
-		self.matrix = MatrixSummaryTechnique(tryMatrix, 1.0, self.docCluster)
+		self.matrix = MatrixSummaryTechnique(tryMatrix, 1.0, self.docCluster, "matrix")
 		self.techniques.append(self.matrix)
-		self.sentenceDistance = SentenceDistanceSummaryTechnique(trySentenceDistance, 1.0, docModels)
+		self.sentenceDistance = SentenceDistanceSummaryTechnique(trySentenceDistance, 1.0, docModels, "sdist")
 		self.techniques.append(self.sentenceDistance)
-		self.sentenceLength = SentenceLengthSummaryTechnique(trySentenceLength, 1.0, docModels)
+		self.sentenceLength = SentenceLengthSummaryTechnique(trySentenceLength, 1.0, docModels, "slen")
 		self.techniques.append(self.sentenceLength)
-		self.npClustering = NpClusteringSummaryTechnique(tryNpClustering, 1.0, docModels)
+		self.npClustering = NpClusteringSummaryTechnique(tryNpClustering, 1.0, docModels, "npcluster")
 		self.techniques.append(self.npClustering)
 		self.summarize()
 
@@ -56,17 +56,21 @@ class InitialSummarizer:
 			for sentence in model.cleanSentences():
 				sum = 0.0
 				for technique in self.techniques:
-					sum += technique[sentence]
+					res = technique[sentence]
+					#print sentence
+					#print "technique: " + technique.techniqueName + ", score: " + str(res) + ", sentence: " + sentence
+					sum += res
 				aggregateSentences[sentence] = sum
 		sortedAggregateSentences = sorted(aggregateSentences.items(), key=operator.itemgetter(1), reverse=True)
 		#topNSortedAggregateSentences = sortedAggregateSentences[:self.N]  # tuples here... convert to sentences
 		#justTopNSentences = [seq[0] for seq in topNSortedAggregateSentences]
-		justTopNSentences = [seq[0] for seq in sortedAggregateSentences]
+		#justTopNSentences = [seq[0] for seq in sortedAggregateSentences]
 	
 		# maximum summary length is measured in words
 		summary = ""
 		currentWords = 0
-		for s in justTopNSentences:
+		for sentenceTuple in sortedAggregateSentences:
+			s = sentenceTuple[0]
 			summary += "\n"
 			words = s.split()
 			currentWords += len(words)

@@ -130,7 +130,7 @@ def summarizeAndGetWeights(models, w1, w2, w3, w4, w5):
 	initialSummarizer = InitialSummarizer(models, idf, True, True, True, True, True)
 	summary = initialSummarizer.getBestSentences(w1, w2, w3, w4, w5)
 	if summary is not None:
-		summaryFileName = summaryOutputPath + "/" + transformedTopicId
+		summaryFileName = summaryOutputPath + "/" + topic.id
 		summaryFile = open(summaryFileName, 'w')
 		summaryFile.write(summary)
 		summaryFile.close()
@@ -141,7 +141,11 @@ def summarizeAndGetWeights(models, w1, w2, w3, w4, w5):
 	rouge2recall = evaluationDict['rouge_2_recall']
 	rouge2fscore = evaluationDict['rouge_2_f_score']
 
-	return [w1, w2, w3, w4, w5, rouge2precision, rouge2recall, rouge2fscore]
+	# for technique in initialSummarizer.techniques:
+	#	print technique.techniqueName + ": " + str(technique.weight) + ", enabled: " + str(technique.enabled)
+	l = [w1, w2, w3, w4, w5, rouge2precision, rouge2recall, rouge2fscore]
+	# print l
+	return l
 
 
 for topic in topics:
@@ -194,6 +198,22 @@ for topic in topics:
 	weightsMatrixArray.append(resultsArray)
 
 	resultsArray = summarizeAndGetWeights(models, 0.75, 1.0, 0.0, 0.0, 0.0)
+	print resultsArray
+	weightsMatrixArray.append(resultsArray)
+
+	resultsArray = summarizeAndGetWeights(models, 1.0, 1.0, 1.0, 1.0, 1.0)
+	print resultsArray
+	weightsMatrixArray.append(resultsArray)
+
+	resultsArray = summarizeAndGetWeights(models, 1.0, 1.0, 1.0, 1.0, 0.0)
+	print resultsArray
+	weightsMatrixArray.append(resultsArray)
+
+	resultsArray = summarizeAndGetWeights(models, 1.0, 1.0, 1.0, 0.0, 0.0)
+	print resultsArray
+	weightsMatrixArray.append(resultsArray)
+
+	resultsArray = summarizeAndGetWeights(models, 1.0, 1.0, 0.0, 1.0, 0.0)
 	print resultsArray
 	weightsMatrixArray.append(resultsArray)
 

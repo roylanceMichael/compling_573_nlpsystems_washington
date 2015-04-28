@@ -7,11 +7,12 @@ __author__ = 'thomas'
 #
 # inherit from this class for new summary techniques.   Then just include the class in initialSummarizer.py
 class SummaryTechnique(dict):
-	def __init__(self, enabled, weight, docModels):
+	def __init__(self, enabled, weight, docModels, techniqueName):
 		super(SummaryTechnique, self).__init__()
 		self.enabled = enabled
 		self.weight = weight
 		self.docModels = docModels
+		self.techniqueName = techniqueName
 
 	def __getitem__(self, key):
 		if not self.enabled:

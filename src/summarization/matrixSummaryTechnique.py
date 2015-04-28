@@ -4,9 +4,9 @@ from model.doc_model import Cluster, Sentence
 
 
 class MatrixSummaryTechnique(SummaryTechnique):
-    def __init__(self, enabled, weight, docCluster):
+    def __init__(self, enabled, weight, docCluster, techniqueName):
         self.docCluster = docCluster
-        SummaryTechnique.__init__(self, enabled, weight, docCluster)
+        SummaryTechnique.__init__(self, enabled, weight, docCluster, techniqueName)
 
 
     def rankSentences(self):
