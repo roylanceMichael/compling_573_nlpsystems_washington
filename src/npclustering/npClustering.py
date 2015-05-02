@@ -1,7 +1,6 @@
 __author__ = 'mroylance'
 import paragraphCluster
 import sentenceCluster
-import collections
 import operator
 
 

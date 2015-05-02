@@ -22,6 +22,7 @@ import extract.topicReader
 import extract.documentRepository
 import model.idf
 import model.doc_model
+import coreference.rules
 import npclustering.npClustering
 import summarization.initialSummarizer
 from order.order import in_order
@@ -59,7 +60,9 @@ idf = model.idf.Idf(idfCachePath)
 # send the data to the model generator
 ##############################################################
 def getModel(docData):
-	return model.doc_model.Doc_Model(docData)
+	initialModel = model.doc_model.Doc_Model(docData)
+	coreference.rules.updateDocumentWithCoreferences(initialModel)
+	return initialModel
 
 
 ##############################################################
