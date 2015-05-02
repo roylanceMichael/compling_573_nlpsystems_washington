@@ -1,4 +1,6 @@
 import os.path
+import datetime
+import re
 
 docNoKey = "DOCNO"
 dateTimeKey = "DATE_TIME"
@@ -26,6 +28,7 @@ class Document:
 		self.headline = ""
 		self.trailer = ""
 		self.body = ""
+		self.comparableDateTime = None
 		self.paragraphs = []
 
 	def __str__(self):
@@ -50,6 +53,16 @@ class Document:
 		}
 		""" % (self.docNo, self.dateTime, self.header, self.slug, self.headline, self.trailer, self.body, paragraphText)
 
+	def getComparableDate(self):
+		beginningOfTime = datetime.datetime(1970, 1, 1)
+
+		try:
+			beginningOfTime = datetime.datetime.strptime(re.sub("\\s+", "", self.dateTime)[0:10], "%Y-%m-%d")
+		except:
+			pass
+
+		return beginningOfTime
+
 	@staticmethod
 	def build(objectDictionary):
 		"""
@@ -69,6 +82,8 @@ class Document:
 		if dateTimeKey in objectDictionary:
 			for item in objectDictionary[dateTimeKey]:
 				newDocument.dateTime += item
+
+			newDocument.comparableDateTime = time.strptime(re.sub("\\s+", "", newDocument.dateTime))
 
 		if headerKey in objectDictionary:
 			for item in objectDictionary[headerKey]:
