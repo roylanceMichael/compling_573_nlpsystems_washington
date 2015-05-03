@@ -1,0 +1,714 @@
+<?xml version='1.0'?>
+<SENT-FEATURE>
+	<S DID="AFP_ENG_20050502.0570" SNO="1" >
+		<FEATURE N="Length" V="13" />
+	</S>
+	<S DID="AFP_ENG_20050502.0570" SNO="2" >
+		<FEATURE N="Length" V="83" />
+	</S>
+	<S DID="AFP_ENG_20050502.0570" SNO="3" >
+		<FEATURE N="Length" V="35" />
+	</S>
+	<S DID="AFP_ENG_20050502.0570" SNO="4" >
+		<FEATURE N="Length" V="31" />
+	</S>
+	<S DID="AFP_ENG_20050502.0570" SNO="5" >
+		<FEATURE N="Length" V="28" />
+	</S>
+	<S DID="AFP_ENG_20050502.0570" SNO="6" >
+		<FEATURE N="Length" V="21" />
+	</S>
+	<S DID="AFP_ENG_20050502.0570" SNO="7" >
+		<FEATURE N="Length" V="23" />
+	</S>
+	<S DID="AFP_ENG_20050502.0570" SNO="8" >
+		<FEATURE N="Length" V="44" />
+	</S>
+	<S DID="AFP_ENG_20050502.0570" SNO="9" >
+		<FEATURE N="Length" V="24" />
+	</S>
+	<S DID="AFP_ENG_20050502.0570" SNO="10" >
+		<FEATURE N="Length" V="13" />
+	</S>
+	<S DID="APW_ENG_20050502.0759" SNO="1" >
+		<FEATURE N="Length" V="14" />
+	</S>
+	<S DID="APW_ENG_20050502.0759" SNO="2" >
+		<FEATURE N="Length" V="1" />
+	</S>
+	<S DID="APW_ENG_20050502.0759" SNO="3" >
+		<FEATURE N="Length" V="25" />
+	</S>
+	<S DID="APW_ENG_20050502.0759" SNO="4" >
+		<FEATURE N="Length" V="1" />
+	</S>
+	<S DID="APW_ENG_20050502.0759" SNO="5" >
+		<FEATURE N="Length" V="19" />
+	</S>
+	<S DID="APW_ENG_20050502.0759" SNO="6" >
+		<FEATURE N="Length" V="17" />
+	</S>
+	<S DID="APW_ENG_20050502.0759" SNO="7" >
+		<FEATURE N="Length" V="17" />
+	</S>
+	<S DID="APW_ENG_20050502.0759" SNO="8" >
+		<FEATURE N="Length" V="23" />
+	</S>
+	<S DID="APW_ENG_20050502.0759" SNO="9" >
+		<FEATURE N="Length" V="17" />
+	</S>
+	<S DID="APW_ENG_20050502.0759" SNO="10" >
+		<FEATURE N="Length" V="19" />
+	</S>
+	<S DID="APW_ENG_20050502.0759" SNO="11" >
+		<FEATURE N="Length" V="23" />
+	</S>
+	<S DID="APW_ENG_20050502.0759" SNO="12" >
+		<FEATURE N="Length" V="21" />
+	</S>
+	<S DID="APW_ENG_20050502.0759" SNO="13" >
+		<FEATURE N="Length" V="9" />
+	</S>
+	<S DID="APW_ENG_20050502.0759" SNO="14" >
+		<FEATURE N="Length" V="27" />
+	</S>
+	<S DID="APW_ENG_20050502.0759" SNO="15" >
+		<FEATURE N="Length" V="22" />
+	</S>
+	<S DID="APW_ENG_20050502.0759" SNO="16" >
+		<FEATURE N="Length" V="16" />
+	</S>
+	<S DID="APW_ENG_20050502.0759" SNO="17" >
+		<FEATURE N="Length" V="27" />
+	</S>
+	<S DID="APW_ENG_20050502.0759" SNO="18" >
+		<FEATURE N="Length" V="9" />
+	</S>
+	<S DID="APW_ENG_20050502.0759" SNO="19" >
+		<FEATURE N="Length" V="30" />
+	</S>
+	<S DID="APW_ENG_20050502.0759" SNO="20" >
+		<FEATURE N="Length" V="12" />
+	</S>
+	<S DID="APW_ENG_20050502.0759" SNO="21" >
+		<FEATURE N="Length" V="18" />
+	</S>
+	<S DID="APW_ENG_20050502.0759" SNO="22" >
+		<FEATURE N="Length" V="14" />
+	</S>
+	<S DID="APW_ENG_20050502.0759" SNO="23" >
+		<FEATURE N="Length" V="23" />
+	</S>
+	<S DID="APW_ENG_20050502.0759" SNO="24" >
+		<FEATURE N="Length" V="19" />
+	</S>
+	<S DID="NYT_ENG_20050502.0213" SNO="1" >
+		<FEATURE N="Length" V="17" />
+	</S>
+	<S DID="NYT_ENG_20050502.0213" SNO="2" >
+		<FEATURE N="Length" V="21" />
+	</S>
+	<S DID="NYT_ENG_20050502.0213" SNO="3" >
+		<FEATURE N="Length" V="12" />
+	</S>
+	<S DID="NYT_ENG_20050502.0213" SNO="4" >
+		<FEATURE N="Length" V="24" />
+	</S>
+	<S DID="NYT_ENG_20050502.0213" SNO="5" >
+		<FEATURE N="Length" V="8" />
+	</S>
+	<S DID="NYT_ENG_20050502.0213" SNO="6" >
+		<FEATURE N="Length" V="29" />
+	</S>
+	<S DID="NYT_ENG_20050502.0213" SNO="7" >
+		<FEATURE N="Length" V="26" />
+	</S>
+	<S DID="NYT_ENG_20050502.0213" SNO="8" >
+		<FEATURE N="Length" V="10" />
+	</S>
+	<S DID="NYT_ENG_20050502.0213" SNO="9" >
+		<FEATURE N="Length" V="16" />
+	</S>
+	<S DID="NYT_ENG_20050502.0213" SNO="10" >
+		<FEATURE N="Length" V="18" />
+	</S>
+	<S DID="NYT_ENG_20050502.0213" SNO="11" >
+		<FEATURE N="Length" V="12" />
+	</S>
+	<S DID="NYT_ENG_20050502.0213" SNO="12" >
+		<FEATURE N="Length" V="12" />
+	</S>
+	<S DID="NYT_ENG_20050502.0213" SNO="13" >
+		<FEATURE N="Length" V="22" />
+	</S>
+	<S DID="NYT_ENG_20050502.0213" SNO="14" >
+		<FEATURE N="Length" V="18" />
+	</S>
+	<S DID="NYT_ENG_20050502.0213" SNO="15" >
+		<FEATURE N="Length" V="17" />
+	</S>
+	<S DID="NYT_ENG_20050502.0213" SNO="16" >
+		<FEATURE N="Length" V="27" />
+	</S>
+	<S DID="NYT_ENG_20050502.0213" SNO="17" >
+		<FEATURE N="Length" V="25" />
+	</S>
+	<S DID="NYT_ENG_20050502.0213" SNO="18" >
+		<FEATURE N="Length" V="32" />
+	</S>
+	<S DID="NYT_ENG_20050502.0213" SNO="19" >
+		<FEATURE N="Length" V="26" />
+	</S>
+	<S DID="NYT_ENG_20050502.0213" SNO="20" >
+		<FEATURE N="Length" V="22" />
+	</S>
+	<S DID="NYT_ENG_20050502.0213" SNO="21" >
+		<FEATURE N="Length" V="17" />
+	</S>
+	<S DID="NYT_ENG_20050502.0213" SNO="22" >
+		<FEATURE N="Length" V="19" />
+	</S>
+	<S DID="NYT_ENG_20050502.0213" SNO="23" >
+		<FEATURE N="Length" V="13" />
+	</S>
+	<S DID="NYT_ENG_20050502.0213" SNO="24" >
+		<FEATURE N="Length" V="30" />
+	</S>
+	<S DID="NYT_ENG_20050502.0213" SNO="25" >
+		<FEATURE N="Length" V="22" />
+	</S>
+	<S DID="NYT_ENG_20050502.0213" SNO="26" >
+		<FEATURE N="Length" V="36" />
+	</S>
+	<S DID="NYT_ENG_20050502.0213" SNO="27" >
+		<FEATURE N="Length" V="25" />
+	</S>
+	<S DID="NYT_ENG_20050502.0213" SNO="28" >
+		<FEATURE N="Length" V="32" />
+	</S>
+	<S DID="LTW_ENG_20050502.0108" SNO="1" >
+		<FEATURE N="Length" V="4" />
+	</S>
+	<S DID="LTW_ENG_20050502.0108" SNO="2" >
+		<FEATURE N="Length" V="2" />
+	</S>
+	<S DID="LTW_ENG_20050502.0108" SNO="3" >
+		<FEATURE N="Length" V="38" />
+	</S>
+	<S DID="LTW_ENG_20050502.0108" SNO="4" >
+		<FEATURE N="Length" V="32" />
+	</S>
+	<S DID="LTW_ENG_20050502.0108" SNO="5" >
+		<FEATURE N="Length" V="13" />
+	</S>
+	<S DID="LTW_ENG_20050502.0108" SNO="6" >
+		<FEATURE N="Length" V="9" />
+	</S>
+	<S DID="LTW_ENG_20050502.0108" SNO="7" >
+		<FEATURE N="Length" V="11" />
+	</S>
+	<S DID="LTW_ENG_20050502.0108" SNO="8" >
+		<FEATURE N="Length" V="10" />
+	</S>
+	<S DID="LTW_ENG_20050502.0108" SNO="9" >
+		<FEATURE N="Length" V="12" />
+	</S>
+	<S DID="LTW_ENG_20050502.0108" SNO="10" >
+		<FEATURE N="Length" V="33" />
+	</S>
+	<S DID="LTW_ENG_20050502.0108" SNO="11" >
+		<FEATURE N="Length" V="33" />
+	</S>
+	<S DID="LTW_ENG_20050502.0108" SNO="12" >
+		<FEATURE N="Length" V="33" />
+	</S>
+	<S DID="LTW_ENG_20050502.0108" SNO="13" >
+		<FEATURE N="Length" V="44" />
+	</S>
+	<S DID="LTW_ENG_20050502.0108" SNO="14" >
+		<FEATURE N="Length" V="23" />
+	</S>
+	<S DID="LTW_ENG_20050502.0108" SNO="15" >
+		<FEATURE N="Length" V="8" />
+	</S>
+	<S DID="LTW_ENG_20050502.0108" SNO="16" >
+		<FEATURE N="Length" V="22" />
+	</S>
+	<S DID="LTW_ENG_20050502.0108" SNO="17" >
+		<FEATURE N="Length" V="17" />
+	</S>
+	<S DID="LTW_ENG_20050502.0108" SNO="18" >
+		<FEATURE N="Length" V="44" />
+	</S>
+	<S DID="LTW_ENG_20050502.0108" SNO="19" >
+		<FEATURE N="Length" V="23" />
+	</S>
+	<S DID="LTW_ENG_20050502.0108" SNO="20" >
+		<FEATURE N="Length" V="10" />
+	</S>
+	<S DID="LTW_ENG_20050502.0108" SNO="21" >
+		<FEATURE N="Length" V="6" />
+	</S>
+	<S DID="LTW_ENG_20050502.0108" SNO="22" >
+		<FEATURE N="Length" V="3" />
+	</S>
+	<S DID="LTW_ENG_20050502.0108" SNO="23" >
+		<FEATURE N="Length" V="28" />
+	</S>
+	<S DID="LTW_ENG_20050502.0108" SNO="24" >
+		<FEATURE N="Length" V="19" />
+	</S>
+	<S DID="LTW_ENG_20050502.0108" SNO="25" >
+		<FEATURE N="Length" V="19" />
+	</S>
+	<S DID="LTW_ENG_20050502.0108" SNO="26" >
+		<FEATURE N="Length" V="32" />
+	</S>
+	<S DID="LTW_ENG_20050502.0108" SNO="27" >
+		<FEATURE N="Length" V="14" />
+	</S>
+	<S DID="LTW_ENG_20050502.0108" SNO="28" >
+		<FEATURE N="Length" V="26" />
+	</S>
+	<S DID="LTW_ENG_20050502.0108" SNO="29" >
+		<FEATURE N="Length" V="19" />
+	</S>
+	<S DID="LTW_ENG_20050502.0108" SNO="30" >
+		<FEATURE N="Length" V="2" />
+	</S>
+	<S DID="LTW_ENG_20050502.0108" SNO="31" >
+		<FEATURE N="Length" V="19" />
+	</S>
+	<S DID="LTW_ENG_20050502.0108" SNO="32" >
+		<FEATURE N="Length" V="36" />
+	</S>
+	<S DID="LTW_ENG_20050502.0108" SNO="33" >
+		<FEATURE N="Length" V="21" />
+	</S>
+	<S DID="LTW_ENG_20050502.0108" SNO="34" >
+		<FEATURE N="Length" V="15" />
+	</S>
+	<S DID="LTW_ENG_20050502.0108" SNO="35" >
+		<FEATURE N="Length" V="9" />
+	</S>
+	<S DID="LTW_ENG_20050502.0108" SNO="36" >
+		<FEATURE N="Length" V="16" />
+	</S>
+	<S DID="LTW_ENG_20050502.0108" SNO="37" >
+		<FEATURE N="Length" V="28" />
+	</S>
+	<S DID="LTW_ENG_20050502.0108" SNO="38" >
+		<FEATURE N="Length" V="23" />
+	</S>
+	<S DID="XIN_ENG_20050502.0185" SNO="1" >
+		<FEATURE N="Length" V="8" />
+	</S>
+	<S DID="XIN_ENG_20050502.0185" SNO="2" >
+		<FEATURE N="Length" V="28" />
+	</S>
+	<S DID="XIN_ENG_20050502.0185" SNO="3" >
+		<FEATURE N="Length" V="44" />
+	</S>
+	<S DID="XIN_ENG_20050502.0185" SNO="4" >
+		<FEATURE N="Length" V="28" />
+	</S>
+	<S DID="XIN_ENG_20050502.0185" SNO="5" >
+		<FEATURE N="Length" V="15" />
+	</S>
+	<S DID="XIN_ENG_20050502.0185" SNO="6" >
+		<FEATURE N="Length" V="24" />
+	</S>
+	<S DID="XIN_ENG_20050502.0185" SNO="7" >
+		<FEATURE N="Length" V="26" />
+	</S>
+	<S DID="XIN_ENG_20050502.0185" SNO="8" >
+		<FEATURE N="Length" V="21" />
+	</S>
+	<S DID="XIN_ENG_20050502.0185" SNO="9" >
+		<FEATURE N="Length" V="17" />
+	</S>
+	<S DID="XIN_ENG_20050502.0185" SNO="10" >
+		<FEATURE N="Length" V="27" />
+	</S>
+	<S DID="XIN_ENG_20050502.0185" SNO="11" >
+		<FEATURE N="Length" V="41" />
+	</S>
+	<S DID="AFP_ENG_20050502.0348" SNO="1" >
+		<FEATURE N="Length" V="7" />
+	</S>
+	<S DID="AFP_ENG_20050502.0348" SNO="2" >
+		<FEATURE N="Length" V="40" />
+	</S>
+	<S DID="AFP_ENG_20050502.0348" SNO="3" >
+		<FEATURE N="Length" V="32" />
+	</S>
+	<S DID="AFP_ENG_20050502.0348" SNO="4" >
+		<FEATURE N="Length" V="26" />
+	</S>
+	<S DID="AFP_ENG_20050502.0348" SNO="5" >
+		<FEATURE N="Length" V="9" />
+	</S>
+	<S DID="AFP_ENG_20050502.0348" SNO="6" >
+		<FEATURE N="Length" V="47" />
+	</S>
+	<S DID="AFP_ENG_20050502.0348" SNO="7" >
+		<FEATURE N="Length" V="35" />
+	</S>
+	<S DID="LTW_ENG_20050502.0086" SNO="1" >
+		<FEATURE N="Length" V="4" />
+	</S>
+	<S DID="LTW_ENG_20050502.0086" SNO="2" >
+		<FEATURE N="Length" V="1" />
+	</S>
+	<S DID="LTW_ENG_20050502.0086" SNO="3" >
+		<FEATURE N="Length" V="29" />
+	</S>
+	<S DID="LTW_ENG_20050502.0086" SNO="4" >
+		<FEATURE N="Length" V="24" />
+	</S>
+	<S DID="LTW_ENG_20050502.0086" SNO="5" >
+		<FEATURE N="Length" V="20" />
+	</S>
+	<S DID="LTW_ENG_20050502.0086" SNO="6" >
+		<FEATURE N="Length" V="18" />
+	</S>
+	<S DID="LTW_ENG_20050502.0086" SNO="7" >
+		<FEATURE N="Length" V="38" />
+	</S>
+	<S DID="LTW_ENG_20050502.0086" SNO="8" >
+		<FEATURE N="Length" V="19" />
+	</S>
+	<S DID="LTW_ENG_20050502.0086" SNO="9" >
+		<FEATURE N="Length" V="17" />
+	</S>
+	<S DID="LTW_ENG_20050502.0086" SNO="10" >
+		<FEATURE N="Length" V="39" />
+	</S>
+	<S DID="LTW_ENG_20050502.0086" SNO="11" >
+		<FEATURE N="Length" V="20" />
+	</S>
+	<S DID="LTW_ENG_20050502.0086" SNO="12" >
+		<FEATURE N="Length" V="21" />
+	</S>
+	<S DID="LTW_ENG_20050502.0086" SNO="13" >
+		<FEATURE N="Length" V="8" />
+	</S>
+	<S DID="LTW_ENG_20050502.0086" SNO="14" >
+		<FEATURE N="Length" V="24" />
+	</S>
+	<S DID="LTW_ENG_20050502.0086" SNO="15" >
+		<FEATURE N="Length" V="18" />
+	</S>
+	<S DID="LTW_ENG_20050502.0086" SNO="16" >
+		<FEATURE N="Length" V="22" />
+	</S>
+	<S DID="LTW_ENG_20050502.0086" SNO="17" >
+		<FEATURE N="Length" V="14" />
+	</S>
+	<S DID="LTW_ENG_20050502.0086" SNO="18" >
+		<FEATURE N="Length" V="17" />
+	</S>
+	<S DID="LTW_ENG_20050502.0086" SNO="19" >
+		<FEATURE N="Length" V="9" />
+	</S>
+	<S DID="LTW_ENG_20050502.0086" SNO="20" >
+		<FEATURE N="Length" V="18" />
+	</S>
+	<S DID="LTW_ENG_20050502.0086" SNO="21" >
+		<FEATURE N="Length" V="24" />
+	</S>
+	<S DID="AFP_ENG_20050502.0439" SNO="1" >
+		<FEATURE N="Length" V="17" />
+	</S>
+	<S DID="AFP_ENG_20050502.0439" SNO="2" >
+		<FEATURE N="Length" V="39" />
+	</S>
+	<S DID="AFP_ENG_20050502.0439" SNO="3" >
+		<FEATURE N="Length" V="45" />
+	</S>
+	<S DID="AFP_ENG_20050502.0439" SNO="4" >
+		<FEATURE N="Length" V="40" />
+	</S>
+	<S DID="AFP_ENG_20050502.0439" SNO="5" >
+		<FEATURE N="Length" V="20" />
+	</S>
+	<S DID="AFP_ENG_20050502.0439" SNO="6" >
+		<FEATURE N="Length" V="9" />
+	</S>
+	<S DID="AFP_ENG_20050502.0439" SNO="7" >
+		<FEATURE N="Length" V="14" />
+	</S>
+	<S DID="AFP_ENG_20050502.0439" SNO="8" >
+		<FEATURE N="Length" V="32" />
+	</S>
+	<S DID="AFP_ENG_20050502.0439" SNO="9" >
+		<FEATURE N="Length" V="9" />
+	</S>
+	<S DID="AFP_ENG_20050502.0439" SNO="10" >
+		<FEATURE N="Length" V="21" />
+	</S>
+	<S DID="AFP_ENG_20050502.0439" SNO="11" >
+		<FEATURE N="Length" V="14" />
+	</S>
+	<S DID="AFP_ENG_20050502.0439" SNO="12" >
+		<FEATURE N="Length" V="13" />
+	</S>
+	<S DID="AFP_ENG_20050502.0439" SNO="13" >
+		<FEATURE N="Length" V="27" />
+	</S>
+	<S DID="AFP_ENG_20050502.0439" SNO="14" >
+		<FEATURE N="Length" V="10" />
+	</S>
+	<S DID="AFP_ENG_20050502.0439" SNO="15" >
+		<FEATURE N="Length" V="8" />
+	</S>
+	<S DID="AFP_ENG_20050502.0439" SNO="16" >
+		<FEATURE N="Length" V="13" />
+	</S>
+	<S DID="AFP_ENG_20050502.0439" SNO="17" >
+		<FEATURE N="Length" V="36" />
+	</S>
+	<S DID="AFP_ENG_20050502.0439" SNO="18" >
+		<FEATURE N="Length" V="31" />
+	</S>
+	<S DID="AFP_ENG_20050502.0439" SNO="19" >
+		<FEATURE N="Length" V="19" />
+	</S>
+	<S DID="AFP_ENG_20050502.0439" SNO="20" >
+		<FEATURE N="Length" V="22" />
+	</S>
+	<S DID="AFP_ENG_20050502.0439" SNO="21" >
+		<FEATURE N="Length" V="21" />
+	</S>
+	<S DID="AFP_ENG_20050502.0439" SNO="22" >
+		<FEATURE N="Length" V="9" />
+	</S>
+	<S DID="AFP_ENG_20050502.0439" SNO="23" >
+		<FEATURE N="Length" V="14" />
+	</S>
+	<S DID="AFP_ENG_20050502.0439" SNO="24" >
+		<FEATURE N="Length" V="25" />
+	</S>
+	<S DID="AFP_ENG_20050502.0439" SNO="25" >
+		<FEATURE N="Length" V="10" />
+	</S>
+	<S DID="AFP_ENG_20050502.0439" SNO="26" >
+		<FEATURE N="Length" V="10" />
+	</S>
+	<S DID="AFP_ENG_20050502.0439" SNO="27" >
+		<FEATURE N="Length" V="27" />
+	</S>
+	<S DID="AFP_ENG_20050502.0439" SNO="28" >
+		<FEATURE N="Length" V="19" />
+	</S>
+	<S DID="AFP_ENG_20050502.0439" SNO="29" >
+		<FEATURE N="Length" V="29" />
+	</S>
+	<S DID="AFP_ENG_20050502.0439" SNO="30" >
+		<FEATURE N="Length" V="22" />
+	</S>
+	<S DID="AFP_ENG_20050502.0439" SNO="31" >
+		<FEATURE N="Length" V="17" />
+	</S>
+	<S DID="AFP_ENG_20050502.0439" SNO="32" >
+		<FEATURE N="Length" V="17" />
+	</S>
+	<S DID="AFP_ENG_20050502.0439" SNO="33" >
+		<FEATURE N="Length" V="14" />
+	</S>
+	<S DID="AFP_ENG_20050502.0439" SNO="34" >
+		<FEATURE N="Length" V="16" />
+	</S>
+	<S DID="AFP_ENG_20050502.0439" SNO="35" >
+		<FEATURE N="Length" V="15" />
+	</S>
+	<S DID="AFP_ENG_20050502.0439" SNO="36" >
+		<FEATURE N="Length" V="14" />
+	</S>
+	<S DID="AFP_ENG_20050502.0439" SNO="37" >
+		<FEATURE N="Length" V="28" />
+	</S>
+	<S DID="AFP_ENG_20050502.0439" SNO="38" >
+		<FEATURE N="Length" V="30" />
+	</S>
+	<S DID="NYT_ENG_20050502.0040" SNO="1" >
+		<FEATURE N="Length" V="8" />
+	</S>
+	<S DID="NYT_ENG_20050502.0040" SNO="2" >
+		<FEATURE N="Length" V="1" />
+	</S>
+	<S DID="NYT_ENG_20050502.0040" SNO="3" >
+		<FEATURE N="Length" V="36" />
+	</S>
+	<S DID="NYT_ENG_20050502.0040" SNO="4" >
+		<FEATURE N="Length" V="25" />
+	</S>
+	<S DID="NYT_ENG_20050502.0040" SNO="5" >
+		<FEATURE N="Length" V="5" />
+	</S>
+	<S DID="NYT_ENG_20050502.0040" SNO="6" >
+		<FEATURE N="Length" V="36" />
+	</S>
+	<S DID="NYT_ENG_20050502.0040" SNO="7" >
+		<FEATURE N="Length" V="19" />
+	</S>
+	<S DID="NYT_ENG_20050502.0040" SNO="8" >
+		<FEATURE N="Length" V="45" />
+	</S>
+	<S DID="NYT_ENG_20050502.0040" SNO="9" >
+		<FEATURE N="Length" V="24" />
+	</S>
+	<S DID="NYT_ENG_20050502.0040" SNO="10" >
+		<FEATURE N="Length" V="16" />
+	</S>
+	<S DID="NYT_ENG_20050502.0040" SNO="11" >
+		<FEATURE N="Length" V="31" />
+	</S>
+	<S DID="NYT_ENG_20050502.0040" SNO="12" >
+		<FEATURE N="Length" V="19" />
+	</S>
+	<S DID="NYT_ENG_20050502.0040" SNO="13" >
+		<FEATURE N="Length" V="11" />
+	</S>
+	<S DID="NYT_ENG_20050502.0040" SNO="14" >
+		<FEATURE N="Length" V="26" />
+	</S>
+	<S DID="NYT_ENG_20050502.0040" SNO="15" >
+		<FEATURE N="Length" V="25" />
+	</S>
+	<S DID="NYT_ENG_20050502.0040" SNO="16" >
+		<FEATURE N="Length" V="18" />
+	</S>
+	<S DID="NYT_ENG_20050502.0040" SNO="17" >
+		<FEATURE N="Length" V="38" />
+	</S>
+	<S DID="NYT_ENG_20050502.0040" SNO="18" >
+		<FEATURE N="Length" V="16" />
+	</S>
+	<S DID="NYT_ENG_20050502.0040" SNO="19" >
+		<FEATURE N="Length" V="8" />
+	</S>
+	<S DID="NYT_ENG_20050502.0040" SNO="20" >
+		<FEATURE N="Length" V="8" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="1" >
+		<FEATURE N="Length" V="7" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="2" >
+		<FEATURE N="Length" V="1" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="3" >
+		<FEATURE N="Length" V="39" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="4" >
+		<FEATURE N="Length" V="38" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="5" >
+		<FEATURE N="Length" V="33" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="6" >
+		<FEATURE N="Length" V="14" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="7" >
+		<FEATURE N="Length" V="36" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="8" >
+		<FEATURE N="Length" V="23" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="9" >
+		<FEATURE N="Length" V="21" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="10" >
+		<FEATURE N="Length" V="26" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="11" >
+		<FEATURE N="Length" V="43" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="12" >
+		<FEATURE N="Length" V="28" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="13" >
+		<FEATURE N="Length" V="19" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="14" >
+		<FEATURE N="Length" V="19" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="15" >
+		<FEATURE N="Length" V="29" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="16" >
+		<FEATURE N="Length" V="18" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="17" >
+		<FEATURE N="Length" V="19" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="18" >
+		<FEATURE N="Length" V="30" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="19" >
+		<FEATURE N="Length" V="1" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="20" >
+		<FEATURE N="Length" V="17" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="21" >
+		<FEATURE N="Length" V="20" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="22" >
+		<FEATURE N="Length" V="18" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="23" >
+		<FEATURE N="Length" V="23" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="24" >
+		<FEATURE N="Length" V="30" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="25" >
+		<FEATURE N="Length" V="7" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="26" >
+		<FEATURE N="Length" V="25" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="27" >
+		<FEATURE N="Length" V="43" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="28" >
+		<FEATURE N="Length" V="28" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="29" >
+		<FEATURE N="Length" V="21" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="30" >
+		<FEATURE N="Length" V="24" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="31" >
+		<FEATURE N="Length" V="30" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="32" >
+		<FEATURE N="Length" V="40" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="33" >
+		<FEATURE N="Length" V="24" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="34" >
+		<FEATURE N="Length" V="13" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="35" >
+		<FEATURE N="Length" V="7" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="36" >
+		<FEATURE N="Length" V="10" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="37" >
+		<FEATURE N="Length" V="9" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="38" >
+		<FEATURE N="Length" V="5" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="39" >
+		<FEATURE N="Length" V="9" />
+	</S>
+	<S DID="LTW_ENG_20050502.0105" SNO="40" >
+		<FEATURE N="Length" V="8" />
+	</S>
+</SENT-FEATURE>

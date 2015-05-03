@@ -79,11 +79,11 @@ class Document:
 			for item in objectDictionary[docTypeKey]:
 				newDocument.docType += item
 
-		if dateTimeKey in objectDictionary:
-			for item in objectDictionary[dateTimeKey]:
-				newDocument.dateTime += item
-
-			newDocument.comparableDateTime = time.strptime(re.sub("\\s+", "", newDocument.dateTime))
+		# if dateTimeKey in objectDictionary:
+		# 	for item in objectDictionary[dateTimeKey]:
+		# 		newDocument.dateTime += item
+		#
+		# 	newDocument.comparableDateTime = datetime.datetime.strptime(re.sub("\\s+", "", newDocument.dateTime))
 
 		if headerKey in objectDictionary:
 			for item in objectDictionary[headerKey]:

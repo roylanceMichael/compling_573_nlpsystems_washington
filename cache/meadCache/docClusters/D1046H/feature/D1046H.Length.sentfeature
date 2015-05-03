@@ -1,0 +1,159 @@
+<?xml version='1.0'?>
+<SENT-FEATURE>
+	<S DID="XIN_ENG_20050110.0191" SNO="1" >
+		<FEATURE N="Length" V="8" />
+	</S>
+	<S DID="XIN_ENG_20050110.0191" SNO="2" >
+		<FEATURE N="Length" V="25" />
+	</S>
+	<S DID="XIN_ENG_20050110.0191" SNO="3" >
+		<FEATURE N="Length" V="55" />
+	</S>
+	<S DID="XIN_ENG_20050110.0191" SNO="4" >
+		<FEATURE N="Length" V="35" />
+	</S>
+	<S DID="XIN_ENG_20050110.0191" SNO="5" >
+		<FEATURE N="Length" V="19" />
+	</S>
+	<S DID="XIN_ENG_20050110.0191" SNO="6" >
+		<FEATURE N="Length" V="19" />
+	</S>
+	<S DID="APW_ENG_20050110.0567" SNO="1" >
+		<FEATURE N="Length" V="7" />
+	</S>
+	<S DID="APW_ENG_20050110.0567" SNO="2" >
+		<FEATURE N="Length" V="22" />
+	</S>
+	<S DID="APW_ENG_20050110.0567" SNO="3" >
+		<FEATURE N="Length" V="30" />
+	</S>
+	<S DID="APW_ENG_20050110.0567" SNO="4" >
+		<FEATURE N="Length" V="18" />
+	</S>
+	<S DID="APW_ENG_20050110.0567" SNO="5" >
+		<FEATURE N="Length" V="20" />
+	</S>
+	<S DID="APW_ENG_20050110.0567" SNO="6" >
+		<FEATURE N="Length" V="18" />
+	</S>
+	<S DID="XIN_ENG_20050110.0141" SNO="1" >
+		<FEATURE N="Length" V="9" />
+	</S>
+	<S DID="XIN_ENG_20050110.0141" SNO="2" >
+		<FEATURE N="Length" V="31" />
+	</S>
+	<S DID="XIN_ENG_20050110.0141" SNO="3" >
+		<FEATURE N="Length" V="20" />
+	</S>
+	<S DID="XIN_ENG_20050110.0141" SNO="4" >
+		<FEATURE N="Length" V="25" />
+	</S>
+	<S DID="XIN_ENG_20050110.0141" SNO="5" >
+		<FEATURE N="Length" V="31" />
+	</S>
+	<S DID="XIN_ENG_20050110.0141" SNO="6" >
+		<FEATURE N="Length" V="26" />
+	</S>
+	<S DID="XIN_ENG_20050110.0141" SNO="7" >
+		<FEATURE N="Length" V="28" />
+	</S>
+	<S DID="XIN_ENG_20050105.0031" SNO="1" >
+		<FEATURE N="Length" V="7" />
+	</S>
+	<S DID="XIN_ENG_20050105.0031" SNO="2" >
+		<FEATURE N="Length" V="25" />
+	</S>
+	<S DID="XIN_ENG_20050105.0031" SNO="3" >
+		<FEATURE N="Length" V="29" />
+	</S>
+	<S DID="XIN_ENG_20050105.0031" SNO="4" >
+		<FEATURE N="Length" V="12" />
+	</S>
+	<S DID="XIN_ENG_20050105.0031" SNO="5" >
+		<FEATURE N="Length" V="21" />
+	</S>
+	<S DID="APW_ENG_20050105.0088" SNO="1" >
+		<FEATURE N="Length" V="6" />
+	</S>
+	<S DID="APW_ENG_20050105.0088" SNO="2" >
+		<FEATURE N="Length" V="20" />
+	</S>
+	<S DID="APW_ENG_20050105.0088" SNO="3" >
+		<FEATURE N="Length" V="34" />
+	</S>
+	<S DID="APW_ENG_20050105.0088" SNO="4" >
+		<FEATURE N="Length" V="29" />
+	</S>
+	<S DID="APW_ENG_20050105.0088" SNO="5" >
+		<FEATURE N="Length" V="31" />
+	</S>
+	<S DID="XIN_ENG_20041230.0105" SNO="1" >
+		<FEATURE N="Length" V="6" />
+	</S>
+	<S DID="XIN_ENG_20041230.0105" SNO="2" >
+		<FEATURE N="Length" V="26" />
+	</S>
+	<S DID="XIN_ENG_20041230.0105" SNO="3" >
+		<FEATURE N="Length" V="19" />
+	</S>
+	<S DID="XIN_ENG_20041230.0105" SNO="4" >
+		<FEATURE N="Length" V="21" />
+	</S>
+	<S DID="XIN_ENG_20041230.0105" SNO="5" >
+		<FEATURE N="Length" V="15" />
+	</S>
+	<S DID="XIN_ENG_20041230.0105" SNO="6" >
+		<FEATURE N="Length" V="32" />
+	</S>
+	<S DID="XIN_ENG_20050105.0203" SNO="1" >
+		<FEATURE N="Length" V="9" />
+	</S>
+	<S DID="XIN_ENG_20050105.0203" SNO="2" >
+		<FEATURE N="Length" V="38" />
+	</S>
+	<S DID="XIN_ENG_20050105.0203" SNO="3" >
+		<FEATURE N="Length" V="17" />
+	</S>
+	<S DID="XIN_ENG_20050105.0203" SNO="4" >
+		<FEATURE N="Length" V="20" />
+	</S>
+	<S DID="XIN_ENG_20050105.0203" SNO="5" >
+		<FEATURE N="Length" V="26" />
+	</S>
+	<S DID="XIN_ENG_20050105.0203" SNO="6" >
+		<FEATURE N="Length" V="36" />
+	</S>
+	<S DID="AFP_ENG_20041231.0013" SNO="1" >
+		<FEATURE N="Length" V="8" />
+	</S>
+	<S DID="AFP_ENG_20041231.0013" SNO="2" >
+		<FEATURE N="Length" V="24" />
+	</S>
+	<S DID="AFP_ENG_20041231.0013" SNO="3" >
+		<FEATURE N="Length" V="20" />
+	</S>
+	<S DID="AFP_ENG_20041231.0013" SNO="4" >
+		<FEATURE N="Length" V="24" />
+	</S>
+	<S DID="AFP_ENG_20050104.0045" SNO="1" >
+		<FEATURE N="Length" V="8" />
+	</S>
+	<S DID="AFP_ENG_20050104.0045" SNO="2" >
+		<FEATURE N="Length" V="33" />
+	</S>
+	<S DID="AFP_ENG_20050104.0045" SNO="3" >
+		<FEATURE N="Length" V="37" />
+	</S>
+	<S DID="XIN_ENG_20041230.0272" SNO="1" >
+		<FEATURE N="Length" V="6" />
+	</S>
+	<S DID="XIN_ENG_20041230.0272" SNO="2" >
+		<FEATURE N="Length" V="17" />
+	</S>
+	<S DID="XIN_ENG_20041230.0272" SNO="3" >
+		<FEATURE N="Length" V="21" />
+	</S>
+	<S DID="XIN_ENG_20041230.0272" SNO="4" >
+		<FEATURE N="Length" V="9" />
+	</S>
+</SENT-FEATURE>

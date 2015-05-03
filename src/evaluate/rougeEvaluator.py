@@ -36,15 +36,18 @@ rougeConfigFooter = """
 </ROUGE_EVAL>
 """
 
-rougeConfigFileName = "rouge_config.xml"
 
 class RougeEvaluator():
-	def __init__(self, rougeDir, modelSummaryDir, systemSummaryDir, modelSummaryCachePath):
+	def __init__(self, rougeDir, modelSummaryDir, systemSummaryDir, modelSummaryCachePath, rougeConfigFileName="rouge_config.xml"):
 		self.configFile = rougeConfigHeader
 		self.rougeDir = rougeDir
 		self.systemSummaryDir = os.path.abspath(systemSummaryDir)
 		self.modelSummaryDir = os.path.abspath(modelSummaryDir)
 		self.modelSummaryCachePath = os.path.abspath(modelSummaryCachePath)
+		self.rougeConfigFileName = rougeConfigFileName
+
+	def reset(self):
+		self.configFile = rougeConfigHeader
 
 	def addCompareToConfig(self, topic, modelSummaries):
 
@@ -83,7 +86,7 @@ class RougeEvaluator():
 				self.sanitizingCopy(modelFile, modelFile.replace(self.modelSummaryDir, self.modelSummaryCachePath))
 			self.addCompareToConfig(topic, modelFiles)
 		self.configFile += rougeConfigFooter
-		outputFile = open(rougeConfigFileName, 'w')
+		outputFile = open(self.rougeConfigFileName, 'w')
 		outputFile.write(self.configFile)
 		outputFile.close()
 
@@ -127,7 +130,7 @@ class RougeEvaluator():
 
 		print "Calling ROUGE with command: " + " ".join(rougeCommand)
 
-		rougeCommand.append(os.path.abspath(rougeConfigFileName))
+		rougeCommand.append(os.path.abspath(self.rougeConfigFileName))
 
 		output = check_output(rougeCommand)
 
