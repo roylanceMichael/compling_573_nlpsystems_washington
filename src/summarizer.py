@@ -28,6 +28,8 @@ import summarization.initialSummarizer
 from order.order import in_order
 from realize.simple_realize import simple_realize
 from summarization.initialSummarizer import InitialSummarizer
+from evaluate.evaluationCompare import EvaluationCompare
+import os
 
 
 
@@ -51,8 +53,10 @@ evaluationOutputPath = "../results"
 modelSummaryCachePath = "../cache/modelSummaryCache"
 documentCachePath = "../cache/documentCache"
 idfCachePath = "../cache/idfCache"
+meadCacheDir = "../cache/meadCache"
+rougeCacheDir = "../cache/rougeCache"
 
-rouge = RougeEvaluator(args.rougePath, args.goldStandardSummaryPath, summaryOutputPath, modelSummaryCachePath)
+rouge = RougeEvaluator(args.rougePath, args.goldStandardSummaryPath, summaryOutputPath, modelSummaryCachePath, rougeCacheDir)
 idf = model.idf.Idf(idfCachePath)
 
 
@@ -88,6 +92,14 @@ def printSummary(docModels):
 		for paragraph in docModel.paragraphs:
 			print str(paragraph)
 
+
+##############################################################
+# helper function for printing out buffers to files
+##############################################################
+def writeBufferToFile(path, buffer):
+	outFile = open(path, 'w')
+	outFile.write(buffer)
+	outFile.close()
 
 ##############################################################
 # Script Starts Here
@@ -149,11 +161,14 @@ for topic in topics:
 print "running the rouge evaluator"
 evaluationResults = evaluate()
 evaluation = evaluationResults[0]
-evaluationDict = evaluationResults[1]
+writeBufferToFile(os.path.join(evaluationOutputPath, "D2.results"), evaluation)
 
-print evaluation
-evaluationFileName = evaluationOutputPath + "/D2.results"
-print evaluationFileName
-evaluationFile = open(evaluationFileName, 'w')
-evaluationFile.write(evaluation)
-evaluationFile.close()
+# call the evaluation comparison routine.
+# note:  this will only print t
+# he summaries you have on your machine.
+# 		 i.e. you should have run the meadSummaryGenerator.py first
+# 		 (though defaults are checked into git)
+comparator = EvaluationCompare(evaluationOutputPath, meadCacheDir, rouge)
+comparison = comparator.getComparison()
+print "\n" + comparison
+writeBufferToFile(os.path.join(evaluationOutputPath, "results_compare.txt"), comparison)

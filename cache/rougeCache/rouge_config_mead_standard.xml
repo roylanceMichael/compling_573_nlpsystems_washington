@@ -1,0 +1,969 @@
+<ROUGE_EVAL version="1.5.5">
+
+<EVAL ID="D1001A">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1001A</P>
+</PEERS>
+<MODELS>
+<M ID="B">D1001-A.M.100.A.B</M>
+<M ID="F">D1001-A.M.100.A.F</M>
+<M ID="A">D1001-A.M.100.A.A</M>
+<M ID="H">D1001-A.M.100.A.H</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1002A">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1002A</P>
+</PEERS>
+<MODELS>
+<M ID="A">D1002-A.M.100.A.A</M>
+<M ID="B">D1002-A.M.100.A.B</M>
+<M ID="C">D1002-A.M.100.A.C</M>
+<M ID="D">D1002-A.M.100.A.D</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1003A">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1003A</P>
+</PEERS>
+<MODELS>
+<M ID="C">D1003-A.M.100.A.C</M>
+<M ID="E">D1003-A.M.100.A.E</M>
+<M ID="A">D1003-A.M.100.A.A</M>
+<M ID="G">D1003-A.M.100.A.G</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1004A">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1004A</P>
+</PEERS>
+<MODELS>
+<M ID="H">D1004-A.M.100.A.H</M>
+<M ID="F">D1004-A.M.100.A.F</M>
+<M ID="A">D1004-A.M.100.A.A</M>
+<M ID="D">D1004-A.M.100.A.D</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1005A">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1005A</P>
+</PEERS>
+<MODELS>
+<M ID="G">D1005-A.M.100.A.G</M>
+<M ID="A">D1005-A.M.100.A.A</M>
+<M ID="F">D1005-A.M.100.A.F</M>
+<M ID="E">D1005-A.M.100.A.E</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1006A">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1006A</P>
+</PEERS>
+<MODELS>
+<M ID="A">D1006-A.M.100.A.A</M>
+<M ID="D">D1006-A.M.100.A.D</M>
+<M ID="F">D1006-A.M.100.A.F</M>
+<M ID="B">D1006-A.M.100.A.B</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1007B">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1007B</P>
+</PEERS>
+<MODELS>
+<M ID="A">D1007-A.M.100.B.A</M>
+<M ID="B">D1007-A.M.100.B.B</M>
+<M ID="H">D1007-A.M.100.B.H</M>
+<M ID="E">D1007-A.M.100.B.E</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1008B">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1008B</P>
+</PEERS>
+<MODELS>
+<M ID="B">D1008-A.M.100.B.B</M>
+<M ID="E">D1008-A.M.100.B.E</M>
+<M ID="D">D1008-A.M.100.B.D</M>
+<M ID="H">D1008-A.M.100.B.H</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1009B">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1009B</P>
+</PEERS>
+<MODELS>
+<M ID="F">D1009-A.M.100.B.F</M>
+<M ID="B">D1009-A.M.100.B.B</M>
+<M ID="G">D1009-A.M.100.B.G</M>
+<M ID="C">D1009-A.M.100.B.C</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1010B">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1010B</P>
+</PEERS>
+<MODELS>
+<M ID="H">D1010-A.M.100.B.H</M>
+<M ID="B">D1010-A.M.100.B.B</M>
+<M ID="C">D1010-A.M.100.B.C</M>
+<M ID="G">D1010-A.M.100.B.G</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1011C">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1011C</P>
+</PEERS>
+<MODELS>
+<M ID="B">D1011-A.M.100.C.B</M>
+<M ID="A">D1011-A.M.100.C.A</M>
+<M ID="C">D1011-A.M.100.C.C</M>
+<M ID="E">D1011-A.M.100.C.E</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1012C">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1012C</P>
+</PEERS>
+<MODELS>
+<M ID="E">D1012-A.M.100.C.E</M>
+<M ID="C">D1012-A.M.100.C.C</M>
+<M ID="F">D1012-A.M.100.C.F</M>
+<M ID="D">D1012-A.M.100.C.D</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1013C">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1013C</P>
+</PEERS>
+<MODELS>
+<M ID="D">D1013-A.M.100.C.D</M>
+<M ID="C">D1013-A.M.100.C.C</M>
+<M ID="A">D1013-A.M.100.C.A</M>
+<M ID="B">D1013-A.M.100.C.B</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1014C">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1014C</P>
+</PEERS>
+<MODELS>
+<M ID="G">D1014-A.M.100.C.G</M>
+<M ID="C">D1014-A.M.100.C.C</M>
+<M ID="E">D1014-A.M.100.C.E</M>
+<M ID="H">D1014-A.M.100.C.H</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1015C">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1015C</P>
+</PEERS>
+<MODELS>
+<M ID="F">D1015-A.M.100.C.F</M>
+<M ID="A">D1015-A.M.100.C.A</M>
+<M ID="C">D1015-A.M.100.C.C</M>
+<M ID="E">D1015-A.M.100.C.E</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1016C">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1016C</P>
+</PEERS>
+<MODELS>
+<M ID="E">D1016-A.M.100.C.E</M>
+<M ID="H">D1016-A.M.100.C.H</M>
+<M ID="C">D1016-A.M.100.C.C</M>
+<M ID="B">D1016-A.M.100.C.B</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1017D">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1017D</P>
+</PEERS>
+<MODELS>
+<M ID="B">D1017-A.M.100.D.B</M>
+<M ID="D">D1017-A.M.100.D.D</M>
+<M ID="A">D1017-A.M.100.D.A</M>
+<M ID="G">D1017-A.M.100.D.G</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1018D">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1018D</P>
+</PEERS>
+<MODELS>
+<M ID="G">D1018-A.M.100.D.G</M>
+<M ID="C">D1018-A.M.100.D.C</M>
+<M ID="D">D1018-A.M.100.D.D</M>
+<M ID="B">D1018-A.M.100.D.B</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1019D">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1019D</P>
+</PEERS>
+<MODELS>
+<M ID="F">D1019-A.M.100.D.F</M>
+<M ID="D">D1019-A.M.100.D.D</M>
+<M ID="C">D1019-A.M.100.D.C</M>
+<M ID="H">D1019-A.M.100.D.H</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1020D">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1020D</P>
+</PEERS>
+<MODELS>
+<M ID="H">D1020-A.M.100.D.H</M>
+<M ID="G">D1020-A.M.100.D.G</M>
+<M ID="A">D1020-A.M.100.D.A</M>
+<M ID="D">D1020-A.M.100.D.D</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1021D">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1021D</P>
+</PEERS>
+<MODELS>
+<M ID="A">D1021-A.M.100.D.A</M>
+<M ID="D">D1021-A.M.100.D.D</M>
+<M ID="B">D1021-A.M.100.D.B</M>
+<M ID="E">D1021-A.M.100.D.E</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1022D">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1022D</P>
+</PEERS>
+<MODELS>
+<M ID="D">D1022-A.M.100.D.D</M>
+<M ID="F">D1022-A.M.100.D.F</M>
+<M ID="H">D1022-A.M.100.D.H</M>
+<M ID="C">D1022-A.M.100.D.C</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1023E">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1023E</P>
+</PEERS>
+<MODELS>
+<M ID="D">D1023-A.M.100.E.D</M>
+<M ID="G">D1023-A.M.100.E.G</M>
+<M ID="E">D1023-A.M.100.E.E</M>
+<M ID="B">D1023-A.M.100.E.B</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1024E">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1024E</P>
+</PEERS>
+<MODELS>
+<M ID="H">D1024-A.M.100.E.H</M>
+<M ID="E">D1024-A.M.100.E.E</M>
+<M ID="F">D1024-A.M.100.E.F</M>
+<M ID="C">D1024-A.M.100.E.C</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1025E">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1025E</P>
+</PEERS>
+<MODELS>
+<M ID="E">D1025-A.M.100.E.E</M>
+<M ID="D">D1025-A.M.100.E.D</M>
+<M ID="A">D1025-A.M.100.E.A</M>
+<M ID="H">D1025-A.M.100.E.H</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1026E">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1026E</P>
+</PEERS>
+<MODELS>
+<M ID="G">D1026-A.M.100.E.G</M>
+<M ID="F">D1026-A.M.100.E.F</M>
+<M ID="C">D1026-A.M.100.E.C</M>
+<M ID="E">D1026-A.M.100.E.E</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1027E">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1027E</P>
+</PEERS>
+<MODELS>
+<M ID="B">D1027-A.M.100.E.B</M>
+<M ID="G">D1027-A.M.100.E.G</M>
+<M ID="E">D1027-A.M.100.E.E</M>
+<M ID="D">D1027-A.M.100.E.D</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1028E">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1028E</P>
+</PEERS>
+<MODELS>
+<M ID="D">D1028-A.M.100.E.D</M>
+<M ID="B">D1028-A.M.100.E.B</M>
+<M ID="A">D1028-A.M.100.E.A</M>
+<M ID="E">D1028-A.M.100.E.E</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1029F">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1029F</P>
+</PEERS>
+<MODELS>
+<M ID="A">D1029-A.M.100.F.A</M>
+<M ID="H">D1029-A.M.100.F.H</M>
+<M ID="F">D1029-A.M.100.F.F</M>
+<M ID="C">D1029-A.M.100.F.C</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1030F">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1030F</P>
+</PEERS>
+<MODELS>
+<M ID="D">D1030-A.M.100.F.D</M>
+<M ID="E">D1030-A.M.100.F.E</M>
+<M ID="F">D1030-A.M.100.F.F</M>
+<M ID="G">D1030-A.M.100.F.G</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1031F">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1031F</P>
+</PEERS>
+<MODELS>
+<M ID="A">D1031-A.M.100.F.A</M>
+<M ID="C">D1031-A.M.100.F.C</M>
+<M ID="H">D1031-A.M.100.F.H</M>
+<M ID="F">D1031-A.M.100.F.F</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1032F">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1032F</P>
+</PEERS>
+<MODELS>
+<M ID="G">D1032-A.M.100.F.G</M>
+<M ID="F">D1032-A.M.100.F.F</M>
+<M ID="B">D1032-A.M.100.F.B</M>
+<M ID="D">D1032-A.M.100.F.D</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1033F">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1033F</P>
+</PEERS>
+<MODELS>
+<M ID="C">D1033-A.M.100.F.C</M>
+<M ID="E">D1033-A.M.100.F.E</M>
+<M ID="F">D1033-A.M.100.F.F</M>
+<M ID="H">D1033-A.M.100.F.H</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1034F">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1034F</P>
+</PEERS>
+<MODELS>
+<M ID="F">D1034-A.M.100.F.F</M>
+<M ID="B">D1034-A.M.100.F.B</M>
+<M ID="H">D1034-A.M.100.F.H</M>
+<M ID="A">D1034-A.M.100.F.A</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1035G">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1035G</P>
+</PEERS>
+<MODELS>
+<M ID="E">D1035-A.M.100.G.E</M>
+<M ID="D">D1035-A.M.100.G.D</M>
+<M ID="G">D1035-A.M.100.G.G</M>
+<M ID="F">D1035-A.M.100.G.F</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1036G">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1036G</P>
+</PEERS>
+<MODELS>
+<M ID="G">D1036-A.M.100.G.G</M>
+<M ID="A">D1036-A.M.100.G.A</M>
+<M ID="B">D1036-A.M.100.G.B</M>
+<M ID="F">D1036-A.M.100.G.F</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1037G">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1037G</P>
+</PEERS>
+<MODELS>
+<M ID="C">D1037-A.M.100.G.C</M>
+<M ID="B">D1037-A.M.100.G.B</M>
+<M ID="H">D1037-A.M.100.G.H</M>
+<M ID="G">D1037-A.M.100.G.G</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1038G">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1038G</P>
+</PEERS>
+<MODELS>
+<M ID="C">D1038-A.M.100.G.C</M>
+<M ID="G">D1038-A.M.100.G.G</M>
+<M ID="F">D1038-A.M.100.G.F</M>
+<M ID="A">D1038-A.M.100.G.A</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1039G">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1039G</P>
+</PEERS>
+<MODELS>
+<M ID="D">D1039-A.M.100.G.D</M>
+<M ID="A">D1039-A.M.100.G.A</M>
+<M ID="G">D1039-A.M.100.G.G</M>
+<M ID="E">D1039-A.M.100.G.E</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1040G">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1040G</P>
+</PEERS>
+<MODELS>
+<M ID="B">D1040-A.M.100.G.B</M>
+<M ID="C">D1040-A.M.100.G.C</M>
+<M ID="G">D1040-A.M.100.G.G</M>
+<M ID="F">D1040-A.M.100.G.F</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1041H">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1041H</P>
+</PEERS>
+<MODELS>
+<M ID="E">D1041-A.M.100.H.E</M>
+<M ID="D">D1041-A.M.100.H.D</M>
+<M ID="H">D1041-A.M.100.H.H</M>
+<M ID="G">D1041-A.M.100.H.G</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1042H">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1042H</P>
+</PEERS>
+<MODELS>
+<M ID="F">D1042-A.M.100.H.F</M>
+<M ID="H">D1042-A.M.100.H.H</M>
+<M ID="B">D1042-A.M.100.H.B</M>
+<M ID="C">D1042-A.M.100.H.C</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1043H">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1043H</P>
+</PEERS>
+<MODELS>
+<M ID="G">D1043-A.M.100.H.G</M>
+<M ID="A">D1043-A.M.100.H.A</M>
+<M ID="B">D1043-A.M.100.H.B</M>
+<M ID="H">D1043-A.M.100.H.H</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1044H">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1044H</P>
+</PEERS>
+<MODELS>
+<M ID="D">D1044-A.M.100.H.D</M>
+<M ID="G">D1044-A.M.100.H.G</M>
+<M ID="A">D1044-A.M.100.H.A</M>
+<M ID="H">D1044-A.M.100.H.H</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1045H">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1045H</P>
+</PEERS>
+<MODELS>
+<M ID="H">D1045-A.M.100.H.H</M>
+<M ID="C">D1045-A.M.100.H.C</M>
+<M ID="F">D1045-A.M.100.H.F</M>
+<M ID="E">D1045-A.M.100.H.E</M>
+
+</MODELS>
+</EVAL>
+
+<EVAL ID="D1046H">
+<PEER-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/meadCache/summaries/standard
+</PEER-ROOT>
+<MODEL-ROOT>
+/home/thomas/projects/clms/ling573/src/compling_573_nlpsystems_washington/cache/modelSummaryCache
+</MODEL-ROOT>
+<INPUT-FORMAT TYPE="SPL">
+</INPUT-FORMAT>
+<PEERS>
+<P ID="1">D1046H</P>
+</PEERS>
+<MODELS>
+<M ID="H">D1046-A.M.100.H.H</M>
+<M ID="D">D1046-A.M.100.H.D</M>
+<M ID="E">D1046-A.M.100.H.E</M>
+<M ID="G">D1046-A.M.100.H.G</M>
+
+</MODELS>
+</EVAL>
+
+</ROUGE_EVAL>

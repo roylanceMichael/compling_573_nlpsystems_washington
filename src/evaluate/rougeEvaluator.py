@@ -38,13 +38,17 @@ rougeConfigFooter = """
 
 
 class RougeEvaluator():
-	def __init__(self, rougeDir, modelSummaryDir, systemSummaryDir, modelSummaryCachePath, rougeConfigFileName="rouge_config.xml"):
+	def __init__(self, rougeDir, modelSummaryDir, systemSummaryDir, modelSummaryCachePath, rougeCachePath):
 		self.configFile = rougeConfigHeader
 		self.rougeDir = rougeDir
 		self.systemSummaryDir = os.path.abspath(systemSummaryDir)
 		self.modelSummaryDir = os.path.abspath(modelSummaryDir)
 		self.modelSummaryCachePath = os.path.abspath(modelSummaryCachePath)
-		self.rougeConfigFileName = rougeConfigFileName
+		self.rougeCachePath = rougeCachePath
+		self.rougeConfigFileName = os.path.join(self.rougeCachePath, "rouge_config.xml")
+		self.abspath = os.path.abspath(self.rougeDir)
+		self.rouge = Rouge155(self.abspath)
+
 
 	def reset(self):
 		self.configFile = rougeConfigHeader
@@ -93,14 +97,13 @@ class RougeEvaluator():
 
 	def evaluate(self):
 
-		abspath = os.path.abspath(self.rougeDir)
-		rouge = Rouge155(abspath)
+
 		# rouge = Rouge155(abspath,
 		# 				 '-e /opt/dropbox/14-15/573/code/ROUGE/data -a -n 4 -x -c 95 -r 1000 -f A -p 0.5 -t 0 -l 100 -s -d')
-		rouge.system_filename_pattern = 'D(\d+)[A-Z]'
-		rouge.model_filename_pattern = 'D#ID#-A.M.100.[A-Z].[A-Z]'
-		rouge.system_dir = os.path.abspath(self.systemSummaryDir)
-		rouge.model_dir = os.path.abspath(self.modelSummaryCachePath)
+		self.rouge.system_filename_pattern = 'D(\d+)[A-Z]'
+		self.rouge.model_filename_pattern = 'D#ID#-A.M.100.[A-Z].[A-Z]'
+		self.rouge.system_dir = os.path.abspath(self.systemSummaryDir)
+		self.rouge.model_dir = os.path.abspath(self.modelSummaryCachePath)
 
 		# output = rouge.convert_and_evaluate()
 
@@ -135,6 +138,6 @@ class RougeEvaluator():
 		output = check_output(rougeCommand)
 
 		# print output
-		outputDict = rouge.output_to_dict(output)
+		outputDict = self.rouge.output_to_dict(output)
 
 		return [output, outputDict]

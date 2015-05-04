@@ -1,14 +1,14 @@
 __author__ = 'thomas'
 """
-  Python Source Code for ling573 Deliverable 2: Basic Summarizer
+  Python Source Code for ling573:  make summaries using mead summarizer
   Author: Thomas Marsh
   Team: Thomas Marsh, Brandon Gaylor, Michael Roylance
   Date: 4/12/2015
 
   This code does the following:
-  1. opens a doc files
+  1. opens doc files
   2. extracts data from doc files
-  3. summarizes doc files
+  3. summarizes doc files using mead
   4. compares summary using ROUGE and outputs results
 
 
@@ -23,11 +23,6 @@ import extract.documentRepository
 import model.idf
 import model.doc_model
 import coreference.rules
-import npclustering.npClustering
-import summarization.initialSummarizer
-from order.order import in_order
-from realize.simple_realize import simple_realize
-from summarization.initialSummarizer import InitialSummarizer
 from mead import meadDocumentCluster
 from mead import meadDocument
 from mead import meadSummarizer
@@ -38,7 +33,7 @@ import os
 
 
 # get parser args and set up global variables
-parser = argparse.ArgumentParser(description='Basic Document Summarizer.')
+parser = argparse.ArgumentParser(description='Mead Summarizer.')
 parser.add_argument('--doc-input-path', help='Path to data files', dest='docInputPath')
 parser.add_argument('--doc-input-path2', help='Path to secondary data files', dest='docInputPath2')
 parser.add_argument('--topic-xml', help='Path to topic xml file', dest='topicXml')
@@ -60,10 +55,11 @@ meadDocumentCachePath = "../cache/meadCache/docClusters"
 meadEvaluationCachePath = "../cache/meadCache/evaluations"
 meadSummaryCachePath = "../cache/meadCache/summaries"
 meadPath = "../mead/bin"
+rougeCachePath = "../cache/rougeCache"
 
 
 idf = model.idf.Idf(idfCachePath)
-rouge = RougeEvaluator(args.rougePath, args.goldStandardSummaryPath, meadSummaryCachePath, modelSummaryCachePath)
+rouge = RougeEvaluator(args.rougePath, args.goldStandardSummaryPath, meadSummaryCachePath, modelSummaryCachePath, rougeCachePath)
 
 ##############################################################
 # send the data to the model generator
@@ -87,7 +83,7 @@ def printSummary(docModels):
 def evalAndWrite(summaryOutputPath, label):
 	rouge.reset()
 	rouge.systemSummaryDir = os.path.abspath(summaryOutputPath)
-	rouge.rougeConfigFileName = "rouge_config_mead_" + label + ".xml"
+	rouge.rougeConfigFileName = os.path.join(rougeCachePath, "rouge_config_mead_" + label + ".xml")
 	# cache the model summaries
 	rouge.cacheModelSummaries(topics)
 
@@ -159,19 +155,3 @@ evalAndWrite(meadStandardSummarizer.outputPath, "standard")
 evalAndWrite(meadInitialSummarizer.outputPath, "initial")
 evalAndWrite(meadRandomSummarizer.outputPath, "random")
 
-
-
-
-
-#
-# print "running the rouge evaluator"
-# evaluationResults = evaluate()
-# evaluation = evaluationResults[0]
-# evaluationDict = evaluationResults[1]
-#
-# print evaluation
-# evaluationFileName = evaluationOutputPath + "/D2.results"
-# print evaluationFileName
-# evaluationFile = open(evaluationFileName, 'w')
-# evaluationFile.write(evaluation)
-# evaluationFile.close()
