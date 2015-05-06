@@ -6,6 +6,7 @@ from npclustering.npClustering import NpClustering
 
 class NpClusteringSummaryTechnique(SummaryTechnique):
 	def rankSentences(self):
+		self.docModels.processNPs()
 		instance = NpClustering(self.docModels)
 		self.addTuplesToDict(instance.buildSentenceDistances())
 

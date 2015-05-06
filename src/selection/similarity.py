@@ -5,6 +5,7 @@ from model.idf import stopWords
 import numpy
 from scipy import spatial
 import time
+import math
 
 def cosine2(sentencePair, vocab=None):
 	beg = time.time()
@@ -71,17 +72,48 @@ class DenseGraph(list):
 		self.remaining = set(range(len(self.sentences)))
 		self._sNum = len(self.sentences)
 		list.__init__(self)
-		for x in range(self._sNum):
-			row = list()
-			for y in range(x):
-				# s1 = cosine2((self.sentences[x], self.sentences[y]))
-				# s2 = cosine2b((self.sentences[x], self.sentences[y]))
-				row.append(simMeasure((self.sentences[x], self.sentences[y])))
-			row.append(1.0)
-			self.append(row)
 
 	def __str__(self):
 		return list.__str__(self)
+
+	def getsim(self, sID0, sID1):
+		raise NotImplemented()
+
+	def setsim(self, sID0, sID1, value):
+		raise NotImplemented()
+
+	def applyfactor(self, sID0, sID1, factor):
+		raise NotImplemented()
+
+	# returns the sentence most similar to everything else,
+	# then turns its sim scores with everything negative
+	def pullinorder(self, pullfactor=-1.0):
+		while len(self.remaining) > 0:
+			sID = max(( sum(self.getsim(x, y) for y in range(self._sNum)), x ) for x in self.remaining)[1]
+
+			for y in range(self._sNum):
+				self.applyfactor(sID, y, pullfactor)
+
+			yield self.sentences[sID]
+			self.remaining.remove(sID)
+
+	def simpleorder(self):
+		f = open("/home/thcrzy1/Documents/matrix.txt", 'w')
+		for score, sID in sorted((( sum(self.getsim(x, y) for y in range(self._sNum) if x!=y), x ) for x in self.remaining), reverse=True):
+			f.write("{} {}\n".format(score, self.sentences[sID]))
+			yield self.sentences[sID]
+		f.flush()
+		f.close()
+
+
+class UnidirectedGraph(DenseGraph):
+	def __init__(self, sentences, simMeasure):
+		DenseGraph.__init__(self, sentences, simMeasure)
+		for x in range(self._sNum):
+			row = list()
+			for y in range(x+1):
+				row.append(simMeasure((self.sentences[x], self.sentences[y])))
+			self.append(row)
 
 	def getsim(self, sID0, sID1):
 		if sID0 > sID1:
@@ -94,26 +126,37 @@ class DenseGraph(list):
 		else:
 			[sID1][sID0] = value
 
-	def makeneg(self, sID0, sID1):
-		# print(( sID0, sID1))
-		# print(sID0 > sID1)
+	def applyfactor(self, sID0, sID1, factor):
 		if sID0 > sID1:
-			if self[sID0][sID1] > 0:
-				self[sID0][sID1] *= -1
-		elif self[sID1][sID0] > 0:
-			self[sID1][sID0] *= -1
+			self[sID0][sID1] *= factor
+			self[sID0][sID1] = math.copysign(self[sID0][sID1], factor)
+		else:
+			self[sID1][sID0] *= factor
+			self[sID1][sID0] = math.copysign(self[sID1][sID0], factor)
 
-	# returns the sentence most similar to everything else,
-	# then turns its sim scores with everything negative
-	def pullinorder(self):
-		while len(self.remaining) > 0:
-			sID = max(( sum(self.getsim(x, y) for y in range(self._sNum)), x ) for x in self.remaining)[1]
 
+class DirectedGraph(DenseGraph):
+	def __init__(self, sentences, simMeasure):
+		DenseGraph.__init__(self, sentences, simMeasure)
+		for x in range(self._sNum):
+			row = list()
 			for y in range(self._sNum):
-				self.makeneg(sID, y)
+				row.append(simMeasure((self.sentences[x], self.sentences[y])))
+			self.append(row)
 
-			yield self.sentences[sID]
-			self.remaining.remove(sID)
+	def getsim(self, sID0, sID1):
+		return self[sID0][sID1]
+
+	def setsim(self, sID0, sID1, value):
+		self[sID0][sID1] = value
+
+	def applyfactor(self, sID0, sID1, factor):
+		# change the score for both sID0 and sID1
+		self[sID0][sID1] *= factor
+		self[sID0][sID1] = math.copysign(self[sID0][sID1], factor)
+		self[sID1][sID0] *= factor
+		self[sID1][sID0] = math.copysign(self[sID1][sID0], factor)
+
 
 
 if __name__ == '__main__':
@@ -121,7 +164,7 @@ if __name__ == '__main__':
 	"Test sentence one.", "This is test sentence two.", "Sentence three.", "Here is the final sentence.")
 	testSentences = tuple(Sentence(s, None, 0) for s in testSentences)
 	simMeasure = cosine2b
-	graph = DenseGraph(testSentences, simMeasure)
+	graph = UnidirectedGraph(testSentences, simMeasure)
 	print(graph)
 	print(graph.getsim(0, 2))
 	print(graph.getsim(2, 0))

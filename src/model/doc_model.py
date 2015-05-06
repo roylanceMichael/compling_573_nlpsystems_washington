@@ -10,6 +10,9 @@ from nltk.stem.porter import *
 import extract.document as document
 from model import idf
 
+import uuid
+import math
+
 
 sentence_breaker = nltk.data.load('tokenizers/punkt/english.pickle')
 stemmer = PorterStemmer().stem
@@ -71,12 +74,15 @@ class Text(list, ParentCompare):
 		return self.full
 
 
+nounPhraseKey = "NP"
+
 class Sentence(list, ParentCompare):
 	def __init__(self, in_string, parent, position_in_parent):
 		ParentCompare.__init__(self, parent, position_in_parent)
 		self.full = in_string
 		self.simple = in_string.replace('\n', ' ')
 		self.coherenceTypes = []
+		self.sentenceNumber = -1
 
 		# at this level we need to deside if we are doing full parsing or just chunking
 		# I'll assume chunking for now because we need at least full NPs to figure out coreference
@@ -91,6 +97,9 @@ class Sentence(list, ParentCompare):
 
 		list.__init__(self, (Chunk(self.tree[t], self, t) for t in range(len(self.tree))))
 
+		self.chunkDict = None #self.buildChunkDict()
+		self.uniqueId = None #str(uuid.uuid1())
+
 	def __str__(self):
 		return self.full
 
@@ -98,6 +107,41 @@ class Sentence(list, ParentCompare):
 		for c in self:
 			for w in c:
 				yield w
+
+	def processNPs(self):
+		self.chunkDict = self.buildChunkDict()
+		self.uniqueId = str(uuid.uuid1())
+
+
+	def buildChunkDict(self):
+		chunkDict = {}
+		for chunk in self:
+			rootChunk = self.getRootAnaphora(chunk)
+			if rootChunk.tag == nounPhraseKey:
+				chunkDict[str(chunk).lower()] = None
+
+		return chunkDict
+
+	def getRootAnaphora(self, chunk):
+		if chunk.anaphora == None:
+			return chunk
+		return self.getRootAnaphora(chunk.anaphora)
+
+	def distance(self, otherSentence):
+		sameTotal = 0
+
+		# give preference to beginning sentences
+		if self.sentenceNumber < 2:
+			sameTotal += 4 - self.sentenceNumber
+
+		for otherChunk in otherSentence.chunkDict:
+			if otherChunk in self.chunkDict:
+				sameTotal += 1
+
+		# todo: work out better
+		# sameTotal -= math.fabs (len(self.chunkDict) - len(otherParagraph.chunkDict))
+
+		return sameTotal
 
 
 class Chunk(list, ParentCompare):
@@ -167,9 +211,15 @@ class Doc_Model:
 
 			self.paragraphs = [Text(tab_split[x], self, x + 1) for x in range(len(tab_split))]
 
+		#number the sentences
+		n = 0
+		for s in self.sentences():
+			n += 1
+			s.sentenceNumber = n
+
 		# compute the basic term frequencies of all words in paragraphs
 		# for use in building cluster-wide quarry term frequency
-		self.termFreq = defaultdict(lambda: 0)
+		self.termFreq = defaultdict(int)
 		for word in self.words():
 			if word.full not in idf.stopWords:
 				self.termFreq[word.full] += 1
@@ -227,6 +277,7 @@ class Cluster(list):
 		for doc in self:
 			for w, f in doc.termFreq.items():
 				self.termFreq[w] += f
+		self.npsprocessed = False
 
 		self._maxFreq = max(self.termFreq.items(), key=lambda x: x[1])[1]
 
@@ -256,6 +307,12 @@ class Cluster(list):
 		for doc in self:
 			for w in doc.words():
 				yield w
+
+	def processNPs(self):
+		if not self.npsprocessed:
+			for s in self.sentences():
+				s.processNPs()
+		self.npsprocessed = True
 
 
 def main():

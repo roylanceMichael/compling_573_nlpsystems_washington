@@ -14,9 +14,9 @@ class NpClustering:
 			sentenceNumber = 0
 			for paragraph in docModel.paragraphs:
 				for sentence in paragraph:
-					sentenceNumber += 1
-					newSentence = sentenceCluster.SentenceCluster(sentence, sentenceNumber)
-					sentences[newSentence.uniqueId] = newSentence
+					#sentenceNumber += 1
+					#newSentence = sentenceCluster.SentenceCluster(sentence, sentenceNumber)
+					sentences[sentence.uniqueId] = sentence
 
 		distancePairs = {}
 		for sentenceId in sentences:
@@ -32,12 +32,15 @@ class NpClustering:
 					distancePairs[sentenceId] += tupleDistance
 				else:
 					distancePairs[sentenceId] = tupleDistance
-
+		f = open("/home/thcrzy1/Documents/np.txt", 'w')
 		# which distancePairs have the highest score?
 		for tupleResult in sorted(distancePairs.items(), key=operator.itemgetter(1), reverse=True):
 			sentence = sentences[tupleResult[0]]
 			score = tupleResult[1]
-			yield (sentence.sentence, score)
+			f.write("{} {}\n".format(score, sentence))
+			yield (sentence, score)
+		f.flush()
+		f.close()
 
 
 	def buildDistances(self):
