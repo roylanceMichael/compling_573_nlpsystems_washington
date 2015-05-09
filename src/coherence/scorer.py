@@ -36,6 +36,10 @@ def isAlsoInSubject(sentence):
 			return True
 	return False
 
+def determineDoc(docModel):
+	for paragraph in docModel.paragraphs:
+		determine(paragraph)
+
 def determine(paragraph):
 	# we're looking for pronouns here
 	sentenceTuples = []
@@ -50,9 +54,20 @@ def determine(paragraph):
 			firstSentence.coherenceTypes.append(types.occasion)
 			secondSentence.coherenceTypes.append(types.occasion)
 			secondSentence.coherenceTypes.append(types.explanation)
+
+			hookUpBothSentences(firstSentence, secondSentence)
 		else:
 			secondSentence.coherenceTypes.append(types.explanation)
+
+			hookUpBothSentences(firstSentence, secondSentence)
 
 		if not isAlsoInSubject(firstSentence) and isAlsoInSubject(secondSentence):
 			firstSentence.coherenceTypes.append(types.parallel)
 			secondSentence.coherenceTypes.append(types.parallel)
+
+			hookUpBothSentences(firstSentence, secondSentence)
+
+
+def hookUpBothSentences(firstSentence, secondSentence):
+	firstSentence.coherenceNextSentence = secondSentence
+	secondSentence.coherencePreviousSentence = firstSentence

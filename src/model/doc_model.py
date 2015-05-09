@@ -73,7 +73,6 @@ class Text(list, ParentCompare):
 	def __str__(self):
 		return self.full
 
-
 nounPhraseKey = "NP"
 
 class Sentence(list, ParentCompare):
@@ -82,23 +81,22 @@ class Sentence(list, ParentCompare):
 		self.full = in_string
 		self.simple = in_string.replace('\n', ' ')
 		self.coherenceTypes = []
+		self.coherencePreviousSentence = None
+		self.coherenceNextSentence = None
 		self.sentenceNumber = -1
 
-		# at this level we need to deside if we are doing full parsing or just chunking
-		# I'll assume chunking for now because we need at least full NPs to figure out coreference
+		# at this level we need to decide if we are doing full parsing or just chunking
 		# for now just assume every word is its own chunk
-
 		tokenized = list(x for x in nltk.pos_tag(word_tokenize(self.full)) if len(x[0]) > 0)
 
 		self.wordNum = len(tokenized)
 
 		self.tree = chunker.parse(tokenized)
-		# print(self.tree)
 
 		list.__init__(self, (Chunk(self.tree[t], self, t) for t in range(len(self.tree))))
 
 		self.chunkDict = None #self.buildChunkDict()
-		self.uniqueId = None #str(uuid.uuid1())
+		self.uniqueId = str(uuid.uuid1())
 
 	def __str__(self):
 		return self.full

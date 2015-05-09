@@ -23,6 +23,7 @@ import extract.documentRepository
 import model.idf
 import model.doc_model
 import coreference.rules
+import coherence.scorer
 import npclustering.npClustering
 import summarization.initialSummarizer
 from order.order import in_order
@@ -66,6 +67,7 @@ idf = model.idf.Idf(idfCachePath)
 def getModel(docData):
 	initialModel = model.doc_model.Doc_Model(docData)
 	coreference.rules.updateDocumentWithCoreferences(initialModel)
+	coherence.scorer.determineDoc(initialModel)
 	return initialModel
 
 
@@ -143,7 +145,6 @@ for topic in topics:
 	for foundDocument in documentRepository.getDocumentsByTopic(topic.id):
 		print "processing docNo: " + foundDocument.docNo
 		convertedModel = getModel(foundDocument)
-		# updatedCorefModel = coreference.rules.Rules.updateDocumentWithCoreferences(convertedModel)
 		models.append(convertedModel)
 
 	# make a summary of the topic cluster

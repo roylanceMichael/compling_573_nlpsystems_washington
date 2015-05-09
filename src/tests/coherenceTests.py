@@ -18,7 +18,7 @@ u a &Cx13;  &Cx11;  BC-OBIT-LENIHAN-NYT &LR;      06-01 0290
 <SLUG> BC-OBIT-LENIHAN-NYT </SLUG>
 <HEADLINE>
 KENNETH J. LENIHAN, SOCIOLOGIST WHO STUDIED CAUSES OF RECIDIVISM,
-DIES AT 69˚
+DIES AT 69
 </HEADLINE>
    (sw)
  By WOLFGANG SAXON
@@ -49,7 +49,6 @@ class CoherenceTests(unittest.TestCase):
 		# act
 		for paragraph in docModel.paragraphs:
 			coherence.scorer.determine(paragraph)
-
 
 		# assert
 		for paragraph in docModel.paragraphs:
