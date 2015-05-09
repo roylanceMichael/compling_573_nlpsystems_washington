@@ -47,7 +47,7 @@ class NpClustering:
 				returnedSentences[sentence.simple] = None
 				yield (sentence, score)
 
-			if (coherence.types.occasion in sentence.coherenceTypes and
+			if (coherence.types.parallel in sentence.coherenceTypes and
 						sentence.coherenceNextSentence is not None):
 				if (sentence.coherenceNextSentence is not None and
 							sentence.coherenceNextSentence.simple not in returnedSentences):
