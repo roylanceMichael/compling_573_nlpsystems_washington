@@ -2,6 +2,7 @@ __author__ = 'mroylance'
 import paragraphCluster
 import sentenceCluster
 import operator
+import coherence.types
 
 
 class NpClustering:
@@ -35,7 +36,6 @@ class NpClustering:
 
 		# which distancePairs have the highest score?
 		returnedSentences = {}
-		sentencesToReturnInOrder = []
 		for tupleResult in sorted(distancePairs.items(), key=operator.itemgetter(1), reverse=True):
 			sentence = sentences[tupleResult[0]]
 			score = tupleResult[1]
@@ -43,20 +43,18 @@ class NpClustering:
 			if sentence.simple in returnedSentences:
 				continue
 
-			#if (sentence.coherencePreviousSentence is not None and
-			#			sentence.coherencePreviousSentence.simple not in returnedSentences):
-			#	returnedSentences[sentence.coherencePreviousSentence.simple] = None
-			#	yield (sentence.coherencePreviousSentence, score)
+			if (coherence.types.occasion in sentence.coherenceTypes and
+				sentence.coherenceNextSentence is not None):
+				if sentence.simple not in returnedSentences:
+					returnedSentences[sentence.simple] = None
+					yield (sentence, score)
 
-			if sentence.simple not in returnedSentences:
-				returnedSentences[sentence.simple] = None
-				yield (sentence, score)
+				if (sentence.coherenceNextSentence is not None and
+					sentence.coherenceNextSentence.simple not in returnedSentences):
+					returnedSentences[sentence.coherenceNextSentence.simple] = None
+					yield (sentence.coherenceNextSentence, score)
 
-
-			#if (sentence.coherenceNextSentence is not None and
-			#			sentence.coherenceNextSentence.simple not in returnedSentences):
-			#	returnedSentences[sentence.coherenceNextSentence.simple] = None
-			#	yield (sentence.coherenceNextSentence, score)
+			continue
 
 
 	def buildDistances(self):

@@ -12,6 +12,7 @@ class SentenceCluster:
 		self.simple = sentence.simple
 		self.coherencePreviousSentence = sentence.coherencePreviousSentence
 		self.coherenceNextSentence = sentence.coherenceNextSentence
+		self.coherenceTypes = sentence.coherenceTypes
 		self.chunkDict = self.buildChunkDict()
 		self.uniqueId = str(uuid.uuid1())
 
