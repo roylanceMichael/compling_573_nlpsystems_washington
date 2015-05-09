@@ -53,10 +53,10 @@ class NpClustering:
 				yield (sentence, score)
 
 
-			if (sentence.coherenceNextSentence is not None and
-						sentence.coherenceNextSentence.simple not in returnedSentences):
-				returnedSentences[sentence.coherenceNextSentence.simple] = None
-				yield (sentence.coherenceNextSentence, score)
+			#if (sentence.coherenceNextSentence is not None and
+			#			sentence.coherenceNextSentence.simple not in returnedSentences):
+			#	returnedSentences[sentence.coherenceNextSentence.simple] = None
+			#	yield (sentence.coherenceNextSentence, score)
 
 
 	def buildDistances(self):
