@@ -34,10 +34,30 @@ class NpClustering:
 					distancePairs[sentenceId] = tupleDistance
 
 		# which distancePairs have the highest score?
+		returnedSentences = {}
+		sentencesToReturnInOrder = []
 		for tupleResult in sorted(distancePairs.items(), key=operator.itemgetter(1), reverse=True):
 			sentence = sentences[tupleResult[0]]
 			score = tupleResult[1]
-			yield (sentence, score)
+
+			if sentence.simple in returnedSentences:
+				continue
+
+			if (sentence.coherencePreviousSentence is not None and
+						sentence.coherencePreviousSentence.simple not in returnedSentences):
+				returnedSentences[sentence.coherencePreviousSentence.simple] = None
+				yield (sentence.coherencePreviousSentence, score)
+
+			if sentence.simple not in returnedSentences:
+				returnedSentences[sentence.simple] = None
+				yield (sentence, score)
+
+
+			if (sentence.coherenceNextSentence is not None and
+						sentence.coherenceNextSentence.simple not in returnedSentences):
+				returnedSentences[sentence.coherenceNextSentence.simple] = None
+				yield (sentence.coherenceNextSentence, score)
+
 
 	def buildDistances(self):
 		paragraphs = {}

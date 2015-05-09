@@ -8,8 +8,6 @@ class NpClusteringSummaryTechnique(SummaryTechnique):
 	def rankSentences(self):
 		self.docModels.processNPs()
 		instance = NpClustering(self.docModels)
-		self.addTuplesToDict(instance.buildSentenceDistances())
 
-	def addTuplesToDict(self, tuples):
-		for sentenceTuple in tuples:
+		for sentenceTuple in instance.buildSentenceDistances():
 			self[sentenceTuple[0].simple] = sentenceTuple[1]

@@ -10,6 +10,8 @@ class SentenceCluster:
 		self.sentenceNumber = sentenceNumber
 		self.sentence = sentence
 		self.simple = sentence.simple
+		self.coherencePreviousSentence = sentence.coherencePreviousSentence
+		self.coherenceNextSentence = sentence.coherenceNextSentence
 		self.chunkDict = self.buildChunkDict()
 		self.uniqueId = str(uuid.uuid1())
 

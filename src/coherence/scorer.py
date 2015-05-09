@@ -20,6 +20,7 @@ def isPronounSubject(sentence):
 
 	return foundPronoun
 
+
 def isThenInSubject(sentence):
 	for chunk in sentence:
 		if str(chunk).lower() == thenWord:
@@ -30,15 +31,18 @@ def isThenInSubject(sentence):
 
 	return False
 
+
 def isAlsoInSubject(sentence):
 	for chunk in sentence:
 		if str(chunk).lower() == alsoWord:
 			return True
 	return False
 
+
 def determineDoc(docModel):
 	for paragraph in docModel.paragraphs:
 		determine(paragraph)
+
 
 def determine(paragraph):
 	# we're looking for pronouns here
