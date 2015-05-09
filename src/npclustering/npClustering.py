@@ -43,10 +43,10 @@ class NpClustering:
 			if sentence.simple in returnedSentences:
 				continue
 
-			if (sentence.coherencePreviousSentence is not None and
-						sentence.coherencePreviousSentence.simple not in returnedSentences):
-				returnedSentences[sentence.coherencePreviousSentence.simple] = None
-				yield (sentence.coherencePreviousSentence, score)
+			#if (sentence.coherencePreviousSentence is not None and
+			#			sentence.coherencePreviousSentence.simple not in returnedSentences):
+			#	returnedSentences[sentence.coherencePreviousSentence.simple] = None
+			#	yield (sentence.coherencePreviousSentence, score)
 
 			if sentence.simple not in returnedSentences:
 				returnedSentences[sentence.simple] = None
