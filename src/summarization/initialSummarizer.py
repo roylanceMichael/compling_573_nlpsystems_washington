@@ -30,8 +30,8 @@ class InitialSummarizer:
 		self.techniques.append(self.sentenceDistance)
 		self.sentenceLength = SentenceLengthSummaryTechnique(trySentenceLength, 1.0, docModels, "slen")
 		self.techniques.append(self.sentenceLength)
-		#self.npClustering = NpClusteringSummaryTechnique(tryNpClustering, 1.0, self.docCluster, "npcluster")
-		self.npClustering = MatrixSummaryTechnique(tryNpClustering, 1.0, self.docCluster, "npcluster", directed=True, usenp=True, pullfactor=1.0)
+		self.npClustering = NpClusteringSummaryTechnique(tryNpClustering, 1.0, self.docCluster, "npcluster")
+		# self.npClustering = MatrixSummaryTechnique(tryNpClustering, 1.0, self.docCluster, "npcluster", directed=True, usenp=True, pullfactor=1.0)
 		self.techniques.append(self.npClustering)
 		self.summarize()
 

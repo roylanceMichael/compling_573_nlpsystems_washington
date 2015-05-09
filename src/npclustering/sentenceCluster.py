@@ -9,6 +9,7 @@ class SentenceCluster:
 	def __init__(self, sentence, sentenceNumber):
 		self.sentenceNumber = sentenceNumber
 		self.sentence = sentence
+		self.simple = sentence.simple
 		self.chunkDict = self.buildChunkDict()
 		self.uniqueId = str(uuid.uuid1())
 
