@@ -12,8 +12,12 @@ pronounTypes = {"PRP": None, "PRP$": None}
 badWords = ["a", "an", "the", "of"]
 badWordsForWordMatching = ["a", "an", "the", "of", "these", "mr", "mr.", "mrs", "mrs."]
 
-wordsToIgnoreMatching = [badWordsForWordMatching, npModel.nominative, npModel.accusative, npModel.possessive,
-						 npModel.reflexive, npModel.ambiguous]
+wordsToIgnoreMatching = [badWordsForWordMatching,
+						 npModel.nominative,
+						 npModel.accusative,
+						 npModel.possessive,
+						 npModel.reflexive,
+						 npModel.ambiguous]
 
 # this will determine if the np's match in number
 # give higher weight to npModel2 being a pronoun
@@ -55,9 +59,9 @@ def wordMatchingRule(npModel1, npModel2):
 # comparison rules
 def matchPlurality(npModel1, npModel2):
 	if npModel1.plurality and npModel2.plurality and npModel2.pronounType != npModel.nonePronounType:
-		return -999
+		return -5
 	if npModel1.plurality and npModel2.plurality:
-		return -999
+		return -5
 	return 20000
 
 
@@ -198,6 +202,8 @@ def findCorrectAntecedent(npModel, previousNps, sentences):
 		totalScore += iMeRule(npModel, previousNp)
 		totalScore += specialThisScore
 
+		# print str(npModel) + " ~ " + str(previousNp) + " -> " + str(totalScore)
+
 		scoringDict[totalScore] = previousNp
 
 	od = collections.OrderedDict(sorted(scoringDict.items()))
@@ -230,7 +236,7 @@ def updateDocumentWithCoreferences(docModel):
 			for chunk in sentence:
 				np = npModel.NpModel(chunk)
 
-				if np.tag in pronounTypes:
+				if np.tag in pronounTypes or np.tag == nounPhraseKey:
 					result = findCorrectAntecedent(np, previousItems, sentences)
 					if result is not None:
 						chunk.anaphora = result.chunk
