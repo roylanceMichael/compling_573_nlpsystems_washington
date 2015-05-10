@@ -43,19 +43,16 @@ class NpClustering:
 			if sentence.simple in returnedSentences:
 				continue
 
-			if (coherence.types.occasion in sentence.coherenceTypes and
-				sentence.coherenceNextSentence is not None):
-				if sentence.simple not in returnedSentences:
-					returnedSentences[sentence.simple] = None
-					yield (sentence, score)
+			if sentence.simple not in returnedSentences:
+				returnedSentences[sentence.simple] = None
+				yield (sentence, score)
 
+			if (coherence.types.parallel in sentence.coherenceTypes and
+						sentence.coherenceNextSentence is not None):
 				if (sentence.coherenceNextSentence is not None and
-					sentence.coherenceNextSentence.simple not in returnedSentences):
+							sentence.coherenceNextSentence.simple not in returnedSentences):
 					returnedSentences[sentence.coherenceNextSentence.simple] = None
 					yield (sentence.coherenceNextSentence, score)
-
-			continue
-
 
 	def buildDistances(self):
 		paragraphs = {}
