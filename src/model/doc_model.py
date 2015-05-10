@@ -9,10 +9,14 @@ from nltk.stem.porter import *
 
 import extract.document as document
 from model import idf
+from textrazor.textrazor import TextRazor
 
 import uuid
 import math
 
+
+client = TextRazor(api_key="99cb513961595f163f4ab253a8aaf167970f8a49981e229a3c8505a0", \
+				   extractors=["entities", "topics"])
 
 sentence_breaker = nltk.data.load('tokenizers/punkt/english.pickle')
 stemmer = PorterStemmer().stem
@@ -84,6 +88,11 @@ class Sentence(list, ParentCompare):
 		self.coherencePreviousSentence = None
 		self.coherenceNextSentence = None
 		self.sentenceNumber = -1
+		response = client.analyze(self.simple)
+		self.entities = response.entities()
+
+		# for entity in response.entities():
+		# 	print entity.id, entity.relevance_score, entity.confidence_score, entity.freebase_types
 
 		# at this level we need to decide if we are doing full parsing or just chunking
 		# for now just assume every word is its own chunk
