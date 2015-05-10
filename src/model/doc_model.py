@@ -88,8 +88,9 @@ class Sentence(list, ParentCompare):
 		self.coherencePreviousSentence = None
 		self.coherenceNextSentence = None
 		self.sentenceNumber = -1
-		response = client.analyze(self.simple)
-		self.entities = response.entities()
+		# response = client.analyze(self.simple)
+		# self.entities = response.entities()
+		self.entities = []
 
 		# for entity in response.entities():
 		# 	print entity.id, entity.relevance_score, entity.confidence_score, entity.freebase_types
