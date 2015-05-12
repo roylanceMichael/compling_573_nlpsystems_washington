@@ -60,6 +60,11 @@ class ParentCompare:
 
 class Text(list, ParentCompare):
 	def __init__(self, in_string, parent, position_in_parent):
+		self.extractions = []
+		self.extractionSentences = []
+		self.extractionTriples = []
+		self.extractionEntities = []
+
 		ParentCompare.__init__(self, parent, position_in_parent)
 		self.full = in_string.strip()
 		sentences = sentence_breaker.tokenize(self.full)

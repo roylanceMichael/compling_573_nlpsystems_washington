@@ -16,6 +16,7 @@ class SentenceCluster:
 		self.chunkDict = self.buildChunkDict()
 		self.uniqueId = str(uuid.uuid1())
 
+
 	def buildChunkDict(self):
 		chunkDict = {}
 		for chunk in self.sentence:
@@ -25,10 +26,12 @@ class SentenceCluster:
 
 		return chunkDict
 
+
 	def getRootAnaphora(self, chunk):
 		if chunk.anaphora == None:
 			return chunk
 		return self.getRootAnaphora(chunk.anaphora)
+
 
 	def distance(self, otherSentence):
 		sameTotal = 0

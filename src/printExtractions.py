@@ -1,0 +1,112 @@
+__author__ = 'mroylance'
+
+import os
+import sys
+import pickle
+import operator
+import extractionclustering.sentence
+from evaluate.rougeEvaluator import RougeEvaluator
+from evaluate.evaluationCompare import EvaluationCompare
+
+
+cachePath = "../cache/docModelCache"
+summaryOutputPath = "../outputs"
+evaluationOutputPath = "../results"
+modelSummaryCachePath = "../cache/modelSummaryCache"
+documentCachePath = "../cache/documentCache"
+idfCachePath = "../cache/idfCache"
+meadCacheDir = "../cache/meadCache"
+rougeCacheDir = "../cache/rougeCache"
+
+rouge = RougeEvaluator("../ROUGE", "/opt/dropbox/14-15/573/Data/models/devtest", summaryOutputPath, modelSummaryCachePath, rougeCacheDir)
+
+##############################################################
+# helper function for printing out buffers to files
+##############################################################
+def writeBufferToFile(path, buffer):
+	outFile = open(path, 'w')
+	outFile.write(buffer)
+	outFile.close()
+
+for fileName in os.listdir(cachePath):
+	pickleFilePath = os.path.join(cachePath, fileName)
+	if os.path.exists(pickleFilePath):
+			pickleFile = open(pickleFilePath, 'rb')
+			topicDictionary = pickle.load(pickleFile)
+
+			allSentences = {}
+			for docNo in topicDictionary:
+				print docNo
+
+				for paragraph in topicDictionary[docNo].paragraphs:
+					sentences = {}
+					sentenceNum = 0
+					for sentence in paragraph.extractionSentences:
+						actualSentence = str(paragraph)[sentence.text_sentence.offset:sentence.text_sentence.length]
+						sentences[sentence.text_sentence.text_sentence_ID] = \
+							extractionclustering.sentence.Sentence(
+								actualSentence,
+								sentence.text_sentence.text_sentence_ID,
+								sentenceNum,
+								topicDictionary[docNo],
+								paragraph)
+						sentenceNum += 1
+
+					for triple in paragraph.extractionTriples:
+						sentences[triple.triple.sentence_ID].triples.append(triple)
+
+					for entity in paragraph.extractionEntities:
+						sentences[entity.entity.sentence_id].entities.append(entity)
+
+					for sentence in sentences:
+						allSentences[sentences[sentence].uniqueId] = sentences[sentence]
+
+			print "doing clustering now on summarization..."
+
+			scoreDictionary = {}
+			for uniqueSentenceId in allSentences:
+				scoreDictionary[uniqueSentenceId] = 0
+
+				compareSentence = allSentences[uniqueSentenceId]
+				for otherUniqueSentenceId in allSentences:
+					if uniqueSentenceId == otherUniqueSentenceId:
+						continue
+
+					score = compareSentence.distanceToOtherSentence(allSentences[otherUniqueSentenceId])
+
+					scoreDictionary[uniqueSentenceId] += score
+
+			maxSentences = 10
+			sentenceIdx = 0
+			summary = ""
+			for tupleResult in sorted(scoreDictionary.items(), key=operator.itemgetter(1), reverse=True):
+				if sentenceIdx > maxSentences:
+					break
+
+				sentence = allSentences[tupleResult[0]]
+				score = tupleResult[1]
+				summary += sentence.simple
+
+				print (sentence.simple, score)
+				sentenceIdx += 1
+
+			if summary is not None:
+				summaryFileName = summaryOutputPath + "/" + fileName
+				summaryFile = open(summaryFileName, 'w')
+				summaryFile.write(summary)
+				summaryFile.close()
+
+print "running the rouge evaluator"
+evaluationResults = rouge.evaluate()
+evaluation = evaluationResults[0]
+writeBufferToFile(os.path.join(evaluationOutputPath, "D2.results"), evaluation)
+
+# call the evaluation comparison routine.
+# note:  this will only print t
+# he summaries you have on your machine.
+# 		 i.e. you should have run the meadSummaryGenerator.py first
+# 		 (though defaults are checked into git)
+comparator = EvaluationCompare(evaluationOutputPath, meadCacheDir, rouge)
+comparison = comparator.getComparison()
+print "\n" + comparison
+writeBufferToFile(os.path.join(evaluationOutputPath, "results_compare.txt"), comparison)
