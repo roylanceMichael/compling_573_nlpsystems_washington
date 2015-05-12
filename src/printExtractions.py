@@ -42,21 +42,21 @@ for fileName in os.listdir(cachePath):
 					sentences = {}
 					sentenceNum = 0
 					for sentence in paragraph.extractionSentences:
-						actualSentence = str(paragraph)[sentence.text_sentence.offset:sentence.text_sentence.length]
-						sentences[sentence.text_sentence.text_sentence_ID] = \
+						actualSentence = str(paragraph)[sentence[1]:sentence[2]]
+						sentences[sentence[0]] = \
 							extractionclustering.sentence.Sentence(
 								actualSentence,
-								sentence.text_sentence.text_sentence_ID,
+								sentence[0],
 								sentenceNum,
 								topicDictionary[docNo],
 								paragraph)
 						sentenceNum += 1
 
 					for triple in paragraph.extractionTriples:
-						sentences[triple.triple.sentence_ID].triples.append(triple)
+						sentences[triple[0]].triples.append(triple)
 
 					for entity in paragraph.extractionEntities:
-						sentences[entity.entity.sentence_id].entities.append(entity)
+						sentences[entity[0]].entities.append(entity)
 
 					for sentence in sentences:
 						allSentences[sentences[sentence].uniqueId] = sentences[sentence]
