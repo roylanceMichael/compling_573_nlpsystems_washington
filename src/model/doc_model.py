@@ -140,12 +140,12 @@ class Sentence(list, ParentCompare):
 			return chunk
 		return self.getRootAnaphora(chunk.anaphora)
 
-	def distance(self, otherSentence):
+	def distance(self, otherSentence, initialwindow=2, initialbonus=4):
 		sameTotal = 0
 
 		# give preference to beginning sentences
-		if self.sentenceNumber < 2:
-			sameTotal += 4 - self.sentenceNumber
+		if self.sentenceNumber < initialwindow:
+			sameTotal += initialbonus - self.sentenceNumber
 
 		for otherChunk in otherSentence.chunkDict:
 			if otherChunk in self.chunkDict:

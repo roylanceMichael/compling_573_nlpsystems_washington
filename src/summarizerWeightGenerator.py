@@ -127,8 +127,8 @@ documentRepository.writefileIdDictionaryToFileCache(documentCachePath)
 
 def summarizeAndGetWeights(models, w1, w2, w3, w4, w5):
 	# make a summary of the topic cluster
-	initialSummarizer = InitialSummarizer(models, idf, True, True, True, True, True)
-	summary = initialSummarizer.getBestSentences(w1, w2, w3, w4, w5)
+	initialSummarizer = InitialSummarizer(models, idf, True, True, True)
+	summary = initialSummarizer.getBestSentences(w1, w3, w4)
 	if summary is not None:
 		summaryFileName = summaryOutputPath + "/" + topic.id
 		summaryFile = open(summaryFileName, 'w')
