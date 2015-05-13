@@ -53,7 +53,7 @@ class Sentence:
 					score += 1
 				if t3Sem == otherT3Sem:
 					score += 1
-		"""
+
 
 		for entity in self.entities:
 			displayText = entity[1].lower()
@@ -76,6 +76,7 @@ class Sentence:
 
 				if domainRole == otherDomainRole:
 					score += 1
+		"""
 
 		return score
 
