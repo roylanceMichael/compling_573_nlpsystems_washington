@@ -3,6 +3,7 @@ __author__ = 'mroylance'
 import os
 import extract
 import extract.topicReader
+import extract.documentRepository
 import pickle
 import operator
 import extractionclustering.sentence
