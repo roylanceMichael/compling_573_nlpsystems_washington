@@ -9,14 +9,17 @@ from nltk.stem.porter import *
 
 import extract.document as document
 from model import idf
-from textrazor.textrazor import TextRazor
+
+import coreference
+import coreference.rules
+import coherence
+from entityGrid import EntityGrid
+
 
 import uuid
 import math
 
 
-client = TextRazor(api_key="99cb513961595f163f4ab253a8aaf167970f8a49981e229a3c8505a0", \
-				   extractors=["entities", "topics"])
 
 sentence_breaker = nltk.data.load('tokenizers/punkt/english.pickle')
 stemmer = PorterStemmer().stem
@@ -93,12 +96,6 @@ class Sentence(list, ParentCompare):
 		self.coherencePreviousSentence = None
 		self.coherenceNextSentence = None
 		self.sentenceNumber = -1
-		# response = client.analyze(self.simple)
-		# self.entities = response.entities()
-		self.entities = []
-
-		# for entity in response.entities():
-		# 	print entity.id, entity.relevance_score, entity.confidence_score, entity.freebase_types
 
 		# at this level we need to decide if we are doing full parsing or just chunking
 		# for now just assume every word is its own chunk
@@ -194,6 +191,8 @@ class Word(ParentCompare):
 
 class Doc_Model:
 	def __init__(self, doc):
+		self.corefPairs = None
+		self.entityGrid = None
 		self.docNo = doc.docNo
 		timeFormat = "%Y-%m-%d"
 		if "/" in doc.dateTime:
@@ -237,6 +236,8 @@ class Doc_Model:
 			if word.full not in idf.stopWords:
 				self.termFreq[word.full] += 1
 
+
+
 	def __lt__(self, other):
 		return isinstance(other, Doc_Model) and self.dateTime < other.dateTime
 
@@ -272,6 +273,17 @@ class Doc_Model:
 			for w in c:
 				yield w
 
+	# do coref pair addition
+	def updateWithCoref(self):
+		self.corefPairs = coreference.rules.updateDocumentWithCoreferences(self)
+
+	# do coherence scoring
+	def scoreWithCoherence(self):
+		coherence.scorer.determineDoc(self)
+
+	# build entity grid
+	def buildEntityGrid(self):
+		self.entityGrid = EntityGrid(self)
 
 class Cluster(list):
 	def __init__(self, doclist, catagory, title, idf):
