@@ -67,10 +67,11 @@ def	cosine2b(sentencePair):
 
 
 class DenseGraph(list):
-	def __init__(self, sentences, simMeasure):
+	def __init__(self, sentences, simMeasure, independentweights):
 		self.sentences = sentences if isinstance(sentences, list) else list(sentences)
 		self.remaining = set(range(len(self.sentences)))
 		self._sNum = len(self.sentences)
+		self.independent = list()
 		list.__init__(self)
 
 	def __str__(self):
@@ -89,7 +90,7 @@ class DenseGraph(list):
 	# then turns its sim scores with everything negative
 	def pullinorder(self, pullfactor=-1.0):
 		while len(self.remaining) > 0:
-			sID = max(( sum(self.getsim(x, y) for y in range(self._sNum)), x ) for x in self.remaining)[1]
+			sID = max(( sum(self.getsim(x, y) for y in range(self._sNum)) + self.independent[x], x ) for x in self.remaining)[1]
 
 			for y in range(self._sNum):
 				self.applyfactor(sID, y, pullfactor)
@@ -98,22 +99,23 @@ class DenseGraph(list):
 			self.remaining.remove(sID)
 
 	def simpleorder(self):
-		f = open("/home/thcrzy1/Documents/matrix.txt", 'w')
-		for score, sID in sorted((( sum(self.getsim(x, y) for y in range(self._sNum) if x!=y), x ) for x in self.remaining), reverse=True):
-			f.write("{} {}\n".format(score, self.sentences[sID]))
+		#f = open("/home/thcrzy1/Documents/matrix.txt", 'w')
+		for score, sID in sorted((( sum(self.getsim(x, y) for y in range(self._sNum) if x!=y) + self.independent[x], x ) for x in self.remaining), reverse=True):
+			#f.write("{} {}\n".format(score, self.sentences[sID]))
 			yield self.sentences[sID]
-		f.flush()
-		f.close()
+		#f.flush()
+		#f.close()
 
 
 class UnidirectedGraph(DenseGraph):
-	def __init__(self, sentences, simMeasure):
-		DenseGraph.__init__(self, sentences, simMeasure)
+	def __init__(self, sentences, simMeasure, independentweights):
+		DenseGraph.__init__(self, sentences, simMeasure, independentweights)
 		for x in range(self._sNum):
 			row = list()
 			for y in range(x+1):
 				row.append(simMeasure((self.sentences[x], self.sentences[y])))
 			self.append(row)
+			self.independent.append(independentweights[self.sentences[x].simple] * self._sNum)
 
 	def getsim(self, sID0, sID1):
 		if sID0 > sID1:
@@ -136,13 +138,14 @@ class UnidirectedGraph(DenseGraph):
 
 
 class DirectedGraph(DenseGraph):
-	def __init__(self, sentences, simMeasure):
-		DenseGraph.__init__(self, sentences, simMeasure)
+	def __init__(self, sentences, simMeasure, independentweights):
+		DenseGraph.__init__(self, sentences, simMeasure, independentweights)
 		for x in range(self._sNum):
 			row = list()
 			for y in range(self._sNum):
 				row.append(simMeasure((self.sentences[x], self.sentences[y])))
 			self.append(row)
+			self.independent.append(independentweights[self.sentences[x].simple] * self._sNum)
 
 	def getsim(self, sID0, sID1):
 		return self[sID0][sID1]
