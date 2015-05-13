@@ -2,6 +2,8 @@ __author__ = 'mroylance'
 
 import uuid
 
+ignoreTriples = {"<empty>": None, "<unspecified>": None}
+
 
 class Sentence:
 	def __init__(self, text, id, sentenceNum, docModel, paragraph):
@@ -21,7 +23,7 @@ class Sentence:
 	def distanceToOtherSentence(self, otherSentence):
 		score = self.beginningScore
 
-		"""
+
 		for triple in self.triples:
 			t1Value= triple[1].lower()
 			t1Sem = triple[2].lower()
@@ -41,19 +43,16 @@ class Sentence:
 				otherT3Value = otherTriple[5].lower()
 				otherT3Sem = otherTriple[6].lower()
 
-				if t1Value == otherT1Value:
-					score += 1
-				if t1Sem == otherT1Sem:
-					score += 1
-				if t2Value == otherT2Value:
-					score += 1
-				if t2Sem == otherT2Sem:
-					score += 1
-				if t3Value == otherT3Value:
-					score += 1
-				if t3Sem == otherT3Sem:
-					score += 1
+				if (t1Value == otherT1Value and
+							t3Value == otherT3Value and
+							t1Value not in ignoreTriples and
+							t3Value not in ignoreTriples):
 
+					# print "-----"
+					# print t1Value + " " + t2Value + " " + t3Value
+					# print otherT1Value + " " + otherT2Value + " " + otherT3Value
+					# print "-----"
+					score += 100
 
 		for entity in self.entities:
 			displayText = entity[1].lower()
@@ -66,17 +65,21 @@ class Sentence:
 				otherDisplayText = otherEntity[1].lower()
 				otherDomainRole = otherEntity[2].lower()
 
+				"""
 				otherSemTags = {}
 				for item in otherEntity[3].split(":"):
 					if item.lower() in semTags:
 						score += 1
+				"""
 
 				if displayText == otherDisplayText:
+					# print displayText + " " + otherDisplayText
 					score += 1
 
+				"""
 				if domainRole == otherDomainRole:
 					score += 1
-		"""
+				"""
 
 		return score
 
