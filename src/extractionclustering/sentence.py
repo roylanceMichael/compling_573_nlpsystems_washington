@@ -21,6 +21,7 @@ class Sentence:
 	def distanceToOtherSentence(self, otherSentence):
 		score = self.beginningScore
 
+		"""
 		for triple in self.triples:
 			t1Value= triple[1].lower()
 			t1Sem = triple[2].lower()
@@ -52,8 +53,8 @@ class Sentence:
 					score += 1
 				if t3Sem == otherT3Sem:
 					score += 1
-
 		"""
+
 		for entity in self.entities:
 			displayText = entity[1].lower()
 			semTags = {}
@@ -75,6 +76,6 @@ class Sentence:
 
 				if domainRole == otherDomainRole:
 					score += 1
-		"""
+
 		return score
 
