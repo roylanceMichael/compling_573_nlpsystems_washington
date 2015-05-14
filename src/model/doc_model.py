@@ -64,6 +64,8 @@ class Text(list, ParentCompare):
 		self.extractionSentences = []
 		self.extractionTriples = []
 		self.extractionEntities = []
+		self.extractionFacts = []
+		self.extractionTextPhrases = []
 
 		ParentCompare.__init__(self, parent, position_in_parent)
 		self.full = in_string.strip()

@@ -12,7 +12,7 @@ import coreference.rules
 import pickle
 
 ss = attensity.semantic_server.SemanticServer()
-configUrl = ss.configurations().config_url(4)
+configUrl = ss.configurations().config_url(7)
 
 topics = []
 for topic in extract.topicReader.Topic.factoryMultiple("../doc/Documents/devtest/GuidedSumm10_test_topics.xml"):
@@ -53,6 +53,12 @@ for topic in topics:
 				if extraction.type == attensity.ExtractionMessage_pb2.Extraction.TRIPLE:
 					paragraph.extractionTriples.append((extraction.triple.sentence_ID, extraction.triple.t1.value, extraction.triple.t1.sem_tags, extraction.triple.t2.value, extraction.triple.t2.sem_tags, extraction.triple.t3.value, extraction.triple.t3.sem_tags))
 					print extraction
+				if extraction.type == attensity.ExtractionMessage_pb2.Extraction.FACT:
+					print extraction
+					paragraph.extractionFacts.append((extraction.fact.sentence_ID, extraction.fact.element.text, extraction.fact.mode.text))
+				if extraction.type == attensity.ExtractionMessage_pb2.Extraction.TEXT_PHRASE:
+					print extraction
+					paragraph.extractionTextPhrases.append((extraction.text_phrase.sentence_ID, extraction.text_phrase.head, extraction.text_phrase.root))
 
 			print str(paragraph)
 
