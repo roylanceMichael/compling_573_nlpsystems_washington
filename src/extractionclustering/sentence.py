@@ -81,7 +81,7 @@ class Sentence:
 					score += 1
 
 				if domainRole == otherDomainRole:
-					score += 1
+					# score += 1
 
 		return score
 
