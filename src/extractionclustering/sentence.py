@@ -57,22 +57,27 @@ class Sentence:
 
 		for entity in self.entities:
 			displayText = entity[1].lower()
-			semTags = {}
-			for item in entity[2].split(":"):
-				semTags[item.lower()] = None
+			semTag = entity[2].lower()
+			#semTags = {}
+			#for item in entity[2].split(":"):
+				#semTags[item.lower()] = None
 			domainRole = entity[3].lower()
 
 			for otherEntity in otherSentence.entities:
 				otherDisplayText = otherEntity[1].lower()
-				otherDomainRole = otherEntity[2].lower()
+				otherSemTag = otherEntity[2].lower()
+				otherDomainRole = otherEntity[3].lower()
 
-				otherSemTags = {}
-				#for item in otherEntity[3].split(":"):
-					#if item.lower() in semTags:
-						#score += 1
+				# otherSemTags = {}
+				# for item in otherEntity[3].split(":"):
+					# if item.lower() in semTags:
+						# score += 1
 
 				if displayText == otherDisplayText:
 					# print displayText + " " + otherDisplayText
+					score += 1
+
+				if semTag == otherSemTag:
 					score += 1
 
 				if domainRole == otherDomainRole:
