@@ -66,8 +66,8 @@ idf = model.idf.Idf(idfCachePath)
 ##############################################################
 def getModel(docData):
 	model = doc_model.Doc_Model(docData)
-	# model.updateWithCoref()
-	# model.scoreWithCoherence()
+	model.updateWithCoref()
+	model.scoreWithCoherence()
 	model.buildEntityGrid()
 
 	return model

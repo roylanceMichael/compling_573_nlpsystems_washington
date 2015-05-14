@@ -14,6 +14,7 @@ import coreference
 import coreference.rules
 import coherence
 from entityGrid import EntityGrid
+from entityGrid import FeatureVector
 
 
 import uuid
@@ -284,6 +285,10 @@ class Doc_Model:
 	# build entity grid
 	def buildEntityGrid(self):
 		self.entityGrid = EntityGrid(self)
+		# self.entityGrid.printMatrix()
+		featureVector = FeatureVector(self.entityGrid)
+		# featureVector.printVector()
+
 
 class Cluster(list):
 	def __init__(self, doclist, catagory, title, idf):
