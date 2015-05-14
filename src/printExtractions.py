@@ -86,6 +86,9 @@ for fileName in os.listdir(cachePath):
 				for entity in compareSentence.entities:
 					print entity[1] + " " + entity[3]
 
+				for triple in compareSentence.triples:
+					print triple[1].lower() + " " + triple[2].lower() + " " + triple[3].lower()
+
 				for otherUniqueSentenceId in allSentences:
 					if uniqueSentenceId == otherUniqueSentenceId:
 						continue

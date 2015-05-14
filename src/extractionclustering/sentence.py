@@ -42,7 +42,7 @@ class Sentence:
 				otherT3Value = otherTriple[5].lower()
 				otherT3Sem = otherTriple[6].lower()
 
-				if (t1Value == otherT1Value or
+				if (t1Value == otherT1Value and
 							t3Value == otherT3Value and
 							(t1Value not in ignoreTriples and
 							t3Value not in ignoreTriples)):
@@ -51,7 +51,7 @@ class Sentence:
 					# print t1Value + " " + t2Value + " " + t3Value
 					# print otherT1Value + " " + otherT2Value + " " + otherT3Value
 					# print "-----"
-					score += 5
+					score += 1
 
 		for entity in self.entities:
 			displayText = entity[1].lower()
