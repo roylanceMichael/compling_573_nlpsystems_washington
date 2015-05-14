@@ -23,6 +23,7 @@ class Sentence:
 	def distanceToOtherSentence(self, otherSentence):
 		score = self.beginningScore
 
+		"""
 		for triple in self.triples:
 			t1Value= triple[1].lower()
 			t1Sem = triple[2].lower()
@@ -52,6 +53,7 @@ class Sentence:
 					# print otherT1Value + " " + otherT2Value + " " + otherT3Value
 					# print "-----"
 					score += 5
+		"""
 
 		for entity in self.entities:
 			displayText = entity[1].lower()
