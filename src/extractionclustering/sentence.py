@@ -2,6 +2,8 @@ __author__ = 'mroylance'
 
 import uuid
 
+ignoreTriples = {"<empty>": None, "<unspecified>": None}
+
 
 class Sentence:
 	def __init__(self, text, id, sentenceNum, docModel, paragraph):
@@ -40,41 +42,27 @@ class Sentence:
 				otherT3Value = otherTriple[5].lower()
 				otherT3Sem = otherTriple[6].lower()
 
-				if t1Value == otherT1Value:
-					score += 1
-				if t1Sem == otherT1Sem:
-					score += 1
-				if t2Value == otherT2Value:
-					score += 1
-				if t2Sem == otherT2Sem:
-					score += 1
-				if t3Value == otherT3Value:
-					score += 1
-				if t3Sem == otherT3Sem:
+				if (t1Value == otherT1Value and
+							t3Value == otherT3Value and
+							(t1Value not in ignoreTriples and
+							t3Value not in ignoreTriples)):
+
+					# print "-----"
+					# print t1Value + " " + t2Value + " " + t3Value
+					# print otherT1Value + " " + otherT2Value + " " + otherT3Value
+					# print "-----"
 					score += 1
 
-		"""
 		for entity in self.entities:
 			displayText = entity[1].lower()
-			semTags = {}
-			for item in entity[2].split(":"):
-				semTags[item.lower()] = None
 			domainRole = entity[3].lower()
 
 			for otherEntity in otherSentence.entities:
 				otherDisplayText = otherEntity[1].lower()
-				otherDomainRole = otherEntity[2].lower()
+				otherDomainRole = otherEntity[3].lower()
 
-				otherSemTags = {}
-				for item in otherEntity[3].split(":"):
-					if item.lower() in semTags:
-						score += 1
-
-				if displayText == otherDisplayText:
+				if displayText == otherDisplayText and domainRole == otherDomainRole:
 					score += 1
 
-				if domainRole == otherDomainRole:
-					score += 1
-		"""
 		return score
 

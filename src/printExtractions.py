@@ -82,27 +82,37 @@ for fileName in os.listdir(cachePath):
 				scoreDictionary[uniqueSentenceId] = 0
 
 				compareSentence = allSentences[uniqueSentenceId]
+				print compareSentence.simple
+				for entity in compareSentence.entities:
+					print entity[1] + " " + entity[3]
+
+				for triple in compareSentence.triples:
+					print triple[1].lower() + " " + triple[2].lower() + " " + triple[3].lower()
+
 				for otherUniqueSentenceId in allSentences:
 					if uniqueSentenceId == otherUniqueSentenceId:
 						continue
 
 					score = compareSentence.distanceToOtherSentence(allSentences[otherUniqueSentenceId])
-
 					scoreDictionary[uniqueSentenceId] += score
 
-			maxSentences = 10
+			maxSentences = 15
 			sentenceIdx = 0
-			summary = ""
+			uniqueSummaries = {}
 			for tupleResult in sorted(scoreDictionary.items(), key=operator.itemgetter(1), reverse=True):
 				if sentenceIdx > maxSentences:
 					break
 
 				sentence = allSentences[tupleResult[0]]
 				score = tupleResult[1]
-				summary += sentence.simple
+				uniqueSummaries[sentence.simple] = None
 
 				print (sentence.simple, score)
 				sentenceIdx += 1
+
+			summary = ""
+			for uniqueSentence in uniqueSummaries:
+				summary += uniqueSentence
 
 			if summary is not None:
 				summaryFileName = summaryOutputPath + "/" + fileName

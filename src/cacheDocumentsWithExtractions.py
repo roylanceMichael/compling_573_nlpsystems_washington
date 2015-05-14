@@ -44,7 +44,11 @@ for topic in topics:
 					paragraph.extractionSentences.append((extraction.text_sentence.text_sentence_ID, extraction.text_sentence.offset, extraction.text_sentence.length))
 					print extraction
 				if extraction.type == attensity.ExtractionMessage_pb2.Extraction.ENTITY:
-					paragraph.extractionEntities.append((extraction.entity.sentence_id, extraction.entity.display_text, extraction.entity.sem_tags, extraction.entity.domain_role))
+					print extraction
+					mid = ""
+					if len(extraction.entity.search_info) > 0:
+						mid = extraction.entity.search_info[0].machine_ID
+					paragraph.extractionEntities.append((extraction.entity.sentence_id, extraction.entity.display_text, extraction.entity.sem_tags, extraction.entity.domain_role, mid))
 					print extraction
 				if extraction.type == attensity.ExtractionMessage_pb2.Extraction.TRIPLE:
 					paragraph.extractionTriples.append((extraction.triple.sentence_ID, extraction.triple.t1.value, extraction.triple.t1.sem_tags, extraction.triple.t2.value, extraction.triple.t2.sem_tags, extraction.triple.t3.value, extraction.triple.t3.sem_tags))
@@ -56,7 +60,7 @@ for topic in topics:
 		docModelCache[initialModel.docNo] = initialModel
 
 	# cache
-	pickleFileName = os.path.join("../cache/docModelCache", transformedTopicId)
+	pickleFileName = os.path.join("../cache/docModelCache", topic.id)
 	pickleFile = open(pickleFileName, 'wb')
 	pickle.dump(docModelCache, pickleFile, pickle.HIGHEST_PROTOCOL)
 	docModelCache = {}
