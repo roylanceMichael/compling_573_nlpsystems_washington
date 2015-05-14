@@ -67,9 +67,9 @@ class Sentence:
 				otherDomainRole = otherEntity[2].lower()
 
 				otherSemTags = {}
-				for item in otherEntity[3].split(":"):
-					if item.lower() in semTags:
-						score += 1
+				#for item in otherEntity[3].split(":"):
+					#if item.lower() in semTags:
+						#score += 1
 
 				if displayText == otherDisplayText:
 					# print displayText + " " + otherDisplayText
