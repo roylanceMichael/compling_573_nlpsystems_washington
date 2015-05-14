@@ -51,7 +51,7 @@ class Sentence:
 					# print t1Value + " " + t2Value + " " + t3Value
 					# print otherT1Value + " " + otherT2Value + " " + otherT3Value
 					# print "-----"
-					score += 100
+					score += 5
 
 		for entity in self.entities:
 			displayText = entity[1].lower()
@@ -64,21 +64,17 @@ class Sentence:
 				otherDisplayText = otherEntity[1].lower()
 				otherDomainRole = otherEntity[2].lower()
 
-				"""
 				otherSemTags = {}
 				for item in otherEntity[3].split(":"):
 					if item.lower() in semTags:
 						score += 1
-				"""
 
 				if displayText == otherDisplayText:
 					# print displayText + " " + otherDisplayText
 					score += 1
 
-				"""
 				if domainRole == otherDomainRole:
 					score += 1
-				"""
 
 		return score
 
