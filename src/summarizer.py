@@ -21,7 +21,7 @@ import extract
 import extract.topicReader
 import extract.documentRepository
 import model.idf
-import model.doc_model
+import model.doc_model as doc_model
 import coreference.rules
 import coherence.scorer
 import npclustering.npClustering
@@ -65,10 +65,12 @@ idf = model.idf.Idf(idfCachePath)
 # send the data to the model generator
 ##############################################################
 def getModel(docData):
-	initialModel = model.doc_model.Doc_Model(docData)
-	coreference.rules.updateDocumentWithCoreferences(initialModel)
-	coherence.scorer.determineDoc(initialModel)
-	return initialModel
+	model = doc_model.Doc_Model(docData)
+	model.updateWithCoref()
+	model.scoreWithCoherence()
+	model.buildEntityGrid()
+
+	return model
 
 
 ##############################################################
@@ -165,8 +167,7 @@ evaluation = evaluationResults[0]
 writeBufferToFile(os.path.join(evaluationOutputPath, "D2.results"), evaluation)
 
 # call the evaluation comparison routine.
-# note:  this will only print t
-# he summaries you have on your machine.
+# note:  this will only print the summaries you have on your machine.
 # 		 i.e. you should have run the meadSummaryGenerator.py first
 # 		 (though defaults are checked into git)
 comparator = EvaluationCompare(evaluationOutputPath, meadCacheDir, rouge)
