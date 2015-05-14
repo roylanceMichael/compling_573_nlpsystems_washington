@@ -23,7 +23,6 @@ class Sentence:
 	def distanceToOtherSentence(self, otherSentence):
 		score = self.beginningScore
 
-
 		for triple in self.triples:
 			t1Value= triple[1].lower()
 			t1Sem = triple[2].lower()
@@ -43,10 +42,10 @@ class Sentence:
 				otherT3Value = otherTriple[5].lower()
 				otherT3Sem = otherTriple[6].lower()
 
-				if (t1Value == otherT1Value and
+				if (t1Value == otherT1Value or
 							t3Value == otherT3Value and
-							t1Value not in ignoreTriples and
-							t3Value not in ignoreTriples):
+							(t1Value not in ignoreTriples and
+							t3Value not in ignoreTriples)):
 
 					# print "-----"
 					# print t1Value + " " + t2Value + " " + t3Value
