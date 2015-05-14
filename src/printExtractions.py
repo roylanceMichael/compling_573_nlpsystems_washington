@@ -82,6 +82,10 @@ for fileName in os.listdir(cachePath):
 				scoreDictionary[uniqueSentenceId] = 0
 
 				compareSentence = allSentences[uniqueSentenceId]
+				print compareSentence.simple
+				for entity in compareSentence.entities:
+					print entity[1] + " " + entity[3]
+
 				for otherUniqueSentenceId in allSentences:
 					if uniqueSentenceId == otherUniqueSentenceId:
 						continue
