@@ -41,7 +41,7 @@ class Sentence:
 
 				if otherElement == element and otherMode == mode:
 					score += 1
-
+		"""
 		for triple in self.triples:
 			t1Value= triple[1].lower()
 			t1Sem = triple[2].lower()
@@ -82,6 +82,6 @@ class Sentence:
 
 				if displayText == otherDisplayText and domainRole == otherDomainRole:
 					score += 1
-
+		"""
 		return score
 
