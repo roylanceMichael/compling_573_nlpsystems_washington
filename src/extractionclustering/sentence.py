@@ -72,7 +72,7 @@ class Sentence:
 					# print otherT1Value + " " + otherT2Value + " " + otherT3Value
 					# print "-----"
 					score += 1
-
+		"""
 		for entity in self.entities:
 			displayText = entity[1].lower()
 			domainRole = entity[3].lower()
@@ -83,6 +83,6 @@ class Sentence:
 
 				if displayText == otherDisplayText and domainRole == otherDomainRole:
 					score += 1
-		"""
+
 		return score
 
