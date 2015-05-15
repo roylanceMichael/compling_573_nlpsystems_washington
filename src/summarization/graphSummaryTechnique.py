@@ -1,4 +1,4 @@
-from selection.similarity import UnidirectedGraph, DirectedGraph, cosine2b
+from selection.similarity import UnidirectedGraph, DirectedGraph, cosine2
 from summaryTechnique import SummaryTechnique
 from model.doc_model import Cluster, Sentence
 from collections import Counter
@@ -6,10 +6,10 @@ from collections import Counter
 
 class GraphSummaryTechnique(SummaryTechnique):
     def __init__(self, enabled, weight, docCluster, techniqueName, cosignweight, pullfactor=-1.0, initialwindow=2,
-                 initialbonus=4, independentweights=Counter()):
+                 initialbonus=4, topicvocab=None, independentweights=Counter()):
         docCluster.processNPs()
-        self.docCluster, self.cosignweight, self.pullfactor, self.initialwindow, self.initialbonus, self.independentweights\
-            = docCluster, cosignweight, pullfactor, initialwindow, initialbonus, independentweights
+        self.docCluster, self.cosignweight, self.pullfactor, self.initialwindow, self.initialbonus, self.topicvocab, self.independentweights\
+            = docCluster, cosignweight, pullfactor, initialwindow, initialbonus, topicvocab, independentweights
         self.directed = cosignweight == 1.0 or initialwindow == 0
         SummaryTechnique.__init__(self, enabled, weight, docCluster, techniqueName)
 
@@ -22,10 +22,10 @@ class GraphSummaryTechnique(SummaryTechnique):
         if not self.cosignweight:
             distancemetric = self.NPSimilarity
         elif self.cosignweight == 1.0:
-            distancemetric = cosine2b
+            distancemetric = lambda x: cosine2(x, self.topicvocab)
         else:
             npweight = 1-self.cosignweight
-            distancemetric = lambda x: self.cosignweight * cosine2b(x) + npweight * self.NPSimilarity(x)
+            distancemetric = lambda x: self.cosignweight * cosine2(x, self.topicvocab) + npweight * self.NPSimilarity(x)
 
         if self.directed:
             matrix = DirectedGraph(self.docCluster.sentences(), distancemetric, self.independentweights)

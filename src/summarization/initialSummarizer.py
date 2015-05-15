@@ -35,7 +35,8 @@ class InitialSummarizer:
 			if technique.enabled:
 				technique.rankSentences()
 	
-	def getBestSentences(self, w_tfidf=None, w_sd=None, w_sl=None, w_cosign=None, w_np=None):
+	def getBestSentences(self, w_tfidf=None, w_sd=None, w_sl=None, w_cosign=None, w_np=None, pullfactor=-1.0,
+			initialwindow=2, initialbonus=4, topicsize=75):
 		if w_tfidf is not None:
 			self.tfIdf.weight = w_tfidf
 		if w_sd is not None:
@@ -57,7 +58,9 @@ class InitialSummarizer:
 		# feed aggregate scores to graph so it can handle overlap
 		graphweight = 2.0 if not w_cosign else w_cosign + w_np
 		cosignweight = 0.5 if not w_cosign else w_cosign / (w_cosign + w_np)
-		self.graph = GraphSummaryTechnique(True, graphweight, self.docCluster, "cosign+np", cosignweight, independentweights=aggregateSentences)
+		topicvocab = self.docCluster.gettopicvocab(topicsize) if topicsize else None
+		self.graph = GraphSummaryTechnique(True, graphweight, self.docCluster, "cosign+np", cosignweight, pullfactor,
+			initialwindow, initialbonus, topicvocab, independentweights=aggregateSentences)
 		self.graph.rankSentences()
 
 		sortedAggregateSentences = sorted(self.graph.items(), key=operator.itemgetter(1), reverse=True)
