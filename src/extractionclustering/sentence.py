@@ -42,7 +42,7 @@ class Sentence:
 
 				if otherElement == element and otherMode == mode:
 					score += 1
-
+		"""
 		for triple in self.triples:
 			t1Value= triple[1].lower()
 			t1Sem = triple[2].lower()
@@ -72,6 +72,7 @@ class Sentence:
 					# print otherT1Value + " " + otherT2Value + " " + otherT3Value
 					# print "-----"
 					score += 1
+		"""
 
 		for entity in self.entities:
 			displayText = entity[1].lower()
