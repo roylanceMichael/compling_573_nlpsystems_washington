@@ -77,7 +77,7 @@ def getModel(docData):
 # summarize
 ##############################################################
 def summarize(docModels):
-	initialSummarizer = InitialSummarizer(docModels, idf, False, False, False)
+	initialSummarizer = InitialSummarizer(docModels, idf, False, False, False, True)
 	return initialSummarizer.getBestSentences(0.0, 0.0, 0.0, 1.0, 1.0)
 
 
@@ -151,7 +151,7 @@ for topic in topics:
 
 	# make a summary of the topic cluster
 	print topic.category + " : " + topic.title + " : building summary for " + str(len(models)) + " models"
-	summary = summarize(models)
+	summary = summarize(doc_model.Cluster(models, topic.category, topic.title, idf))
 	if summary is not None:
 		summaryFileName = summaryOutputPath + "/" + topic.id
 		summaryFile = open(summaryFileName, 'w')

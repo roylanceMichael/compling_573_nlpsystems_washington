@@ -294,7 +294,7 @@ class Doc_Model:
 
 class Cluster(list):
 	def __init__(self, doclist, catagory, title, idf):
-		self.catagory, self.title, self.idf = catagory, title, idf.loadIDF()
+		self.catagory, self.title, self.idf = catagory, Sentence(title, self, -1), idf.loadIDF()
 
 		if isinstance(doclist[0], document.Document):
 			list.__init__(self, sorted(Doc_Model(x) for x in doclist))

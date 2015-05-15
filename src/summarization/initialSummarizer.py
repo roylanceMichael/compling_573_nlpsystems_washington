@@ -3,7 +3,7 @@ __author__ = 'mroylance'
 from summaryTechnique import SummaryTechnique
 from sentenceDistanceSummaryTechnique import SentenceDistanceSummaryTechnique
 from sentenceLengthSummaryTechnique import SentenceLengthSummaryTechnique
-from npClusteringTechnique import NpClusteringSummaryTechnique
+from topicSimSummaryTechnique import TopicSimSummaryTechnique
 from tfidfSummaryTechnique import TfidfSummaryTechnique
 from graphSummaryTechnique import GraphSummaryTechnique
 from model.doc_model import Cluster
@@ -13,20 +13,21 @@ import operator
 
 
 class InitialSummarizer:
-	def __init__(self, docModels, idf, tryTfIdf, trySentenceDistance, trySentenceLength):
-		self.docModels = docModels
+	def __init__(self, docCluster, idf, tryTfIdf, trySentenceDistance, trySentenceLength, tryTopicSim):
+		self.docCluster = docCluster
 		self.idf = idf
 		self.N = 10  # keep the top N sentences for each technique
 		self.wordCount = 100
 
-		self.docCluster = Cluster(docModels, "", "", idf)
 
 		self.techniques = list()
 		self.tfIdf = TfidfSummaryTechnique(tryTfIdf, 1.0, self.docCluster, "tf-idf")
 		self.techniques.append(self.tfIdf)
-		self.sentenceDistance = SentenceDistanceSummaryTechnique(trySentenceDistance, 1.0, docModels, "sdist")
+		self.sentenceDistance = SentenceDistanceSummaryTechnique(trySentenceDistance, 1.0, docCluster, "sdist")
 		self.techniques.append(self.sentenceDistance)
-		self.sentenceLength = SentenceLengthSummaryTechnique(trySentenceLength, 1.0, docModels, "slen")
+		self.sentenceLength = SentenceLengthSummaryTechnique(trySentenceLength, 1.0, docCluster, "slen")
+		self.techniques.append(self.sentenceLength)
+		self.topicSim = TopicSimSummaryTechnique(tryTopicSim, 1.0, docCluster, "topic")
 		self.techniques.append(self.sentenceLength)
 		self.summarize()
 
@@ -35,7 +36,7 @@ class InitialSummarizer:
 			if technique.enabled:
 				technique.rankSentences()
 	
-	def getBestSentences(self, w_tfidf=None, w_sd=None, w_sl=None, w_cosign=None, w_np=None, pullfactor=-1.0,
+	def getBestSentences(self, w_tfidf=None, w_sd=None, w_sl=None, w_topic=None, w_cosign=0.0, w_np=0.0, pullfactor=-1.0,
 			initialwindow=2, initialbonus=4, topicsize=75):
 		if w_tfidf is not None:
 			self.tfIdf.weight = w_tfidf
@@ -43,9 +44,11 @@ class InitialSummarizer:
 			self.sentenceDistance.weight = w_sd
 		if w_sl is not None:
 			self.sentenceLength.weight = w_sl
+		if w_topic is not None:
+			self.topicSim.weight = w_topic
 
 		aggregateSentences = {}
-		for model in self.docModels:
+		for model in self.docCluster:
 			for sentence in model.cleanSentences():
 				sum = 0.0
 				for technique in self.techniques:
