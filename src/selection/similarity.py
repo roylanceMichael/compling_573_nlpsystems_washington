@@ -7,37 +7,7 @@ from scipy import spatial
 import time
 import math
 
-def cosine2(sentencePair, vocab=None):
-	beg = time.time()
-	counts = defaultdict(lambda: [0, 0])
-
-	for i in (0, 1):
-		for w in sentencePair[i].words():
-			word = w.lower
-			if vocab and word not in vocab:
-				continue
-			elif word in stopWords:
-				continue
-
-			counts[word][i] += 1
-
-	magnitudes = [0.0, 0.0]
-	dotProd = 0.0
-	for value in counts.values():
-		for i in (0, 1):
-			magnitudes[i] += value[i] ** 2
-		dotProd += value[0] * value[1]
-
-	# can't do cosine similarity of one of the sentences has no in-vocab words
-	# return 0 (completely dissimilar) in this case
-	for i in (0, 1):
-		if magnitudes[i] == 0.0:
-			return 0
-	cosSim = dotProd ** 2 / (magnitudes[0] * magnitudes[1])
-	end = time.time() - beg
-	return cosSim
-
-def	cosine2b(sentencePair):
+def	cosine2(sentencePair, topicvocab=None):
 	beg = time.time()
 	counts = defaultdict(lambda: [0, 0])
 	vocab = []
@@ -45,7 +15,9 @@ def	cosine2b(sentencePair):
 	for i in (0, 1):
 		for w in sentencePair[i].words():
 			word = w.full.lower()
-			if word in stopWords:
+			if topicvocab and word not in topicvocab:
+				continue
+			elif word in stopWords:
 				continue
 			counts[word][i] += 1
 			vocab.append(word)
@@ -166,7 +138,7 @@ if __name__ == '__main__':
 	testSentences = (
 	"Test sentence one.", "This is test sentence two.", "Sentence three.", "Here is the final sentence.")
 	testSentences = tuple(Sentence(s, None, 0) for s in testSentences)
-	simMeasure = cosine2b
+	simMeasure = cosine2
 	graph = UnidirectedGraph(testSentences, simMeasure)
 	print(graph)
 	print(graph.getsim(0, 2))

@@ -14,6 +14,8 @@ class Sentence:
 		self.paragraph = paragraph
 		self.triples = []
 		self.entities = []
+		self.facts = []
+		self.phrases = []
 		self.beginningScore = 0
 		self.uniqueId = str(uuid.uuid1())
 
@@ -22,6 +24,24 @@ class Sentence:
 
 	def distanceToOtherSentence(self, otherSentence):
 		score = self.beginningScore
+
+		"""
+		for phrase in self.phrases:
+			root = phrase[2].lower()
+			for otherPhrase in otherSentence.phrases:
+				otherRoot = otherPhrase[2].lower()
+				if root == otherRoot:
+					score += 1
+		"""
+		for fact in self.facts:
+			element = fact[1].lower()
+			mode = fact[2].lower()
+			for otherFact in otherSentence.facts:
+				otherElement = otherFact[1].lower()
+				otherMode = otherFact[2].lower()
+
+				if otherElement == element and otherMode == mode:
+					score += 1
 
 		for triple in self.triples:
 			t1Value= triple[1].lower()

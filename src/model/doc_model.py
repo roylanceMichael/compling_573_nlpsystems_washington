@@ -68,6 +68,8 @@ class Text(list, ParentCompare):
 		self.extractionSentences = []
 		self.extractionTriples = []
 		self.extractionEntities = []
+		self.extractionFacts = []
+		self.extractionTextPhrases = []
 
 		ParentCompare.__init__(self, parent, position_in_parent)
 		self.full = in_string.strip()
@@ -292,7 +294,7 @@ class Doc_Model:
 
 class Cluster(list):
 	def __init__(self, doclist, catagory, title, idf):
-		self.catagory, self.title, self.idf = catagory, title, idf.loadIDF()
+		self.catagory, self.title, self.idf = catagory, Sentence(title, self, -1), idf.loadIDF()
 
 		if isinstance(doclist[0], document.Document):
 			list.__init__(self, sorted(Doc_Model(x) for x in doclist))
@@ -310,6 +312,9 @@ class Cluster(list):
 		self.npsprocessed = False
 
 		self._maxFreq = max(self.termFreq.items(), key=lambda x: x[1])[1]
+		self.sortedtfidf = sorted(( (w, self.getTFIDF(w)) for w in self.termFreq.keys() ), reverse=True)
+		self.topicvocab = set()
+		self.tvsize = 0
 
 	def getTF(self, word):
 		return self.termFreq[word]
@@ -322,6 +327,13 @@ class Cluster(list):
 
 	def getQueryTFIDF(self, word):
 		return self.getQueryTF(word) * self.idf[word]
+
+	def gettopicvocab(self, size):
+		if self.tvsize != size:
+			self.tvsize = size
+			self.topicvocab = frozenset( x[0] for x in self.sortedtfidf[0:size] )
+		return self.topicvocab
+
 
 	def sentences(self):
 		for doc in self:

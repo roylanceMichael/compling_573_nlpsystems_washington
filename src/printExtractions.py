@@ -1,6 +1,7 @@
 __author__ = 'mroylance'
 
 import os
+import re
 import extract
 import extract.topicReader
 import extract.documentRepository
@@ -72,6 +73,12 @@ for fileName in os.listdir(cachePath):
 					for entity in paragraph.extractionEntities:
 						sentences[entity[0]].entities.append(entity)
 
+					for fact in paragraph.extractionFacts:
+						sentences[fact[0]].facts.append(fact)
+
+					for phrase in paragraph.extractionTextPhrases:
+						sentences[phrase[0]].phrases.append(phrase)
+
 					for sentence in sentences:
 						allSentences[sentences[sentence].uniqueId] = sentences[sentence]
 
@@ -82,12 +89,16 @@ for fileName in os.listdir(cachePath):
 				scoreDictionary[uniqueSentenceId] = 0
 
 				compareSentence = allSentences[uniqueSentenceId]
+
+				"""
 				print compareSentence.simple
 				for entity in compareSentence.entities:
 					print entity[1] + " " + entity[3]
 
 				for triple in compareSentence.triples:
 					print triple[1].lower() + " " + triple[2].lower() + " " + triple[3].lower()
+
+				"""
 
 				for otherUniqueSentenceId in allSentences:
 					if uniqueSentenceId == otherUniqueSentenceId:
@@ -105,9 +116,10 @@ for fileName in os.listdir(cachePath):
 
 				sentence = allSentences[tupleResult[0]]
 				score = tupleResult[1]
-				uniqueSummaries[sentence.simple] = None
+				strippedSentence = re.sub("\s+", " ", sentence.simple)
+				uniqueSummaries[strippedSentence] = None
 
-				print (sentence.simple, score)
+				print (strippedSentence, score)
 				sentenceIdx += 1
 
 			summary = ""
