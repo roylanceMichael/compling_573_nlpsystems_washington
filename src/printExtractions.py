@@ -1,6 +1,7 @@
 __author__ = 'mroylance'
 
 import os
+import re
 import extract
 import extract.topicReader
 import extract.documentRepository
@@ -115,9 +116,10 @@ for fileName in os.listdir(cachePath):
 
 				sentence = allSentences[tupleResult[0]]
 				score = tupleResult[1]
-				uniqueSummaries[sentence.simple] = None
+				strippedSentence = re.sub("\s+", " ", sentence.simple)
+				uniqueSummaries[strippedSentence] = None
 
-				print (sentence.simple, score)
+				print (strippedSentence, score)
 				sentenceIdx += 1
 
 			summary = ""
