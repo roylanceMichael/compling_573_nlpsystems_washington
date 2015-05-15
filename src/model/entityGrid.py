@@ -2,11 +2,15 @@ __author__ = 'thomas'
 
 from textrazor.textrazor import TextRazor
 import numpy
+import random
 
 subjectScore = 3.0
 objectScore = 2.0
 obliqueScore = 1.0
 
+# textrazor keys
+thomasKey = "99cb513961595f163f4ab253a8aaf167970f8a49981e229a3c8505a0"
+mikeKey = "a40db69a54fa0905294e6b604b5dca251e9df8b912de4924d4254421"
 
 class Transition:
 	def __init__(self, tFrom, tTo):
@@ -15,14 +19,30 @@ class Transition:
 
 
 class FeatureVector:
-	def __init__(self, entityGrid):
+	def __init__(self, entityGrid, docIndex):
 		self.types = ['-', 'x', 'o', 's']
+		self.transitionMap = {}
+		self.docIndex = docIndex
 		self.entityGrid = entityGrid
 		self.transitions = self.generateTransitions()
+
+	def getTransitionIndexFromTransitionString(self, transitionString):
+		return self.transitionMap[transitionString]
+
+	def getTransitionStringFromTransitionIndex(self, transitionIndex):
+		for fromType in self.types:
+			for toType in self.types:
+				transitionString = fromType + toType
+				testIndex = self.transitionMap[transitionString]
+				if testIndex == transitionIndex:
+					return transitionString
+		raise IndexError("bad transition index")
+
 
 	def generateTransitions(self):
 
 		numTransitions = float((len(self.entityGrid.sentences) - 1) * len(self.entityGrid.matrixIndices))
+		# make transitions dictionary
 		transitions = {}
 		for fromType in self.types:
 			for toType in self.types:
@@ -31,6 +51,16 @@ class FeatureVector:
 				except KeyError:
 					transitions[fromType] = {}
 					transitions[fromType][toType] = 0
+
+		# make the transition map
+		transitionIndex = 1
+		for fromType in self.types:
+			for toType in self.types:
+				transitionString = fromType + toType
+				self.transitionMap[transitionString] = transitionIndex
+				transitionIndex += 1
+
+		# fill in transitions with actual transitions map
 		for sIdx in range(0, len(self.entityGrid.sentences) - 1):
 			s1 = self.entityGrid.grid[sIdx]
 			s2 = self.entityGrid.grid[sIdx + 1]
@@ -50,6 +80,26 @@ class FeatureVector:
 				print fromType + toType + ":" + str(round(self.transitions[fromType][toType], 2)) + " ",
 		print "\n"
 
+	def printVectorWithIndices(self):
+		outString = ""
+		for fromType in self.types:
+			for toType in self.types:
+				featureIndex = str(self.getTransitionIndexFromTransitionString(fromType + toType))
+				featureValue = str(round(self.transitions[fromType][toType], 2))
+				outString += featureIndex + ":" + featureValue + " "
+		outString += "\n"
+		print outString
+
+	def getVector(self, rank):
+		vector = []
+		for fromType in self.types:
+			for toType in self.types:
+				featureIndex = self.getTransitionIndexFromTransitionString(fromType + toType)
+				featureValue = self.transitions[fromType][toType]
+				if featureValue > 0.0:
+					vector.append((featureIndex, featureValue))
+		finalVector = (rank, vector, self.docIndex)
+		return finalVector
 
 class EntityGrid:
 	# build entity grid
@@ -57,8 +107,10 @@ class EntityGrid:
 		self.docModel = docModel
 		self.sentences = self.docModel.cleanSentences()
 		self.fullText = " \n".join(self.sentences)
-		self.textRazor = TextRazor(api_key="99cb513961595f163f4ab253a8aaf167970f8a49981e229a3c8505a0", \
-								   extractors=["entities", "topics", "words", "dependency-trees"])
+
+		# thomas' key
+		self.textRazor = TextRazor(api_key=thomasKey, extractors=["entities", "topics", "words", "dependency-trees"])
+
 		self.nerResults = self.textRazor.analyze(self.fullText)
 		self.allEntities = self.nerResults.entities()
 		self.matrixIndices = self.getMatrixIndices()
@@ -168,6 +220,9 @@ class DummyDocModel:
 
 	def cleanSentences(self):
 		return self.sentences
+
+	def randomizeSentences(self):
+		random.shuffle(self.sentences)
 
 
 testText = [
