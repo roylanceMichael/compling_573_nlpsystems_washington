@@ -1,7 +1,6 @@
 __author__ = 'thomas'
 
 from summaryTechnique import SummaryTechnique
-from npclustering.npClustering import NpClustering
 
 
 class SentenceDistanceSummaryTechnique(SummaryTechnique):
@@ -11,7 +10,7 @@ class SentenceDistanceSummaryTechnique(SummaryTechnique):
 			d = 0
 			sentences = model.cleanSentences()
 			n = float(len(sentences) - 1)
-			for sentence in sentences:  # there is an error here.
+			for sentence in sentences:
 				if n == 0:
 					self[sentence] = 1.0
 				else:

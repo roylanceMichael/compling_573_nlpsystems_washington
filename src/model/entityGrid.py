@@ -12,12 +12,9 @@ obliqueScore = 1.0
 thomasKey = "99cb513961595f163f4ab253a8aaf167970f8a49981e229a3c8505a0"
 mikeKey = "a40db69a54fa0905294e6b604b5dca251e9df8b912de4924d4254421"
 
-class Transition:
-	def __init__(self, tFrom, tTo):
-		self.tFrom = tFrom
-		self.tTo = tTo
-
-
+#
+# FeatureVector:  class for generating and holding the feature vector as svmlight expects it
+#
 class FeatureVector:
 	def __init__(self, entityGrid, docIndex):
 		self.types = ['-', 'x', 'o', 's']
@@ -37,7 +34,6 @@ class FeatureVector:
 				if testIndex == transitionIndex:
 					return transitionString
 		raise IndexError("bad transition index")
-
 
 	def generateTransitions(self):
 
@@ -101,16 +97,17 @@ class FeatureVector:
 		finalVector = (rank, vector, self.docIndex)
 		return finalVector
 
+#
+# EntityGrid:  generates an entity grid ala Barsilay and Lapata (2005)
+#			   uses TextRazor to mark named entities.
+#
 class EntityGrid:
 	# build entity grid
 	def __init__(self, docModel):
 		self.docModel = docModel
 		self.sentences = self.docModel.cleanSentences()
 		self.fullText = " \n".join(self.sentences)
-
-		# thomas' key
 		self.textRazor = TextRazor(api_key=thomasKey, extractors=["entities", "topics", "words", "dependency-trees"])
-
 		self.nerResults = self.textRazor.analyze(self.fullText)
 		self.allEntities = self.nerResults.entities()
 		self.matrixIndices = self.getMatrixIndices()
@@ -165,17 +162,19 @@ class EntityGrid:
 				i += 1
 		return matrixIndices
 
-	def scoreFromToken(self, scoreToken):
+	@staticmethod
+	def scoreFromToken(scoreToken):
 		score = 0.0
 		if scoreToken == "s":
 			score = 3.0
 		elif scoreToken == "o":
 			score = 2.0
 		elif scoreToken == "x":
-			scoreToken = 1.0
-		return scoreToken
+			score = 1.0
+		return score
 
-	def tokenFromScore(self, score):
+	@staticmethod
+	def tokenFromScore(score):
 		scoreToken = "-"
 		if score == 1.0:
 			scoreToken = "x"
@@ -184,7 +183,6 @@ class EntityGrid:
 		elif score == 3.0:
 			scoreToken = "s"
 		return scoreToken
-
 
 	@staticmethod
 	def getLongestEntity(entities):
@@ -213,7 +211,9 @@ class EntityGrid:
 
 			print row
 
-
+#
+# DummyDocModel: super duper simple doc model that only has sentences.
+#
 class DummyDocModel:
 	def __init__(self, sentences):
 		self.sentences = sentences
