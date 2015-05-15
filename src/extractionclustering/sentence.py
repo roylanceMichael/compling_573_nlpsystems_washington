@@ -25,13 +25,14 @@ class Sentence:
 	def distanceToOtherSentence(self, otherSentence):
 		score = self.beginningScore
 
+		"""
 		for phrase in self.phrases:
 			root = phrase[2].lower()
 			for otherPhrase in otherSentence.phrases:
 				otherRoot = otherPhrase[2].lower()
 				if root == otherRoot:
 					score += 1
-
+		"""
 		for fact in self.facts:
 			element = fact[1].lower()
 			mode = fact[2].lower()
