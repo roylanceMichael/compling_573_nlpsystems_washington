@@ -44,6 +44,7 @@ for topic in topics:
 			wholeDocument += cleansedStr + " "
 
 		docModel = extractionclustering.docModel.DocModel()
+		docModel.text = wholeDocument
 
 		parse.process(wholeDocument, configUrl)
 		ext = attensity.extractions.Extractions.from_protobuf(parse.result)

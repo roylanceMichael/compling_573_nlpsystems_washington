@@ -5,6 +5,9 @@ import re
 import extract
 import extract.topicReader
 import extract.documentRepository
+import model.doc_model
+import coherence.scorer
+import coreference.rules
 import pickle
 import operator
 import extractionclustering.sentence
@@ -43,6 +46,8 @@ def writeBufferToFile(path, buffer):
 	outFile.write(buffer)
 	outFile.close()
 
+documentRepository = extract.documentRepository.DocumentRepository("/corpora/LDC/LDC02T31/", "/corpora/LDC/LDC08T25/data/", topics)
+
 for fileName in os.listdir(cachePath):
 	pickleFilePath = os.path.join(cachePath, fileName)
 	if os.path.exists(pickleFilePath):
@@ -53,34 +58,43 @@ for fileName in os.listdir(cachePath):
 			for docNo in topicDictionary:
 				print docNo
 
-				for paragraph in topicDictionary[docNo].paragraphs:
-					sentences = {}
-					sentenceNum = 0
-					for sentence in paragraph.extractionSentences:
-						actualSentence = str(paragraph)[sentence[1]:sentence[2]]
-						sentences[sentence[0]] = \
-							extractionclustering.sentence.Sentence(
-								actualSentence,
-								sentence[0],
-								sentenceNum,
-								topicDictionary[docNo],
-								paragraph)
-						sentenceNum += 1
+				document = documentRepository.getDocument(docNo)
+				initialModel = model.doc_model.Doc_Model(document)
+				coreference.rules.updateDocumentWithCoreferences(initialModel)
+				coherence.scorer.determineDoc(initialModel)
 
-					for triple in paragraph.extractionTriples:
+				docModel = topicDictionary[docNo]
+				wholeDocument = ""
+				for paragraph in initialModel.paragraphs:
+					cleansedStr = re.sub("\s+", " ", str(paragraph))
+					wholeDocument += cleansedStr + " "
+
+				sentences = {}
+				sentenceNum = 0
+				for sentence in docModel.extractionSentences:
+					actualSentence = wholeDocument[sentence[1]:sentence[2]]
+					sentences[sentence[0]] = \
+						extractionclustering.sentence.Sentence(
+							actualSentence,
+							sentence[0],
+							sentenceNum,
+							topicDictionary[docNo],
+							paragraph)
+					sentenceNum += 1
+
+				for triple in docModel.extractionTriples:
 						sentences[triple[0]].triples.append(triple)
-
-					for entity in paragraph.extractionEntities:
+				for entity in paragraph.extractionEntities:
 						sentences[entity[0]].entities.append(entity)
 
-					for fact in paragraph.extractionFacts:
-						sentences[fact[0]].facts.append(fact)
+				for fact in paragraph.extractionFacts:
+					sentences[fact[0]].facts.append(fact)
 
-					for phrase in paragraph.extractionTextPhrases:
-						sentences[phrase[0]].phrases.append(phrase)
+				for phrase in paragraph.extractionTextPhrases:
+					sentences[phrase[0]].phrases.append(phrase)
 
-					for sentence in sentences:
-						allSentences[sentences[sentence].uniqueId] = sentences[sentence]
+				for sentence in sentences:
+					allSentences[sentences[sentence].uniqueId] = sentences[sentence]
 
 			print "doing clustering now on summarization..."
 

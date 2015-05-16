@@ -11,3 +11,4 @@ class DocModel:
 		self.extractionTextPhrases = []
 		self.extractionKeywordResults = []
 		self.extractionFactRelations = []
+		self.text = ""
