@@ -42,6 +42,7 @@ class Sentence:
 				if mode == otherMode and element == otherElement:
 					score += 1
 
+		"""
 		for triple in self.triples:
 			t1Value= triple[1].lower()
 			t1Sem = triple[2].lower()
@@ -66,7 +67,7 @@ class Sentence:
 							(t1Value not in ignoreTriples and
 							t3Value not in ignoreTriples)):
 					score += 1
-
+		"""
 		for entity in self.entities:
 			displayText = entity[1].lower()
 			domainRole = entity[3].lower()
