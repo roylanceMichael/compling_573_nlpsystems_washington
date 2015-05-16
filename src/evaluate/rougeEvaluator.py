@@ -130,10 +130,11 @@ class RougeEvaluator():
 		rougeCommand.append("100")
 		rougeCommand.append("-s")
 		rougeCommand.append("-d")
+		rougeCommand.append(os.path.abspath(self.rougeConfigFileName))
 
 		print "Calling ROUGE with command: " + " ".join(rougeCommand)
 
-		rougeCommand.append(os.path.abspath(self.rougeConfigFileName))
+
 
 		output = check_output(rougeCommand)
 
