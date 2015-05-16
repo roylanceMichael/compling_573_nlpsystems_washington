@@ -5,7 +5,7 @@ from npclustering.npClustering import NpClustering
 
 
 class SentenceLengthSummaryTechnique(SummaryTechnique):
-	def rankSentences(self):
+	def rankSentences(self, paramaters):
 		longestSentenceLength = 0
 
 		tempDict = {}

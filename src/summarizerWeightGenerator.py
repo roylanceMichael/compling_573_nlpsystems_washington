@@ -50,8 +50,10 @@ evaluationOutputPath = "../results"
 modelSummaryCachePath = "../cache/modelSummaryCache"
 documentCachePath = "../cache/documentCache"
 idfCachePath = "../cache/idfCache"
+meadCacheDir = "../cache/meadCache"
+rougeCacheDir = "../cache/rougeCache"
 
-rouge = RougeEvaluator(args.rougePath, args.goldStandardSummaryPath, summaryOutputPath, modelSummaryCachePath)
+rouge = RougeEvaluator(args.rougePath, args.goldStandardSummaryPath, summaryOutputPath, modelSummaryCachePath, rougeCacheDir)
 idf = model.idf.Idf(idfCachePath)
 
 
@@ -125,15 +127,17 @@ for topic in topics:
 documentRepository.writefileIdDictionaryToFileCache(documentCachePath)
 
 
-def summarizeAndGetWeights(models, w1, w2, w3, w4, w5):
+def summarizeAndGetWeights(initsumm, models, w_tfidf=None, w_sd=None, w_sl=None, w_topic=None, w_cosign=0.0, w_np=0.0,
+                           pullfactor=-1.0, initialwindow=2, initialbonus=4, topicsize=75):
 	# make a summary of the topic cluster
-	initialSummarizer = InitialSummarizer(models, idf, True, True, True)
-	summary = initialSummarizer.getBestSentences(w1, w2, w3, w4, w5)
+	summary = initsumm.getBestSentences(w_tfidf, w_sd, w_sl, w_topic, w_cosign, w_np,
+		pullfactor, initialwindow, initialbonus, topicsize)
 	if summary is not None:
 		summaryFileName = summaryOutputPath + "/" + topic.id
 		summaryFile = open(summaryFileName, 'w')
 		summaryFile.write(summary)
 		summaryFile.close()
+		#print(summary)
 
 	evaluationResults = evaluate()
 	evaluationDict = evaluationResults[1]
@@ -143,12 +147,17 @@ def summarizeAndGetWeights(models, w1, w2, w3, w4, w5):
 
 	# for technique in initialSummarizer.techniques:
 	#	print technique.techniqueName + ": " + str(technique.weight) + ", enabled: " + str(technique.enabled)
-	l = [w1, w2, w3, w4, w5, rouge2precision, rouge2recall, rouge2fscore]
+	l = [w_tfidf, w_sd, w_sl, w_topic, w_cosign, w_np, pullfactor, initialwindow, initialbonus,
+		topicsize, rouge2precision, rouge2recall, rouge2fscore]
 	# print l
 	return l
 
+def divisions(start, end, n):
+	r = (end - start) / n
+	for i in range(n+1):
+		yield start + r*i
 
-for topic in topics:
+for topic in topics[0:1]:
 	transformedTopicId = topic.docsetAId[:-3] + '-A'
 	print "processing topicId: " + transformedTopicId
 	# let's get all the documents associated with this topic
@@ -160,62 +169,60 @@ for topic in topics:
 		# updatedCorefModel = coreference.rules.Rules.updateDocumentWithCoreferences(convertedModel)
 		models.append(convertedModel)
 
-
+	docCluster = model.doc_model.Cluster(models, topic.category, topic.title, idf)
 	weightsMatrixArray = []
 
 
+	initsumm = InitialSummarizer(docCluster, idf, True, True, True, True)
 
-	resultsArray = summarizeAndGetWeights(models, 1.0, 0.0, 0.0, 0.0, 0.0)
-	print resultsArray
-	weightsMatrixArray.append(resultsArray)
 
-	resultsArray = summarizeAndGetWeights(models, 0.0, 1.0, 0.0, 0.0, 0.0)
-	print resultsArray
-	weightsMatrixArray.append(resultsArray)
+	for w_tfidf in divisions(0.0, 1.0, 3):
+		for w_sd in divisions(0.0, 1.0, 3):
+			for w_sl in divisions(0.0, 1.0, 3):
+				for w_topic in divisions(0.0, 1.0, 3):
+					w_cosign, w_np, pullfactor, initialwindow, initialbonus, topicsize = 1.0, 0.0, -1.0, 2, 4, 0
+					resultsArray = summarizeAndGetWeights(initsumm, docCluster, w_tfidf, w_sd, w_sl, w_topic, w_cosign, w_np, pullfactor, initialwindow, initialbonus, topicsize)
+					print resultsArray
+					weightsMatrixArray.append(resultsArray)
+	max = 0.0
+	maxRow = None
+	for matrixRow in weightsMatrixArray:
+		sum = matrixRow[5] + matrixRow[6] + matrixRow[7]
+		ave = sum / 3.0
+		if ave > max:
+			max = ave
+			maxRow = matrixRow
 
-	resultsArray = summarizeAndGetWeights(models, 0.0, 0.0, 1.0, 0.0, 0.0)
-	print resultsArray
-	weightsMatrixArray.append(resultsArray)
+	print "Max Row, weights:"
+	print maxRow
 
-	resultsArray = summarizeAndGetWeights(models, 0.0, 0.0, 0.0, 1.0, 0.0)
-	print resultsArray
-	weightsMatrixArray.append(resultsArray)
+	weightsMatrixArray = []
 
-	resultsArray = summarizeAndGetWeights(models, 0.0, 0.0, 0.0, 0.0, 1.0)
-	print resultsArray
-	weightsMatrixArray.append(resultsArray)
+	for w_cosign in divisions(0.0, 1.0, 3):
+		for w_np in divisions(0.0, 1.0, 3):
+			for pullfactor in divisions(0.0, 1.0, 3):
+				for initialwindow in divisions(0, 5, 5):
+					for initialbonus in divisions(0, 5, 5):
+						for topicsize in divisions(0, 200, 5):
+							if not sum(w_tfidf, w_sd, w_sl, w_topic, w_cosign, w_np) == 0.0:
+								w_tfidf, w_sd, w_sl, w_topic = .25, .25, .25, .25
+								resultsArray = summarizeAndGetWeights(initsumm, docCluster, w_tfidf, w_sd, w_sl, w_topic, w_cosign, w_np, pullfactor, initialwindow, initialbonus, topicsize)
+								print resultsArray
+								weightsMatrixArray.append(resultsArray)
+	max = 0.0
+	maxRow = None
+	for matrixRow in weightsMatrixArray:
+		sum = matrixRow[5] + matrixRow[6] + matrixRow[7]
+		ave = sum / 3.0
+		if ave > max:
+			max = ave
+			maxRow = matrixRow
 
-	resultsArray = summarizeAndGetWeights(models, 1.0, 1.0, 0.0, 0.0, 0.0)
-	print resultsArray
-	weightsMatrixArray.append(resultsArray)
+	print "Max Row, redundency:"
+	print maxRow
 
-	resultsArray = summarizeAndGetWeights(models, 0.25, 1.0, 0.0, 0.0, 0.0)
-	print resultsArray
-	weightsMatrixArray.append(resultsArray)
 
-	resultsArray = summarizeAndGetWeights(models, 0.5, 1.0, 0.0, 0.0, 0.0)
-	print resultsArray
-	weightsMatrixArray.append(resultsArray)
 
-	resultsArray = summarizeAndGetWeights(models, 0.75, 1.0, 0.0, 0.0, 0.0)
-	print resultsArray
-	weightsMatrixArray.append(resultsArray)
-
-	resultsArray = summarizeAndGetWeights(models, 1.0, 1.0, 1.0, 1.0, 1.0)
-	print resultsArray
-	weightsMatrixArray.append(resultsArray)
-
-	resultsArray = summarizeAndGetWeights(models, 1.0, 1.0, 1.0, 1.0, 0.0)
-	print resultsArray
-	weightsMatrixArray.append(resultsArray)
-
-	resultsArray = summarizeAndGetWeights(models, 1.0, 1.0, 1.0, 0.0, 0.0)
-	print resultsArray
-	weightsMatrixArray.append(resultsArray)
-
-	resultsArray = summarizeAndGetWeights(models, 1.0, 1.0, 0.0, 1.0, 0.0)
-	print resultsArray
-	weightsMatrixArray.append(resultsArray)
 
 	# inc = 0.25
 	# w1 = 0.0
@@ -237,14 +244,3 @@ for topic in topics:
 
 
 	# get max average
-	max = 0.0
-	maxRow = None
-	for matrixRow in weightsMatrixArray:
-		sum = matrixRow[5] + matrixRow[6] + matrixRow[7]
-		ave = sum / 3.0
-		if ave > max:
-			max = ave
-			maxRow = matrixRow
-
-	print "Max Row:"
-	print maxRow

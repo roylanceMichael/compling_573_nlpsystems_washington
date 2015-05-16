@@ -29,15 +29,15 @@ class InitialSummarizer:
 		self.techniques.append(self.sentenceLength)
 		self.topicSim = TopicSimSummaryTechnique(tryTopicSim, 1.0, docCluster, "topic")
 		self.techniques.append(self.sentenceLength)
-		self.summarize()
+		self.summarize(None)
 
-	def summarize(self):
+	def summarize(self, paramaters):
 		for technique in self.techniques:
 			if technique.enabled:
-				technique.rankSentences()
+				technique.rankSentences(paramaters)
 	
-	def getBestSentences(self, w_tfidf=None, w_sd=None, w_sl=None, w_topic=None, w_cosign=0.0, w_np=0.0, pullfactor=-1.0,
-			initialwindow=2, initialbonus=4, topicsize=75):
+	def getBestSentences(self, w_tfidf=None, w_sd=None, w_sl=None, w_topic=None, w_cosign=0.0, w_np=0.0,
+		pullfactor=-1.0, initialwindow=2, initialbonus=4, topicsize=75, paramaters=None):
 		if w_tfidf is not None:
 			self.tfIdf.weight = w_tfidf
 		if w_sd is not None:
@@ -64,7 +64,7 @@ class InitialSummarizer:
 		topicvocab = self.docCluster.gettopicvocab(topicsize) if topicsize else None
 		self.graph = GraphSummaryTechnique(True, graphweight, self.docCluster, "cosign+np", cosignweight, pullfactor,
 			initialwindow, initialbonus, topicvocab, independentweights=aggregateSentences)
-		self.graph.rankSentences()
+		self.graph.rankSentences(paramaters)
 
 		sortedAggregateSentences = sorted(self.graph.items(), key=operator.itemgetter(1), reverse=True)
 		#topNSortedAggregateSentences = sortedAggregateSentences[:self.N]  # tuples here... convert to sentences

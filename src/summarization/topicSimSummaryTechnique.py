@@ -9,7 +9,7 @@ class TopicSimSummaryTechnique(SummaryTechnique):
         SummaryTechnique.__init__(self, enabled, weight, docCluster, techniqueName)
 
 
-    def rankSentences(self):
+    def rankSentences(self, paramaters):
         topic = self.docCluster.topic
         sentences = list(self.docCluster.sentences())
         scores = list(cosine2((x, topic)) for x in sentences)

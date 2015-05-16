@@ -18,7 +18,7 @@ class GraphSummaryTechnique(SummaryTechnique):
         return sentencepair[0].distance(sentencepair[1], self.initialwindow, self.initialbonus)
 
 
-    def rankSentences(self):
+    def rankSentences(self, paramaters):
         if not self.cosignweight:
             distancemetric = self.NPSimilarity
         elif self.cosignweight == 1.0:

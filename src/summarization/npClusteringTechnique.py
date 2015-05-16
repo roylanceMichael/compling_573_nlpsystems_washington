@@ -5,7 +5,7 @@ from npclustering.npClustering import NpClustering
 
 
 class NpClusteringSummaryTechnique(SummaryTechnique):
-	def rankSentences(self):
+	def rankSentences(self, paramaters):
 		self.docModels.processNPs()
 		instance = NpClustering(self.docModels)
 
