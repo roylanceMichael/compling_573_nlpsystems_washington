@@ -70,6 +70,8 @@ class Text(list, ParentCompare):
 		self.extractionEntities = []
 		self.extractionFacts = []
 		self.extractionTextPhrases = []
+		self.extractionKeywordResults = []
+		self.extractionFactRelations = []
 
 		ParentCompare.__init__(self, parent, position_in_parent)
 		self.full = in_string.strip()
