@@ -26,6 +26,18 @@ rougeCacheDir = "../cache/rougeCache"
 
 rouge = RougeEvaluator("../ROUGE", "/opt/dropbox/14-15/573/Data/models/devtest", summaryOutputPath, modelSummaryCachePath, rougeCacheDir)
 
+topics = []
+for topic in extract.topicReader.Topic.factoryMultiple("../doc/Documents/devtest/GuidedSumm10_test_topics.xml"):
+	topics.append(topic)
+
+documentRepository = extract.documentRepository.DocumentRepository("/corpora/LDC/LDC02T31/", "/corpora/LDC/LDC08T25/data/", topics)
+
+# load the cached docs
+documentRepository.readFileIdDictionaryFromFileCache(documentCachePath)
+
+# cache the model summaries
+rouge.cacheModelSummaries(topics)
+
 ##############################################################
 # helper function for printing out buffers to files
 ##############################################################
