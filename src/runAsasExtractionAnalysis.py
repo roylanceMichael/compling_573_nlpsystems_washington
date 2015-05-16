@@ -99,7 +99,7 @@ for fileName in os.listdir(cachePath):
 				score = compareSentence.distanceToOtherSentence(allSentences[otherUniqueSentenceId])
 				scoreDictionary[uniqueSentenceId] += score
 
-		maxSentences = 3
+		maxSentences = 1
 		sentenceIdx = 0
 		uniqueSummaries = {}
 		for tupleResult in sorted(scoreDictionary.items(), key=operator.itemgetter(1), reverse=True):
