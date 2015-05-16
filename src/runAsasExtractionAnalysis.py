@@ -37,89 +37,79 @@ def writeBufferToFile(path, buffer):
 for fileName in os.listdir(cachePath):
 	pickleFilePath = os.path.join(cachePath, fileName)
 	if os.path.exists(pickleFilePath):
-			pickleFile = open(pickleFilePath, 'rb')
-			topicDictionary = pickle.load(pickleFile)
+		pickleFile = open(pickleFilePath, 'rb')
+		topicDictionary = pickle.load(pickleFile)
 
-			allSentences = {}
-			for docNo in topicDictionary:
-				print docNo
+		allSentences = {}
+		for docNo in topicDictionary:
+			print docNo
 
-				docModel = topicDictionary[docNo]
-				sentences = {}
-				sentenceNum = 0
-				for sentence in docModel.extractionSentences:
-					actualSentence = docModel.text[sentence[1]:sentence[2]]
-					sentences[sentence[0]] = \
-						extractionclustering.sentence.Sentence(
-							actualSentence,
-							sentence[0],
-							sentenceNum,
-							docModel)
-					sentenceNum += 1
+			docModel = topicDictionary[docNo]
+			sentences = {}
+			sentenceNum = 0
+			for sentence in docModel.extractionSentences:
+				actualSentence = docModel.text[sentence[1]:sentence[2]]
+				sentences[sentence[0]] = \
+					extractionclustering.sentence.Sentence(
+						actualSentence,
+						sentence[0],
+						sentenceNum,
+						docModel)
+				sentenceNum += 1
 
-				for triple in docModel.extractionTriples:
-						sentences[triple[0]].triples.append(triple)
-				for entity in docModel.extractionEntities:
-						sentences[entity[0]].entities.append(entity)
+			for triple in docModel.extractionTriples:
+					sentences[triple[0]].triples.append(triple)
+			for entity in docModel.extractionEntities:
+					sentences[entity[0]].entities.append(entity)
 
-				for fact in docModel.extractionFacts:
-					sentences[fact[0]].facts.append(fact)
+			for fact in docModel.extractionFacts:
+				sentences[fact[0]].facts.append(fact)
 
-				for phrase in docModel.extractionTextPhrases:
-					sentences[phrase[0]].phrases.append(phrase)
+			for phrase in docModel.extractionTextPhrases:
+				sentences[phrase[0]].phrases.append(phrase)
 
-				for sentence in sentences:
-					allSentences[sentences[sentence].uniqueId] = sentences[sentence]
+			for sentence in sentences:
+				allSentences[sentences[sentence].uniqueId] = sentences[sentence]
 
-			print "doing clustering now on summarization..."
+		print "doing clustering now on summarization..."
 
-			scoreDictionary = {}
-			for uniqueSentenceId in allSentences:
-				scoreDictionary[uniqueSentenceId] = 0
+		scoreDictionary = {}
+		for uniqueSentenceId in allSentences:
+			scoreDictionary[uniqueSentenceId] = 0
 
-				compareSentence = allSentences[uniqueSentenceId]
+			compareSentence = allSentences[uniqueSentenceId]
 
-				"""
-				print compareSentence.simple
-				for entity in compareSentence.entities:
-					print entity[1] + " " + entity[3]
+			for otherUniqueSentenceId in allSentences:
+				if uniqueSentenceId == otherUniqueSentenceId:
+					continue
 
-				for triple in compareSentence.triples:
-					print triple[1].lower() + " " + triple[2].lower() + " " + triple[3].lower()
+				score = compareSentence.distanceToOtherSentence(allSentences[otherUniqueSentenceId])
+				scoreDictionary[uniqueSentenceId] += score
 
-				"""
+		maxSentences = 15
+		sentenceIdx = 0
+		uniqueSummaries = {}
+		for tupleResult in sorted(scoreDictionary.items(), key=operator.itemgetter(1), reverse=True):
+			if sentenceIdx > maxSentences:
+				break
 
-				for otherUniqueSentenceId in allSentences:
-					if uniqueSentenceId == otherUniqueSentenceId:
-						continue
+			sentence = allSentences[tupleResult[0]]
+			score = tupleResult[1]
+			strippedSentence = re.sub("\s+", " ", sentence.simple)
+			uniqueSummaries[strippedSentence] = None
 
-					score = compareSentence.distanceToOtherSentence(allSentences[otherUniqueSentenceId])
-					scoreDictionary[uniqueSentenceId] += score
+			print (strippedSentence, score)
+			sentenceIdx += 1
 
-			maxSentences = 15
-			sentenceIdx = 0
-			uniqueSummaries = {}
-			for tupleResult in sorted(scoreDictionary.items(), key=operator.itemgetter(1), reverse=True):
-				if sentenceIdx > maxSentences:
-					break
+		summary = ""
+		for uniqueSentence in uniqueSummaries:
+			summary += uniqueSentence
 
-				sentence = allSentences[tupleResult[0]]
-				score = tupleResult[1]
-				strippedSentence = re.sub("\s+", " ", sentence.simple)
-				uniqueSummaries[strippedSentence] = None
-
-				print (strippedSentence, score)
-				sentenceIdx += 1
-
-			summary = ""
-			for uniqueSentence in uniqueSummaries:
-				summary += uniqueSentence
-
-			if summary is not None:
-				summaryFileName = summaryOutputPath + "/" + fileName
-				summaryFile = open(summaryFileName, 'w')
-				summaryFile.write(summary)
-				summaryFile.close()
+		if summary is not None:
+			summaryFileName = summaryOutputPath + "/" + fileName
+			summaryFile = open(summaryFileName, 'wb')
+			summaryFile.write(summary)
+			summaryFile.close()
 
 print "running the rouge evaluator"
 evaluationResults = rouge.evaluate()
