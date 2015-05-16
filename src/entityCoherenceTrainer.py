@@ -108,29 +108,32 @@ for topic in topics:
 		if firstDocument is None:
 			firstDocument = foundDocument
 		print "processing docNo: " + foundDocument.docNo
-		grid = EntityGrid(DummyDocModel(getFullTextAsSentencesFromDocModel(foundDocument)))
-		# grid.printMatrix()
-		featureVector = FeatureVector(grid, docIndex)
-		# featureVector.printVector()
-		# featureVector.printVectorWithIndices()
-		vector = featureVector.getVector(2)
+
+		sentences = getFullTextAsSentencesFromDocModel(foundDocument)
+		if len(sentences) > 1:  # because there have to be transitions
+			grid = EntityGrid(DummyDocModel(sentences))
+			# grid.printMatrix()
+			featureVector = FeatureVector(grid, docIndex)
+			# featureVector.printVector()
+			# featureVector.printVectorWithIndices()
+			vector = featureVector.getVector(2)
 
 
-		badDoc = DummyDocModel(getFullTextAsSentencesFromDocModel(foundDocument))
-		badDoc.randomizeSentences()
-		badGrid = EntityGrid(badDoc)
-		# grid.printMatrix()
-		badFeatureVector = FeatureVector(badGrid, docIndex)
-		# featureVector.printVector()
-		# featureVector.printVectorWithIndices()
-		vector = featureVector.getVector(2)
-		badVector = badFeatureVector.getVector(1)
-		print vector
-		print badVector
-		featureVectors.append(vector)
-		featureVectors.append(badVector)
+			badDoc = DummyDocModel(getFullTextAsSentencesFromDocModel(foundDocument))
+			badDoc.randomizeSentences()
+			badGrid = EntityGrid(badDoc)
+			# grid.printMatrix()
+			badFeatureVector = FeatureVector(badGrid, docIndex)
+			# featureVector.printVector()
+			# featureVector.printVectorWithIndices()
+			vector = featureVector.getVector(2)
+			badVector = badFeatureVector.getVector(1)
+			print vector
+			print badVector
+			featureVectors.append(vector)
+			featureVectors.append(badVector)
 
-		docIndex += 1
+			docIndex += 1
 
 # now train on the data
 model = svmlight.learn(featureVectors, type='ranking', verbosity=0)
