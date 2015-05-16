@@ -59,8 +59,10 @@ for fileName in os.listdir(cachePath):
 			docModel = topicDictionary[docNo]
 			sentences = {}
 			sentenceNum = 0
+			print docModel.text
 			for sentence in docModel.extractionSentences:
-				actualSentence = docModel.text[sentence[1]:sentence[2]]
+				text = docModel.text
+				actualSentence = text[sentence[1]:sentence[1] + sentence[2] + 1]
 				sentences[sentence[0]] = \
 					extractionclustering.sentence.Sentence(
 						actualSentence,
