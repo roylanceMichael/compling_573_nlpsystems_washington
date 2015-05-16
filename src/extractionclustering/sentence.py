@@ -6,12 +6,11 @@ ignoreTriples = {"<empty>": None, "<unspecified>": None}
 
 
 class Sentence:
-	def __init__(self, text, id, sentenceNum, docModel, paragraph):
+	def __init__(self, text, id, sentenceNum, docModel):
 		self.simple = text
 		self.id = id
 		self.sentenceNum = sentenceNum
 		self.docModel = docModel
-		self.paragraph = paragraph
 		self.triples = []
 		self.entities = []
 		self.facts = []
@@ -23,6 +22,8 @@ class Sentence:
 			self.beginningScore = 4 - self.sentenceNum
 
 	def distanceToOtherSentence(self, otherSentence):
+		if len(self.simple) == 0:
+			return 0
 		score = self.beginningScore
 
 		"""

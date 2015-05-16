@@ -26,18 +26,6 @@ rougeCacheDir = "../cache/rougeCache"
 
 rouge = RougeEvaluator("../ROUGE", "/opt/dropbox/14-15/573/Data/models/devtest", summaryOutputPath, modelSummaryCachePath, rougeCacheDir)
 
-topics = []
-for topic in extract.topicReader.Topic.factoryMultiple("../doc/Documents/devtest/GuidedSumm10_test_topics.xml"):
-	topics.append(topic)
-
-documentRepository = extract.documentRepository.DocumentRepository("/corpora/LDC/LDC02T31/", "/corpora/LDC/LDC08T25/data/", topics)
-
-# load the cached docs
-documentRepository.readFileIdDictionaryFromFileCache(documentCachePath)
-
-# cache the model summaries
-rouge.cacheModelSummaries(topics)
-
 ##############################################################
 # helper function for printing out buffers to files
 ##############################################################
@@ -45,8 +33,6 @@ def writeBufferToFile(path, buffer):
 	outFile = open(path, 'w')
 	outFile.write(buffer)
 	outFile.close()
-
-documentRepository = extract.documentRepository.DocumentRepository("/corpora/LDC/LDC02T31/", "/corpora/LDC/LDC08T25/data/", topics)
 
 for fileName in os.listdir(cachePath):
 	pickleFilePath = os.path.join(cachePath, fileName)
@@ -58,39 +44,28 @@ for fileName in os.listdir(cachePath):
 			for docNo in topicDictionary:
 				print docNo
 
-				document = documentRepository.getDocument(docNo)
-				initialModel = model.doc_model.Doc_Model(document)
-				coreference.rules.updateDocumentWithCoreferences(initialModel)
-				coherence.scorer.determineDoc(initialModel)
-
 				docModel = topicDictionary[docNo]
-				wholeDocument = ""
-				for paragraph in initialModel.paragraphs:
-					cleansedStr = re.sub("\s+", " ", str(paragraph))
-					wholeDocument += cleansedStr + " "
-
 				sentences = {}
 				sentenceNum = 0
 				for sentence in docModel.extractionSentences:
-					actualSentence = wholeDocument[sentence[1]:sentence[2]]
+					actualSentence = docModel.text[sentence[1]:sentence[2]]
 					sentences[sentence[0]] = \
 						extractionclustering.sentence.Sentence(
 							actualSentence,
 							sentence[0],
 							sentenceNum,
-							topicDictionary[docNo],
-							paragraph)
+							docModel)
 					sentenceNum += 1
 
 				for triple in docModel.extractionTriples:
 						sentences[triple[0]].triples.append(triple)
-				for entity in paragraph.extractionEntities:
+				for entity in docModel.extractionEntities:
 						sentences[entity[0]].entities.append(entity)
 
-				for fact in paragraph.extractionFacts:
+				for fact in docModel.extractionFacts:
 					sentences[fact[0]].facts.append(fact)
 
-				for phrase in paragraph.extractionTextPhrases:
+				for phrase in docModel.extractionTextPhrases:
 					sentences[phrase[0]].phrases.append(phrase)
 
 				for sentence in sentences:
