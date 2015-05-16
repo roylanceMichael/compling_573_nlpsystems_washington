@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "summarizer.py", line 109, in <module>
+    for topic in extract.topicReader.Topic.factoryMultiple(args.topicXml):
+  File "/home2/roylance/compling_573_nlpsystems_washington/src/extract/topicReader.py", line 69, in factoryMultiple
+    xmlDocument = ET.parse(fileName)
+  File "/opt/python-2.7/lib/python2.7/xml/etree/ElementTree.py", line 1182, in parse
+    tree.parse(source, parser)
+  File "/opt/python-2.7/lib/python2.7/xml/etree/ElementTree.py", line 647, in parse
+    source = open(source, "rb")
+IOError: [Errno 2] No such file or directory: 'arg3'
