@@ -106,11 +106,6 @@ for fileName in os.listdir(cachePath):
 			if sentenceIdx > maxSentences:
 				break
 
-			# testing out taking the 4th and 5th sentences
-			if sentenceIdx < 4:
-				sentenceIdx += 1
-				continue
-
 			sentence = allSentences[tupleResult[0]]
 			score = tupleResult[1]
 			strippedSentence = re.sub("\s+", " ", sentence.simple)
@@ -121,7 +116,7 @@ for fileName in os.listdir(cachePath):
 
 		summary = ""
 		for uniqueSentence in uniqueSummaries:
-			summary += uniqueSentence
+			summary += uniqueSentence + "\n"
 
 		if summary is not None:
 			summaryFileName = summaryOutputPath + "/" + fileName
