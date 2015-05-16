@@ -108,6 +108,7 @@ for fileName in os.listdir(cachePath):
 
 			# testing out taking the 4th and 5th sentences
 			if sentenceIdx < 4:
+				sentenceIdx += 1
 				continue
 
 			sentence = allSentences[tupleResult[0]]
