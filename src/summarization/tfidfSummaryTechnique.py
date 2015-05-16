@@ -9,7 +9,7 @@ class TfidfSummaryTechnique(SummaryTechnique):
         SummaryTechnique.__init__(self, enabled, weight, docCluster, techniqueName)
 
 
-    def rankSentences(self):
+    def rankSentences(self, paramaters):
         scores = list()
         sentences = list(self.docCluster.sentences())
         for sentence in sentences:

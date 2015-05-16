@@ -23,5 +23,5 @@ class SummaryTechnique(dict):
 			except KeyError:
 				return 0.0
 
-	def rankSentences(self):
+	def rankSentences(self, paramaters):
 		raise NotImplementedError("Please Implement this method")
