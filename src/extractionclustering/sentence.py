@@ -41,7 +41,10 @@ class Sentence:
 				otherElement = otherFact[1].lower()
 				otherMode = otherFact[2].lower()
 
-				if otherElement == element and otherMode == mode:
+				if element == otherElement:
+					score += 1
+
+				if mode == otherMode:
 					score += 1
 
 		for triple in self.triples:
@@ -68,11 +71,13 @@ class Sentence:
 							(t1Value not in ignoreTriples and
 							t3Value not in ignoreTriples)):
 
-					# print "-----"
-					# print t1Value + " " + t2Value + " " + t3Value
-					# print otherT1Value + " " + otherT2Value + " " + otherT3Value
-					# print "-----"
-					score += 1
+					"""
+					print "-----"
+					print t1Value + " " + t2Value + " " + t3Value
+					print otherT1Value + " " + otherT2Value + " " + otherT3Value
+					print "-----"
+					"""
+					score += 5
 
 		for entity in self.entities:
 			displayText = entity[1].lower()
@@ -82,7 +87,10 @@ class Sentence:
 				otherDisplayText = otherEntity[1].lower()
 				otherDomainRole = otherEntity[3].lower()
 
-				if displayText == otherDisplayText and domainRole == otherDomainRole:
+				if displayText == otherDisplayText:
+					score += 1
+
+				if domainRole == otherDomainRole:
 					score += 1
 
 		return score
