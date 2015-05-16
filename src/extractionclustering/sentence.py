@@ -19,11 +19,9 @@ class Sentence:
 		self.uniqueId = str(uuid.uuid1())
 
 		if self.sentenceNum < 2:
-			self.beginningScore = 30 - self.sentenceNum
+			self.beginningScore = 4 - self.sentenceNum
 
 	def distanceToOtherSentence(self, otherSentence):
-		if len(self.simple) == 0:
-			return 0
 		score = self.beginningScore
 
 		"""
@@ -41,10 +39,7 @@ class Sentence:
 				otherElement = otherFact[1].lower()
 				otherMode = otherFact[2].lower()
 
-				if element == otherElement:
-					score += 1
-
-				if mode == otherMode:
+				if mode == otherMode and element == otherElement:
 					score += 1
 
 		for triple in self.triples:
@@ -77,7 +72,7 @@ class Sentence:
 					print otherT1Value + " " + otherT2Value + " " + otherT3Value
 					print "-----"
 					"""
-					score += 5
+					score += 1
 
 		for entity in self.entities:
 			displayText = entity[1].lower()
@@ -87,10 +82,7 @@ class Sentence:
 				otherDisplayText = otherEntity[1].lower()
 				otherDomainRole = otherEntity[3].lower()
 
-				if displayText == otherDisplayText:
-					score += 1
-
-				if domainRole == otherDomainRole:
+				if domainRole == otherDomainRole and displayText == otherDisplayText:
 					score += 1
 
 		return score
