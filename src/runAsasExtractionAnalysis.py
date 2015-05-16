@@ -99,12 +99,16 @@ for fileName in os.listdir(cachePath):
 				score = compareSentence.distanceToOtherSentence(allSentences[otherUniqueSentenceId])
 				scoreDictionary[uniqueSentenceId] += score
 
-		maxSentences = 1
+		maxSentences = 5
 		sentenceIdx = 0
 		uniqueSummaries = {}
 		for tupleResult in sorted(scoreDictionary.items(), key=operator.itemgetter(1), reverse=True):
 			if sentenceIdx > maxSentences:
 				break
+
+			# testing out taking the 4th and 5th sentences
+			if sentenceIdx < 4:
+				continue
 
 			sentence = allSentences[tupleResult[0]]
 			score = tupleResult[1]
