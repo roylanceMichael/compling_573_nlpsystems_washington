@@ -6,15 +6,17 @@ __author__ = 'thomas'
   Date: 4/12/2015
 
   This code does the following:
-  1. opens a doc files
-  2. extracts data from doc files
-  3. summarizes doc files
-  4. compares summary using ROUGE and outputs results
+  1. reads through corpus
+  2. computes a ranking feature vector ala barzilay and labata (2005)
+  3. trains a model using svmlight
+  3. writes model to file
+
 
 
 """
 
 import argparse
+import pickle
 
 import extract
 import extract.topicReader
@@ -26,6 +28,8 @@ from model.entityGrid import DummyDocModel
 import nltk
 import nltk.data
 import svmlight
+from nltk.corpus import reuters
+import time
 
 # get parser args and set up global variables
 parser = argparse.ArgumentParser(description='Basic Document Summarizer.')
@@ -57,6 +61,12 @@ def writeBufferToFile(path, buffer):
 	outFile.write(buffer)
 	outFile.close()
 
+def getSentencesFromCorpusDocument(document):
+	sentences = []
+	cleanDoc = document.replace('\n', ' ')
+	paragraphSentences = sentence_breaker.tokenize(cleanDoc)
+	sentences.extend(paragraphSentences)
+	return sentences
 
 def getFullTextAsSentencesFromDocModel(document):
 	sentences = []
@@ -71,57 +81,45 @@ def getFullTextAsSentencesFromDocModel(document):
 # Script Starts Here
 ###############################################################
 
-# get training xml file
-# go through each topic
-topics = []
-for topic in extract.topicReader.Topic.factoryMultiple(args.topicXml):
-	topics.append(topic)
-
-documentRepository = extract.documentRepository.DocumentRepository(args.docInputPath, args.docInputPath2, topics)
-
-# load the cached docs
-documentRepository.readFileIdDictionaryFromFileCache(documentCachePath)
-
-# load and cache the docs if they are not loaded.  just get them if they are.
-for topic in topics:
-	transformedTopicId = topic.docsetAId[:-3] + '-A'
-	print "caching topicId: " + transformedTopicId
-	# let's get all the documents associated with this topic
-
-	# get the doc objects, and build doc models from them
-	for foundDocument in documentRepository.getDocumentsByTopic(topic.id):
-		# print "caching document: " + foundDocument.docNo
-		pass
-
 # recache documents for later
 # documentRepository.writefileIdDictionaryToFileCache(documentCachePath)
 docIndex = 1
 featureVectors = []
 firstDocument = None
-for topic in topics:
-	transformedTopicId = topic.docsetAId[:-3] + '-A'
-	print "processing topicId: " + transformedTopicId
-	# let's get all the documents associated with this topic
-	models = list()
-	# get the doc objects, and build doc models from them
-	for foundDocument in documentRepository.getDocumentsByTopic(topic.id):
-		if firstDocument is None:
-			firstDocument = foundDocument
-		print "processing docNo: " + foundDocument.docNo
+files = reuters.fileids()
+numDocs = len(files)
 
-		sentences = getFullTextAsSentencesFromDocModel(foundDocument)
-		if len(sentences) > 1:  # because there have to be transitions
-			grid = EntityGrid(DummyDocModel(sentences))
+
+def getSentenceText(sentences):
+	plainSentences = []
+	for sentence in sentences:
+		plainSentences.append(" ".join(sentence))
+	return plainSentences
+
+startTime = time.time()
+fNumDocs = float(numDocs)
+numDocsTried = 1
+maxN = 5000
+for fileid in files:
+	sentences = getSentencesFromCorpusDocument(reuters.raw("test/15387"))
+
+	# get the doc objects, and build doc models from them
+	secs = time.time() - startTime
+	docsPerSec = numDocsTried / secs
+	print "processing doc(" + str(docIndex) + "/" + str(numDocsTried) + "): " + str(fileid) + ", rate=" + str(round(docsPerSec, 4)) + " docs per second."
+
+	if len(sentences) > 1:  # because there have to be transitions
+		docModel = DummyDocModel(sentences)
+		grid = EntityGrid(docModel)
+		if len(grid.matrixIndices) > 0:
 			# grid.printMatrix()
 			featureVector = FeatureVector(grid, docIndex)
 			# featureVector.printVector()
 			# featureVector.printVectorWithIndices()
 			vector = featureVector.getVector(2)
 
-
-			badDoc = DummyDocModel(getFullTextAsSentencesFromDocModel(foundDocument))
-			badDoc.randomizeSentences()
-			badGrid = EntityGrid(badDoc)
+			docModel.randomizeSentences()
+			badGrid = EntityGrid(docModel)
 			# grid.printMatrix()
 			badFeatureVector = FeatureVector(badGrid, docIndex)
 			# featureVector.printVector()
@@ -132,36 +130,15 @@ for topic in topics:
 			print badVector
 			featureVectors.append(vector)
 			featureVectors.append(badVector)
-
 			docIndex += 1
+
+	pickleFile = open("../cache/svmlightCache/featureVectors.pickle", 'wb')
+	pickle.dump(featureVectors, pickleFile, pickle.HIGHEST_PROTOCOL)
+	pickleFile.close()
+	if docIndex >= maxN:
+		break
+	numDocsTried += 1
 
 # now train on the data
 model = svmlight.learn(featureVectors, type='ranking', verbosity=0)
-svmlight.write_model(model, 'my_model.dat')
-
-
-# now test with some random permutations of the first document using our model!
-print "\n!!!!!!!!!!!!!!!!! TESTING !!!!!!!!!!!!!!!!!!!!!!!!\n"
-testVectors = []
-docIndex = 1
-goodDoc = DummyDocModel(getFullTextAsSentencesFromDocModel(firstDocument))
-goodGrid = EntityGrid(goodDoc)
-goodFeatureVector = FeatureVector(goodGrid, docIndex)
-vector = goodFeatureVector.getVector(2)
-testVectors.append(vector)
-print vector
-
-for i in range(0, 5):
-	badDoc = DummyDocModel(getFullTextAsSentencesFromDocModel(firstDocument))
-	badDoc.randomizeSentences()
-	badGrid = EntityGrid(badDoc)
-	badFeatureVector = FeatureVector(badGrid, docIndex)
-	vector = badFeatureVector.getVector(1)
-	testVectors.append(vector)
-	print vector
-
-predictions = svmlight.classify(model, testVectors)
-
-for p in predictions:
-	print p
-
+svmlight.write_model(model, '../cache/svmlightCache/svmlightModel.dat')

@@ -67,7 +67,10 @@ class FeatureVector:
 
 		for fromType in self.types:
 			for toType in self.types:
-				transitions[fromType][toType] /= numTransitions
+				try:
+					transitions[fromType][toType] /= numTransitions
+				except ZeroDivisionError:
+					print "wtf?"
 		return transitions
 
 	def printVector(self):
@@ -107,7 +110,7 @@ class EntityGrid:
 		self.docModel = docModel
 		self.sentences = self.docModel.cleanSentences()
 		self.fullText = " \n".join(self.sentences)
-		self.textRazor = TextRazor(api_key=thomasKey, extractors=["entities", "topics", "words", "dependency-trees"])
+		self.textRazor = TextRazor(api_key=mikeKey, extractors=["entities", "topics", "words", "dependency-trees"])
 		self.nerResults = self.textRazor.analyze(self.fullText)
 		self.allEntities = self.nerResults.entities()
 		self.matrixIndices = self.getMatrixIndices()
