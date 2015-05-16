@@ -59,7 +59,6 @@ for fileName in os.listdir(cachePath):
 			docModel = topicDictionary[docNo]
 			sentences = {}
 			sentenceNum = 0
-			print docModel.text
 			for sentence in docModel.extractionSentences:
 				text = docModel.text
 				actualSentence = text[sentence[1]:sentence[1] + sentence[2] + 1]

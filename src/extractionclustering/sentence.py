@@ -19,7 +19,7 @@ class Sentence:
 		self.uniqueId = str(uuid.uuid1())
 
 		if self.sentenceNum < 2:
-			self.beginningScore = 4 - self.sentenceNum
+			self.beginningScore = 30 - self.sentenceNum
 
 	def distanceToOtherSentence(self, otherSentence):
 		if len(self.simple) == 0:
