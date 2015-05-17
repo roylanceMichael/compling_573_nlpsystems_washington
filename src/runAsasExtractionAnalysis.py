@@ -134,6 +134,7 @@ for fileName in os.listdir(cachePath):
 					sentences[phrase[0]].phrases.append(phrase)
 
 				for sentence in sentences:
+					sentences[sentence].assignEntityScores()
 					allSentences[sentences[sentence].uniqueId] = sentences[sentence]
 
 		print "doing clustering now on summarization..."

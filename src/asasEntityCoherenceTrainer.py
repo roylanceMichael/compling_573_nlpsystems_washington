@@ -70,6 +70,10 @@ def writeBufferToFile(path, buffer):
 def readSentencesFromFile(fileName):
 	pickleFile = open(fileName, 'rb')
 	topicSummary = pickle.load(pickleFile)
+
+	for sentence in topicSummary.sentences:
+		sentence.assignEntityScores()
+
 	return topicSummary.sentences
 
 def writeSentencesToFile(sentences, fileName):
@@ -118,13 +122,6 @@ def getAllFileNames():
 		print fileName
 	return fileNames
 
-
-def getSentenceText(sentences):
-	plainSentences = []
-	for sentence in sentences:
-		plainSentences.append(" ".join(sentence))
-	return plainSentences
-
 files = getAllFileNames()
 numDocs = len(files)
 startTime = time.time()
@@ -144,7 +141,7 @@ for fileName in files:
 		if len(grid.matrixIndices) > 0:
 			# grid.printMatrix()
 			featureVector = FeatureVector(grid, docIndex)
-			# featureVector.printVector()
+			featureVector.printVector()
 			# featureVector.printVectorWithIndices()
 			vector = featureVector.getVector(2)
 
