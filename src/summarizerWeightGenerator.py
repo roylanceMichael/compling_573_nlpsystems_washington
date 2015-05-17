@@ -187,8 +187,8 @@ for topic in topics[0:1]:
 	max = 0.0
 	maxRow = None
 	for matrixRow in weightsMatrixArray:
-		sum = matrixRow[5] + matrixRow[6] + matrixRow[7]
-		ave = sum / 3.0
+		rougetotal = matrixRow[5] + matrixRow[6] + matrixRow[7]
+		ave = rougetotal / 3.0
 		if ave > max:
 			max = ave
 			maxRow = matrixRow
@@ -204,16 +204,15 @@ for topic in topics[0:1]:
 				for initialwindow in divisions(0, 5, 5):
 					for initialbonus in divisions(0, 5, 5):
 						for topicsize in divisions(0, 200, 5):
-							if not sum(w_tfidf, w_sd, w_sl, w_topic, w_cosign, w_np) == 0.0:
-								w_tfidf, w_sd, w_sl, w_topic = .25, .25, .25, .25
-								resultsArray = summarizeAndGetWeights(initsumm, docCluster, w_tfidf, w_sd, w_sl, w_topic, w_cosign, w_np, pullfactor, initialwindow, initialbonus, topicsize)
-								print resultsArray
-								weightsMatrixArray.append(resultsArray)
+							w_tfidf, w_sd, w_sl, w_topic = .25, .25, .25, .25
+							resultsArray = summarizeAndGetWeights(initsumm, docCluster, w_tfidf, w_sd, w_sl, w_topic, w_cosign, w_np, pullfactor, initialwindow, initialbonus, topicsize)
+							print resultsArray
+							weightsMatrixArray.append(resultsArray)
 	max = 0.0
 	maxRow = None
 	for matrixRow in weightsMatrixArray:
-		sum = matrixRow[5] + matrixRow[6] + matrixRow[7]
-		ave = sum / 3.0
+		rougetotal = matrixRow[5] + matrixRow[6] + matrixRow[7]
+		ave = rougetotal / 3.0
 		if ave > max:
 			max = ave
 			maxRow = matrixRow
