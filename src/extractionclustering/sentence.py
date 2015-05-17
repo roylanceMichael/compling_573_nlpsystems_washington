@@ -12,7 +12,7 @@ passiveBe = ["were", "was"]
 
 class Sentence:
 	def __init__(self, text, id, sentenceNum, docModel):
-		self.simple = text
+		self.simple = text.strip()
 		self.id = id
 		self.sentenceNum = sentenceNum
 		self.docModel = docModel
@@ -29,8 +29,8 @@ class Sentence:
 		if self.sentenceNum < 2:
 			self.beginningScore = 4 - self.sentenceNum
 
-		self.assignEntityScores()
-		self.removeArticleHeader()
+		# self.assignEntityScores()
+		# self.removeArticleHeader()
 
 	def assignEntityScores(self):
 		# 40 40 20 split
