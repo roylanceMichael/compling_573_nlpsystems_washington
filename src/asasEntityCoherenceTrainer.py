@@ -23,6 +23,8 @@ import pickle
 import extract
 import extract.topicReader
 import extract.documentRepository
+import extractionclustering.topicSummary
+import model.asasEntityGrid
 import model.idf
 from model.entityGrid import EntityGrid
 from model.entityGrid import FeatureVector
@@ -31,6 +33,7 @@ import nltk
 import nltk.data
 import svmlight
 from nltk.corpus import reuters
+import random
 import time
 import os
 
@@ -65,12 +68,9 @@ def writeBufferToFile(path, buffer):
 	outFile.close()
 
 def readSentencesFromFile(fileName):
-	allSentences = []
-	inFile = open(fileName, 'r')
-	for line in inFile:
-		allSentences.append(line.strip())
-	inFile.close()
-	return allSentences
+	pickleFile = open(fileName, 'rb')
+	topicSummary = pickle.load(pickleFile)
+	return topicSummary.sentences
 
 def writeSentencesToFile(sentences, fileName):
 	file = open(fileName, 'w')
@@ -107,9 +107,7 @@ firstDocument = None
 
 
 def getAllFileNames():
-	directories = ["/opt/dropbox/14-15/573/Data/models/devtest",
-				   "/opt/dropbox/14-15/573/Data/models/training/2009",
-				   "/opt/dropbox/14-15/573/Data/mydata"]
+	directories = ["../cache/goldCache"]
 	fileNames = []
 	for directory in directories:
 		files = os.listdir(directory)
@@ -142,8 +140,7 @@ for fileName in files:
 	print "processing doc(" + str(docIndex) + "/" + str(numDocsTried) + "): " + fileName + ", rate=" + str(round(docsPerSec, 4)) + " docs per second."
 
 	if len(sentences) > 1:  # because there have to be transitions
-		docModel = DummyDocModel(sentences)
-		grid = EntityGrid(docModel)
+		grid = model.asasEntityGrid.AsasEntityGrid(sentences)
 		if len(grid.matrixIndices) > 0:
 			# grid.printMatrix()
 			featureVector = FeatureVector(grid, docIndex)
@@ -151,8 +148,9 @@ for fileName in files:
 			# featureVector.printVectorWithIndices()
 			vector = featureVector.getVector(2)
 
-			docModel.randomizeSentences()
-			badGrid = EntityGrid(docModel)
+			clone = sentences[:]
+			random.shuffle(clone)
+			badGrid = model.asasEntityGrid.AsasEntityGrid(clone)
 			# grid.printMatrix()
 			badFeatureVector = FeatureVector(badGrid, docIndex)
 			# featureVector.printVector()
