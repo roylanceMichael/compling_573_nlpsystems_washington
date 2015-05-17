@@ -48,7 +48,7 @@ summaryOutputPath = args.outputPath
 reorderedSummaryOutputPath = args.outputPath + "_reordered"
 documentCachePath = "../cache/documentCache"
 idfCachePath = "../cache/idfCache"
-rankModel = svmlight.read_model('my_model.dat')
+rankModel = svmlight.read_model('../cache/svmlightCache/svmlightModel.dat')
 
 sentence_breaker = nltk.data.load('tokenizers/punkt/english.pickle')
 evaluationOutputPath = "../results"
