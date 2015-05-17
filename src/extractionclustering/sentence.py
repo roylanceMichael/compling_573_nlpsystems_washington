@@ -6,16 +6,17 @@ ignoreTriples = {"<empty>": None, "<unspecified>": None}
 
 
 class Sentence:
-	def __init__(self, text, id, sentenceNum, docModel, paragraph):
+	def __init__(self, text, id, sentenceNum, docModel):
 		self.simple = text
 		self.id = id
 		self.sentenceNum = sentenceNum
 		self.docModel = docModel
-		self.paragraph = paragraph
 		self.triples = []
 		self.entities = []
 		self.facts = []
 		self.phrases = []
+		self.keywordResults = []
+		self.factRelations = []
 		self.beginningScore = 0
 		self.uniqueId = str(uuid.uuid1())
 
@@ -40,9 +41,10 @@ class Sentence:
 				otherElement = otherFact[1].lower()
 				otherMode = otherFact[2].lower()
 
-				if otherElement == element and otherMode == mode:
+				if mode == otherMode and element == otherElement:
 					score += 1
 
+		"""
 		for triple in self.triples:
 			t1Value= triple[1].lower()
 			t1Sem = triple[2].lower()
@@ -66,13 +68,8 @@ class Sentence:
 							t3Value == otherT3Value and
 							(t1Value not in ignoreTriples and
 							t3Value not in ignoreTriples)):
-
-					# print "-----"
-					# print t1Value + " " + t2Value + " " + t3Value
-					# print otherT1Value + " " + otherT2Value + " " + otherT3Value
-					# print "-----"
 					score += 1
-
+		"""
 		for entity in self.entities:
 			displayText = entity[1].lower()
 			domainRole = entity[3].lower()
@@ -81,7 +78,7 @@ class Sentence:
 				otherDisplayText = otherEntity[1].lower()
 				otherDomainRole = otherEntity[3].lower()
 
-				if displayText == otherDisplayText and domainRole == otherDomainRole:
+				if domainRole == otherDomainRole and displayText == otherDisplayText:
 					score += 1
 
 		return score

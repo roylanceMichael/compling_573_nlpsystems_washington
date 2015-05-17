@@ -1,12 +1,15 @@
 __author__ = 'mroylance'
 
 import os
+import re
 import sys
 import extract
 import attensity.semantic_server
 import model.doc_model
 import extract.topicReader
 import extract.documentRepository
+import extractionclustering.docModel
+import extractionclustering.paragraph
 import coherence.scorer
 import coreference.rules
 import pickle
@@ -30,40 +33,62 @@ for topic in topics:
 	# get the doc objects, and build doc models from them
 	for foundDocument in documentRepository.getDocumentsByTopic(topic.id):
 		initialModel = model.doc_model.Doc_Model(foundDocument)
+		docNo = initialModel.docNo
 		coreference.rules.updateDocumentWithCoreferences(initialModel)
 		coherence.scorer.determineDoc(initialModel)
 
-		parse = ss.parse()
-
+		docModel = extractionclustering.docModel.DocModel()
 		for paragraph in initialModel.paragraphs:
+			newParagraph = extractionclustering.paragraph.Paragraph()
+			docModel.paragraphs.append(newParagraph)
+			# cleansedParagraph = re.sub("\s+", " ", str(paragraph))
+			newParagraph.text = str(paragraph)
+
+			parse = ss.parse()
 			parse.process(str(paragraph), configUrl)
 			ext = attensity.extractions.Extractions.from_protobuf(parse.result)
 
 			for extraction in ext.extractions():
+				if extraction.type == attensity.ExtractionMessage_pb2.Extraction.KEYWORD_RESULTS:
+					roots = {}
+					for item in extraction.keyword_results.root:
+						roots[item.id] = {"root": item.root, "word": item.word, "pos": item.pos}
+					for item in extraction.keyword_results.location:
+						roots[item.id]["sentence"] = item.sentence
+					for key in roots:
+						if "sentence" not in roots[key]:
+							continue
+
+						try:
+
+							sentenceId = int(roots[key]["sentence"])
+							root = str(roots[key]["root"])
+							word = str(roots[key]["word"])
+							pos = list(roots[key]["pos"])
+							newParagraph.extractionKeywordResults.append((sentenceId, root, word, pos))
+						except Exception:
+							print "error happened"
+				if extraction.type == attensity.ExtractionMessage_pb2.Extraction.FACT_RELATION:
+					newParagraph.extractionFactRelations.append((extraction.fact_relation.fact_one, extraction.fact_relation.fact_two, extraction.fact_relation.text))
 				if extraction.type == attensity.ExtractionMessage_pb2.Extraction.TEXT_SENTENCE:
-					paragraph.extractionSentences.append((extraction.text_sentence.text_sentence_ID, extraction.text_sentence.offset, extraction.text_sentence.length))
-					print extraction
+					print "|||" + newParagraph.text[extraction.text_sentence.offset:extraction.text_sentence.offset + extraction.text_sentence.length] + "|||"
+					newParagraph.extractionSentences.append((extraction.text_sentence.text_sentence_ID, extraction.text_sentence.offset, extraction.text_sentence.length))
 				if extraction.type == attensity.ExtractionMessage_pb2.Extraction.ENTITY:
-					print extraction
 					mid = ""
 					if len(extraction.entity.search_info) > 0:
 						mid = extraction.entity.search_info[0].machine_ID
-					paragraph.extractionEntities.append((extraction.entity.sentence_id, extraction.entity.display_text, extraction.entity.sem_tags, extraction.entity.domain_role, mid))
-					print extraction
+					newParagraph.extractionEntities.append((extraction.entity.sentence_id, extraction.entity.display_text, extraction.entity.sem_tags, extraction.entity.domain_role, mid))
 				if extraction.type == attensity.ExtractionMessage_pb2.Extraction.TRIPLE:
-					paragraph.extractionTriples.append((extraction.triple.sentence_ID, extraction.triple.t1.value, extraction.triple.t1.sem_tags, extraction.triple.t2.value, extraction.triple.t2.sem_tags, extraction.triple.t3.value, extraction.triple.t3.sem_tags))
-					print extraction
+					newParagraph.extractionTriples.append((extraction.triple.sentence_ID, extraction.triple.t1.value, extraction.triple.t1.sem_tags, extraction.triple.t2.value, extraction.triple.t2.sem_tags, extraction.triple.t3.value, extraction.triple.t3.sem_tags))
+					# print extraction
 				if extraction.type == attensity.ExtractionMessage_pb2.Extraction.FACT:
-					print extraction
-					paragraph.extractionFacts.append((extraction.fact.sentence_ID, extraction.fact.element.text, extraction.fact.mode.text))
+					# print extraction
+					newParagraph.extractionFacts.append((extraction.fact.sentence_ID, extraction.fact.element.text, extraction.fact.mode.text))
 				if extraction.type == attensity.ExtractionMessage_pb2.Extraction.TEXT_PHRASE:
-					print extraction
-					paragraph.extractionTextPhrases.append((extraction.text_phrase.sentence_ID, extraction.text_phrase.head, extraction.text_phrase.root))
+					# print extraction
+					newParagraph.extractionTextPhrases.append((extraction.text_phrase.sentence_ID, extraction.text_phrase.head, extraction.text_phrase.root))
 
-			print str(paragraph)
-
-
-		docModelCache[initialModel.docNo] = initialModel
+		docModelCache[docNo] = docModel
 
 	# cache
 	pickleFileName = os.path.join("../cache/docModelCache", topic.id)

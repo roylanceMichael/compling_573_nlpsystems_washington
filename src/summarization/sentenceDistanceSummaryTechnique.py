@@ -4,7 +4,7 @@ from summaryTechnique import SummaryTechnique
 
 
 class SentenceDistanceSummaryTechnique(SummaryTechnique):
-	def rankSentences(self):
+	def rankSentences(self, paramaters):
 		# get distance from first sentence
 		for model in self.docModels:
 			d = 0
