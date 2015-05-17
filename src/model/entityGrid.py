@@ -111,7 +111,7 @@ class EntityGrid:
 		self.docModel = docModel
 		self.sentences = self.docModel.cleanSentences()
 		self.fullText = " \n".join(self.sentences)
-		self.textRazor = TextRazor(api_key=mikeKey, extractors=["entities", "topics", "words", "dependency-trees"])
+		self.textRazor = TextRazor(api_key=thomasKey, extractors=["entities", "topics", "words", "dependency-trees"])
 		self.nerResults = self.textRazor.analyze(re.sub(r'[^\x00-\x7F]', ' ', self.fullText))
 		self.allEntities = self.nerResults.entities()
 		self.matrixIndices = self.getMatrixIndices()

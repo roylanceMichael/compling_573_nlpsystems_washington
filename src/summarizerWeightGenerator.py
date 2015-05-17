@@ -5,12 +5,13 @@ __author__ = 'thomas'
   Team: Thomas Marsh, Brandon Gaylor, Michael Roylance
   Date: 4/12/2015
 
-  This code does the following:
-  1. opens a doc files
-  2. extracts data from doc files
-  3. summarizes doc files
-  4. compares summary using ROUGE and outputs results
+  Find optimal weights for summary techniques.
 
+  This code does the following:
+  1. opens doc files
+  2. generates summaries
+  3. iterates through each weight combination
+  4. finds the optimal weights
 
 """
 
@@ -187,8 +188,8 @@ for topic in topics[0:1]:
 	max = 0.0
 	maxRow = None
 	for matrixRow in weightsMatrixArray:
-		rougetotal = matrixRow[5] + matrixRow[6] + matrixRow[7]
-		ave = rougetotal / 3.0
+		summm = matrixRow[5] + matrixRow[6] + matrixRow[7]
+		ave = summm / 3.0
 		if ave > max:
 			max = ave
 			maxRow = matrixRow
@@ -204,15 +205,16 @@ for topic in topics[0:1]:
 				for initialwindow in divisions(0, 5, 5):
 					for initialbonus in divisions(0, 5, 5):
 						for topicsize in divisions(0, 200, 5):
-							w_tfidf, w_sd, w_sl, w_topic = .25, .25, .25, .25
-							resultsArray = summarizeAndGetWeights(initsumm, docCluster, w_tfidf, w_sd, w_sl, w_topic, w_cosign, w_np, pullfactor, initialwindow, initialbonus, topicsize)
-							print resultsArray
-							weightsMatrixArray.append(resultsArray)
+							if not sum(w_tfidf, w_sd, w_sl, w_topic, w_cosign, w_np) == 0.0:
+								w_tfidf, w_sd, w_sl, w_topic = .25, .25, .25, .25
+								resultsArray = summarizeAndGetWeights(initsumm, docCluster, w_tfidf, w_sd, w_sl, w_topic, w_cosign, w_np, pullfactor, initialwindow, initialbonus, topicsize)
+								print resultsArray
+								weightsMatrixArray.append(resultsArray)
 	max = 0.0
 	maxRow = None
 	for matrixRow in weightsMatrixArray:
-		rougetotal = matrixRow[5] + matrixRow[6] + matrixRow[7]
-		ave = rougetotal / 3.0
+		summm = matrixRow[5] + matrixRow[6] + matrixRow[7]
+		ave = summm / 3.0
 		if ave > max:
 			max = ave
 			maxRow = matrixRow

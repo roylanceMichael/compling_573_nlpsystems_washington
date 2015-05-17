@@ -5,11 +5,14 @@ __author__ = 'thomas'
   Team: Thomas Marsh, Brandon Gaylor, Michael Roylance
   Date: 4/12/2015
 
+  Checks how well the Barzilay and Lapata (2005) entity-based coherence ranking algorithm works.
+
   This code does the following:
-  1. opens a doc files
-  2. extracts data from doc files
-  3. summarizes doc files
-  4. compares summary using ROUGE and outputs results
+  1. runs through each doc file
+  2. makes a random-ordered doc
+  3. classifies for rank
+  4. checks to see accuracy
+
 
 
 """

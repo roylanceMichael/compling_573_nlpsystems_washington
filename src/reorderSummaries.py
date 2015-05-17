@@ -5,11 +5,15 @@ __author__ = 'thomas'
   Team: Thomas Marsh, Brandon Gaylor, Michael Roylance
   Date: 4/12/2015
 
+  Implements something similar to Barzilay and Lapata (2005)'s entity-based coherence ranking
+  algorithm to reorder sentences in summaries
+
   This code does the following:
-  1. opens a doc files
-  2. extracts data from doc files
-  3. summarizes doc files
-  4. compares summary using ROUGE and outputs results
+  1. reads each output summary
+  2. decodes with ranking decoder using previously generated model
+  	 (model generation/training is done with entityCoherenceTrainer.py)
+  3. rewrites summaries using new ordering
+  4. compares: (a) unordered summaries (b) reordered summaries (c) baseline summaries.
 
 
 """
@@ -154,7 +158,7 @@ writeBufferToFile(os.path.join(evaluationOutputPath, "D3.results_reordered"), ev
 
 # call the evaluation comparison routine.
 # note:  this will only print the summaries you have on your machine.
-# 		 i.e. you should have run the meadSummaryGenerator.py first
+# 		 i.e. you should have run the meadSummaryGenerator.py and reorderSummaries.py first
 # 		 (though defaults are checked into git)
 comparator = EvaluationCompare(evaluationOutputPath, meadCacheDir, rouge)
 comparison = comparator.getComparison()

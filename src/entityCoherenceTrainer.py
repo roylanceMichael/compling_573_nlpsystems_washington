@@ -5,9 +5,11 @@ __author__ = 'thomas'
   Team: Thomas Marsh, Brandon Gaylor, Michael Roylance
   Date: 4/12/2015
 
+  Trainer for my implementation of Barzilay and Lapata (2005) entity-based coherence ranking algorithm
+
   This code does the following:
   1. reads through corpus
-  2. computes a ranking feature vector ala barzilay and labata (2005)
+  2. builds entity grid, and computes a ranking feature vector for each input document
   3. trains a model using svmlight
   3. writes model to file
 
