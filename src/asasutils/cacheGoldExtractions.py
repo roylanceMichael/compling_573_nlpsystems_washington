@@ -16,7 +16,7 @@ import coherence.scorer
 import coreference.rules
 import pickle
 
-cachePath = "../cache/docModelCache"
+cachePath = "../cache/docModelCacheOld"
 summaryOutputPath = "../outputs"
 reorderedSummaryOutputPath = summaryOutputPath + "_reordered"
 evaluationOutputPath = "../results"

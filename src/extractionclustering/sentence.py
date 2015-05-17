@@ -3,77 +3,24 @@ __author__ = 'mroylance'
 import uuid
 
 ignoreTriples = {"<empty>": None, "<unspecified>": None}
-subjectScore = 3.0
-objectScore = 2.0
-obliqueScore = 1.0
-
-passiveBe = ["were", "was"]
 
 
 class Sentence:
-	def __init__(self, text, id, sentenceNum, docModel):
-		self.simple = text.strip()
+	def __init__(self, text, id, sentenceNum, docModel, paragraph):
+		self.simple = text
 		self.id = id
 		self.sentenceNum = sentenceNum
 		self.docModel = docModel
+		self.paragraph = paragraph
 		self.triples = []
 		self.entities = []
-		self.entityScores = {}
 		self.facts = []
 		self.phrases = []
-		self.keywordResults = []
-		self.factRelations = []
 		self.beginningScore = 0
 		self.uniqueId = str(uuid.uuid1())
 
 		if self.sentenceNum < 2:
 			self.beginningScore = 4 - self.sentenceNum
-
-		# self.assignEntityScores()
-		# self.removeArticleHeader()
-
-	def assignEntityScores(self):
-		# 40 40 20 split
-		totalEntities = len(self.entities)
-		firstForty = float(totalEntities*.4)
-		secondForty = float(firstForty + (totalEntities * 0.4))
-
-		isPassive = False
-		for keyword in self.keywordResults:
-			if keyword[1] == "be" and keyword[2] in passiveBe:
-				isPassive = True
-
-		idx = 0
-		for entity in self.entities:
-			if idx <= firstForty:
-				if isPassive:
-					self.entityScores[entity] = objectScore
-				else:
-					self.entityScores[entity] = subjectScore
-			elif idx <= secondForty:
-				if isPassive:
-					self.entityScores[entity] = subjectScore
-				else:
-					self.entityScores[entity] = objectScore
-			else:
-				self.entityScores[entity] = obliqueScore
-			idx += 1
-
-	def removeArticleHeader(self):
-		beginningArticles = ["--", "_"]
-
-		for beginningArticle in beginningArticles:
-			result = self.simple.find(beginningArticle, 0)
-
-			if result > -1:
-				subStr = self.simple[0:result]
-				uppers = [l for l in subStr if l.isupper()]
-
-				if float(len(uppers)) > float(len(subStr) / 2):
-					self.simple = self.simple[result+len(beginningArticle):]
-					break
-
-		self.simple = self.simple.strip()
 
 	def distanceToOtherSentence(self, otherSentence):
 		score = self.beginningScore
@@ -93,7 +40,7 @@ class Sentence:
 				otherElement = otherFact[1].lower()
 				otherMode = otherFact[2].lower()
 
-				if mode == otherMode and element == otherElement:
+				if otherElement == element and otherMode == mode:
 					score += 1
 
 		for triple in self.triples:
@@ -119,6 +66,11 @@ class Sentence:
 							t3Value == otherT3Value and
 							(t1Value not in ignoreTriples and
 							t3Value not in ignoreTriples)):
+
+					# print "-----"
+					# print t1Value + " " + t2Value + " " + t3Value
+					# print otherT1Value + " " + otherT2Value + " " + otherT3Value
+					# print "-----"
 					score += 1
 
 		for entity in self.entities:
@@ -129,7 +81,7 @@ class Sentence:
 				otherDisplayText = otherEntity[1].lower()
 				otherDomainRole = otherEntity[3].lower()
 
-				if domainRole == otherDomainRole and displayText == otherDisplayText:
+				if displayText == otherDisplayText and domainRole == otherDomainRole:
 					score += 1
 
 		return score

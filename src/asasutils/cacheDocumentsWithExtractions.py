@@ -106,7 +106,7 @@ for topic in topics:
 		docModelCache[docNo] = docModel
 
 	# cache
-	pickleFileName = os.path.join("../cache/docModelCache", topic.id)
+	pickleFileName = os.path.join("../cache/docModelCacheOld", topic.id)
 	pickleFile = open(pickleFileName, 'wb')
 	pickle.dump(docModelCache, pickleFile, pickle.HIGHEST_PROTOCOL)
 	docModelCache = {}

@@ -35,7 +35,7 @@ from evaluate.rougeEvaluator import RougeEvaluator
 from evaluate.evaluationCompare import EvaluationCompare
 
 
-cachePath = "../cache/docModelCache"
+cachePath = "../cache/docModelCacheOld"
 summaryOutputPath = "../outputs"
 reorderedSummaryOutputPath = summaryOutputPath + "_reordered"
 evaluationOutputPath = "../results"
