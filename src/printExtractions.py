@@ -135,7 +135,7 @@ for fileName in os.listdir(cachePath):
 print "running the rouge evaluator"
 evaluationResults = rouge.evaluate()
 evaluation = evaluationResults[0]
-writeBufferToFile(os.path.join(evaluationOutputPath, "D2.results"), evaluation)
+writeBufferToFile(os.path.join(evaluationOutputPath, "D3.results"), evaluation)
 
 # call the evaluation comparison routine.
 # note:  this will only print t

@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 cd ./src/
-./run.sh
+./runD3.sh
