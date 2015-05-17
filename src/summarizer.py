@@ -1,16 +1,15 @@
 __author__ = 'thomas'
 """
-  Python Source Code for ling573 Deliverable 2: Basic Summarizer
+  Python Source Code for ling573 Deliverable 3: Ordering Summarizer
   Author: Thomas Marsh
   Team: Thomas Marsh, Brandon Gaylor, Michael Roylance
-  Date: 4/12/2015
+  Date: 5/16/2015
 
   This code does the following:
-  1. opens a doc files
+  1. opens doc files
   2. extracts data from doc files
-  3. summarizes doc files
-  4. compares summary using ROUGE and outputs results
-
+  3. summarizes doc files and outputs summaries for each topic
+  4. compares summary to baseline using ROUGE and outputs results
 
 """
 

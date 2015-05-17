@@ -6,6 +6,8 @@ import glob
 import re
 from subprocess import check_output
 
+
+# global templates
 rougeConfigHeader = "<ROUGE_EVAL version=\"1.5.5\">\n"
 
 rougeEvalEntryStart = \
@@ -36,7 +38,11 @@ rougeConfigFooter = """
 </ROUGE_EVAL>
 """
 
-
+#
+# class for doing evaluations using rouge.
+# it used to use pyrouge for evaluation, but now it calls rouge directly
+# the output is still sent to pyrouge to get a dictionary.
+#
 class RougeEvaluator():
 	def __init__(self, rougeDir, modelSummaryDir, systemSummaryDir, modelSummaryCachePath, rougeCachePath):
 		self.configFile = rougeConfigHeader
@@ -63,8 +69,6 @@ class RougeEvaluator():
 		entry += rougeEvalEntryModelEntryEnd
 
 		self.configFile += entry
-
-
 
 	# this is because ROUGE doesn't appreciate non-utf8 characters
 	def sanitizingCopy(self, inputFileName, outputFileName):
@@ -94,18 +98,11 @@ class RougeEvaluator():
 		outputFile.write(self.configFile)
 		outputFile.close()
 
-
 	def evaluate(self):
-
-
-		# rouge = Rouge155(abspath,
-		# 				 '-e /opt/dropbox/14-15/573/code/ROUGE/data -a -n 4 -x -c 95 -r 1000 -f A -p 0.5 -t 0 -l 100 -s -d')
 		self.rouge.system_filename_pattern = 'D(\d+)[A-Z]'
 		self.rouge.model_filename_pattern = 'D#ID#-A.M.100.[A-Z].[A-Z]'
 		self.rouge.system_dir = os.path.abspath(self.systemSummaryDir)
 		self.rouge.model_dir = os.path.abspath(self.modelSummaryCachePath)
-
-		# output = rouge.convert_and_evaluate()
 
 		rougeCommand = list()
 		rougeCommand.append(os.path.join(self.rougeDir, "ROUGE-1.5.5.pl"))
@@ -133,8 +130,6 @@ class RougeEvaluator():
 		rougeCommand.append(os.path.abspath(self.rougeConfigFileName))
 
 		print "Calling ROUGE with command: " + " ".join(rougeCommand)
-
-
 
 		output = check_output(rougeCommand)
 

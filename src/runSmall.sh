@@ -1,5 +1,8 @@
 #!/bin/bash
-# Mike Roylance (roylance@uw.edu)
+# Author:  Mike Roylance (roylance@uw.edu)
+#
+# run summarizer (without reordering) on a small bit of data
+#
 
 firstCorporaPath=$1
 secondCorporaPath=$2

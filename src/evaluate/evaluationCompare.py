@@ -2,6 +2,15 @@ __author__ = 'thomas'
 
 import os
 
+#
+# class for comparing the different evaluations.
+#  it will print an easy to read/compare output of:
+#	  (a) generated summaries
+#	  (b) reordered summaries (if they exist)
+#     (c) mead standard output
+#     (d) mead initial output
+#     (e) mead random output
+#
 class EvaluationCompare:
 	def __init__(self, resultsDir, meadCacheDir, rougeEvaluator):
 		self.resultsDir = resultsDir

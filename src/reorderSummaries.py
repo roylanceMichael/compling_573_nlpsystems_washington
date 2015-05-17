@@ -3,7 +3,7 @@ __author__ = 'thomas'
   Python Source Code for ling573 Deliverable 3: Summarizer with Ordering
   Author: Thomas Marsh
   Team: Thomas Marsh, Brandon Gaylor, Michael Roylance
-  Date: 4/12/2015
+  Date: 5/16/2015
 
   Implements something similar to Barzilay and Lapata (2005)'s entity-based coherence ranking
   algorithm to reorder sentences in summaries

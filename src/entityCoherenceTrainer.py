@@ -3,7 +3,7 @@ __author__ = 'thomas'
   Python Source Code for ling573 Deliverable 3: Summarizer with Ordering
   Author: Thomas Marsh
   Team: Thomas Marsh, Brandon Gaylor, Michael Roylance
-  Date: 4/12/2015
+  Date: 5/16/2015
 
   Trainer for my implementation of Barzilay and Lapata (2005) entity-based coherence ranking algorithm
 

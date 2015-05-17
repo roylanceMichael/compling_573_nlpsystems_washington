@@ -1,4 +1,8 @@
-# mike roylance
+# Author:  Mike Roylance (roylance@uw.edu)
+#
+# run tests
+#
+
 # http://stackoverflow.com/questions/1732438/how-to-run-all-python-unit-tests-in-a-directory - thank you!
 import unittest
 

@@ -1,5 +1,9 @@
 #!/bin/bash
-# Mike Roylance (roylance@uw.edu)
+# Author:  thomas marsh (sugarork@uw.edu)
+#          adapted from run.sh by mike roylance (roylance@uw.edu)
+#
+# run mead summarizer to generate baseline summaries
+#
 
 firstCorporaPath=$1
 secondCorporaPath=$2

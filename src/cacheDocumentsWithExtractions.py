@@ -1,5 +1,21 @@
 __author__ = 'mroylance'
 
+"""
+  Python Source Code for ling573 Deliverable 3: Summarizer with Ordering
+  Author: Thomas Marsh
+  Team: Thomas Marsh, Brandon Gaylor, Michael Roylance
+  Date: 5/16/2015
+
+  Extracts entities and other data using attensity parser
+
+  This code does the following:
+  1. reads through documents
+  2. pulls out entities and semantic information
+  3. saves extractions into pickle file
+
+"""
+
+
 import os
 import re
 import sys

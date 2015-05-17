@@ -1,5 +1,19 @@
 __author__ = 'mroylance'
 
+"""
+  Python Source Code for ling573 Deliverable 3: Summarizer with Ordering
+  Author: Thomas Marsh
+  Team: Thomas Marsh, Brandon Gaylor, Michael Roylance
+  Date: 5/16/2015
+
+  Converts from topic-centered documents to plain-text documents
+
+  This code does the following:
+  1. reads through documents
+  2. writes text from documents into cached files
+
+"""
+
 import os
 import sys
 import extract

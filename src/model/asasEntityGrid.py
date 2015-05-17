@@ -89,6 +89,7 @@ class AsasEntityGrid:
 		for index in self.matrixIndices:
 			print index + " - ",
 		print "\n"
+		score = 0.0
 		for sNum in range(0, len(self.grid)):
 			row = ""
 			for index in self.matrixIndices:

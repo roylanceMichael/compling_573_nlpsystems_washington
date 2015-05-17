@@ -1,5 +1,9 @@
 #!/bin/bash
-# Mike Roylance (roylance@uw.edu)
+# Author:  thomas marsh (sugarork@uw.edu)
+#          adapted from run.sh by mike roylance (roylance@uw.edu)
+#
+# run emprical optimal summary technique weight generator
+#
 
 firstCorporaPath=$1
 secondCorporaPath=$2

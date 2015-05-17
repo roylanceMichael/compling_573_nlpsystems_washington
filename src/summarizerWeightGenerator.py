@@ -1,9 +1,9 @@
 __author__ = 'thomas'
 """
-  Python Source Code for ling573 Deliverable 2: Basic Summarizer
+  Python Source Code for ling573 Deliverable 3: Ordering Summarizer
   Author: Thomas Marsh
   Team: Thomas Marsh, Brandon Gaylor, Michael Roylance
-  Date: 4/12/2015
+  Date: 5/16/2015
 
   Find optimal weights for summary techniques.
 

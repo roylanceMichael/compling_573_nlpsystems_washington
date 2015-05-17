@@ -1,9 +1,9 @@
 __author__ = 'thomas'
 """
-  Python Source Code for ling573:  make summaries using mead summarizer
+  Python Source Code for ling573:  make baseline summaries using mead summarizer
   Author: Thomas Marsh
   Team: Thomas Marsh, Brandon Gaylor, Michael Roylance
-  Date: 4/12/2015
+  Date: 5/16/2015
 
   This code does the following:
   1. opens doc files

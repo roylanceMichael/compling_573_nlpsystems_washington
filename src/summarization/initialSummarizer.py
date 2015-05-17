@@ -11,7 +11,16 @@ from graphSummaryTechnique import GraphSummaryTechnique
 
 import operator
 
-
+#
+# container class for holding summarizers.  These summarizers are descendants
+# of the SummaryTechnique abstract base class.
+# every SummaryTechnique is weighted and can contribute to the overall score
+#
+# each summary happens only once, ranking all, then the gets on the summary
+# techniques combine the gets with a weight and return a score for each sentence.
+#
+# from that, we can add up weighted votes for each sentence and select the best one.
+#
 class InitialSummarizer:
 	def __init__(self, docCluster, idf, tryTfIdf, trySentenceDistance, trySentenceLength, tryTopicSim):
 		self.docCluster = docCluster
