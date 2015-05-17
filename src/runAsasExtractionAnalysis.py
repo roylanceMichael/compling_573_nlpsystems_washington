@@ -138,7 +138,7 @@ for fileName in os.listdir(cachePath):
 				score = compareSentence.distanceToOtherSentence(allSentences[otherUniqueSentenceId])
 				scoreDictionary[uniqueSentenceId] += score
 
-		maxSentences = 7
+		maxSentences = 15
 		sentenceIdx = 0
 		uniqueSummaries = {}
 		bestSentences = []

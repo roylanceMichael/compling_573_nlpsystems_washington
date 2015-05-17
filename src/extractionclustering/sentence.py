@@ -7,6 +7,8 @@ subjectScore = 3.0
 objectScore = 2.0
 obliqueScore = 1.0
 
+passiveBe = ["were", "was"]
+
 
 class Sentence:
 	def __init__(self, text, id, sentenceNum, docModel):
@@ -35,12 +37,23 @@ class Sentence:
 		firstForty = float(totalEntities*.4)
 		secondForty = float(firstForty + (totalEntities * 0.4))
 
+		isPassive = False
+		for keyword in self.keywordResults:
+			if keyword[1] == "be" and keyword[2] in passiveBe:
+				isPassive = True
+
 		idx = 0
 		for entity in self.entities:
 			if idx <= firstForty:
-				self.entityScores[entity] = subjectScore
+				if isPassive:
+					self.entityScores[entity] = objectScore
+				else:
+					self.entityScores[entity] = subjectScore
 			elif idx <= secondForty:
-				self.entityScores[entity] = objectScore
+				if isPassive:
+					self.entityScores[entity] = subjectScore
+				else:
+					self.entityScores[entity] = objectScore
 			else:
 				self.entityScores[entity] = obliqueScore
 			idx += 1
