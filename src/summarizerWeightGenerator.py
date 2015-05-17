@@ -157,7 +157,7 @@ def divisions(start, end, n):
 	r = (end - start) / n
 	for i in range(n+1):
 		yield start + r*i
-
+print topics
 for topic in topics[0:1]:
 	transformedTopicId = topic.docsetAId[:-3] + '-A'
 	print "processing topicId: " + transformedTopicId
