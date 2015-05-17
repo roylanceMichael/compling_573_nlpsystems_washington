@@ -6,8 +6,12 @@ import extract
 import extract.topicReader
 import extract.documentRepository
 import model.doc_model
+import model.asasEntityGrid
+import model.entityGrid
 import coherence.scorer
 import coreference.rules
+import svmlight
+import itertools
 import pickle
 import operator
 import extractionclustering.sentence
@@ -17,12 +21,15 @@ from evaluate.evaluationCompare import EvaluationCompare
 
 cachePath = "../cache/docModelCache"
 summaryOutputPath = "../outputs"
+reorderedSummaryOutputPath = summaryOutputPath + "_reordered"
 evaluationOutputPath = "../results"
 modelSummaryCachePath = "../cache/modelSummaryCache"
 documentCachePath = "../cache/documentCache"
 idfCachePath = "../cache/idfCache"
 meadCacheDir = "../cache/meadCache"
 rougeCacheDir = "../cache/rougeCache"
+
+rankModel = svmlight.read_model('../cache/svmlightCache/svmlightModel.dat')
 
 rouge = RougeEvaluator("../ROUGE", "/opt/dropbox/14-15/573/Data/models/devtest", summaryOutputPath, modelSummaryCachePath, rougeCacheDir)
 
@@ -38,6 +45,27 @@ documentRepository.readFileIdDictionaryFromFileCache(documentCachePath)
 # cache the model summaries
 rouge.cacheModelSummaries(topics)
 
+def getBestSummaryOrder(sentences, docIndex):
+	permList = []
+
+	testVectors = []
+
+	permutations = itertools.permutations(sentences)
+	for permutation in permutations:
+		permList.append(permutation)
+		grid = model.asasEntityGrid.AsasEntityGrid(permutation)
+		featureVector = model.entityGrid.FeatureVector(grid, docIndex)
+		vector = featureVector.getVector(1)
+		testVectors.append(vector)
+
+	predictions = svmlight.classify(rankModel, testVectors)
+
+	maxInList = max(predictions)
+	maxIndex = predictions.index(maxInList)
+	print "reordering document(" + str(docIndex) + ")"
+	bestOrder = permList[maxIndex]
+	return bestOrder
+
 ##############################################################
 # helper function for printing out buffers to files
 ##############################################################
@@ -45,6 +73,7 @@ def writeBufferToFile(path, buffer):
 	outFile = open(path, 'w')
 	outFile.write(buffer)
 	outFile.close()
+docIndex = 0
 
 for fileName in os.listdir(cachePath):
 	pickleFilePath = os.path.join(cachePath, fileName)
@@ -53,6 +82,7 @@ for fileName in os.listdir(cachePath):
 		topicDictionary = pickle.load(pickleFile)
 
 		allSentences = {}
+
 		for docNo in topicDictionary:
 			print docNo
 
@@ -108,30 +138,49 @@ for fileName in os.listdir(cachePath):
 				score = compareSentence.distanceToOtherSentence(allSentences[otherUniqueSentenceId])
 				scoreDictionary[uniqueSentenceId] += score
 
-		maxSentences = 10
+		maxSentences = 7
 		sentenceIdx = 0
 		uniqueSummaries = {}
+		bestSentences = []
 		for tupleResult in sorted(scoreDictionary.items(), key=operator.itemgetter(1), reverse=True):
 			if sentenceIdx > maxSentences:
 				break
 
 			sentence = allSentences[tupleResult[0]]
+			bestSentences.append(sentence)
 			score = tupleResult[1]
 			strippedSentence = re.sub("\s+", " ", sentence.simple)
 			uniqueSummaries[strippedSentence] = None
 
-			print (strippedSentence, score)
+			# print (strippedSentence, score)
 			sentenceIdx += 1
 
 		summary = ""
 		for uniqueSentence in uniqueSummaries:
 			summary += uniqueSentence + "\n"
 
+		print summary
 		if summary is not None:
 			summaryFileName = summaryOutputPath + "/" + fileName
 			summaryFile = open(summaryFileName, 'wb')
 			summaryFile.write(summary)
 			summaryFile.close()
+
+		print "now calculating the best order..."
+		bestOrder = getBestSummaryOrder(bestSentences, docIndex)
+		summary = ""
+		for newSentence in bestOrder:
+			summary += re.sub("\s+", " ", newSentence.simple) + "\n"
+
+		if summary is not None:
+			summaryFileName = reorderedSummaryOutputPath + "/" + fileName
+			summaryFile = open(summaryFileName, 'wb')
+			summaryFile.write(summary)
+			summaryFile.close()
+
+		print summary
+
+	docIndex += 1
 
 print "running the rouge evaluator"
 evaluationResults = rouge.evaluate()

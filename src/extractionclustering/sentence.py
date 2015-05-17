@@ -3,6 +3,9 @@ __author__ = 'mroylance'
 import uuid
 
 ignoreTriples = {"<empty>": None, "<unspecified>": None}
+subjectScore = 3.0
+objectScore = 2.0
+obliqueScore = 1.0
 
 
 class Sentence:
@@ -13,6 +16,7 @@ class Sentence:
 		self.docModel = docModel
 		self.triples = []
 		self.entities = []
+		self.entityScores = {}
 		self.facts = []
 		self.phrases = []
 		self.keywordResults = []
@@ -22,6 +26,24 @@ class Sentence:
 
 		if self.sentenceNum < 2:
 			self.beginningScore = 4 - self.sentenceNum
+
+		self.assignEntityScores()
+
+	def assignEntityScores(self):
+		# 40 40 20 split
+		totalEntities = len(self.entities)
+		firstForty = float(totalEntities*.4)
+		secondForty = float(firstForty + (totalEntities * 0.4))
+
+		idx = 0
+		for entity in self.entities:
+			if idx <= firstForty:
+				self.entityScores[entity] = subjectScore
+			elif idx <= secondForty:
+				self.entityScores[entity] = objectScore
+			else:
+				self.entityScores[entity] = obliqueScore
+			idx += 1
 
 	def distanceToOtherSentence(self, otherSentence):
 		score = self.beginningScore
