@@ -60,7 +60,6 @@ for topic in topics:
 							continue
 
 						try:
-
 							sentenceId = int(roots[key]["sentence"])
 							root = str(roots[key]["root"])
 							word = str(roots[key]["word"])
