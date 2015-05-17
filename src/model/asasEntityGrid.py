@@ -21,6 +21,7 @@ class AsasEntityGrid:
 		for sentence in sentences:
 			for entity in sentence.entities:
 				self.entities.append(entity)
+				# print entity
 
 		self.matrixIndices = self.getMatrixIndices()
 		self.numUniqueEntities = len(self.matrixIndices)
@@ -38,9 +39,11 @@ class AsasEntityGrid:
 	def fillMatrix(self):
 		matrix = self.makeEmptyMatrix()
 
+		sNum = 0
 		for sentence in self.sentences:
 			for entity in sentence.entityScores:
-				self.setEntityUseType(entity[4], matrix, sentence.sentenceNum, sentence.entityScores[entity])
+				self.setEntityUseType(entity[4], matrix, sNum, sentence.entityScores[entity])
+			sNum += 1
 
 		return matrix
 

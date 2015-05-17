@@ -144,15 +144,17 @@ for fileName in files:
 			featureVector.printVector()
 			# featureVector.printVectorWithIndices()
 			vector = featureVector.getVector(2)
+			# grid.printMatrix()
+			# featureVector.printVector()
+
 
 			clone = sentences[:]
 			random.shuffle(clone)
 			badGrid = model.asasEntityGrid.AsasEntityGrid(clone)
-			# grid.printMatrix()
 			badFeatureVector = FeatureVector(badGrid, docIndex)
-			# featureVector.printVector()
+			# badGrid.printMatrix()
+			# badFeatureVector.printVector()
 			# featureVector.printVectorWithIndices()
-			vector = featureVector.getVector(2)
 			badVector = badFeatureVector.getVector(1)
 			print vector
 			print badVector
