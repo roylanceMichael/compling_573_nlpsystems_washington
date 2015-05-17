@@ -57,37 +57,38 @@ for fileName in os.listdir(cachePath):
 			print docNo
 
 			docModel = topicDictionary[docNo]
-			sentences = {}
-			sentenceNum = 0
-			for sentence in docModel.extractionSentences:
-				text = docModel.text
-				actualSentence = text[sentence[1]:sentence[1] + sentence[2]]
-				sentences[sentence[0]] = \
-					extractionclustering.sentence.Sentence(
-						actualSentence,
-						sentence[0],
-						sentenceNum,
-						docModel)
-				sentenceNum += 1
+			for paragraph in docModel.paragraphs:
+				sentences = {}
+				sentenceNum = 0
+				for sentence in paragraph.extractionSentences:
+					text = paragraph.text
+					actualSentence = text[sentence[1]:sentence[1] + sentence[2]]
+					sentences[sentence[0]] = \
+						extractionclustering.sentence.Sentence(
+							actualSentence,
+							sentence[0],
+							sentenceNum,
+							docModel)
+					sentenceNum += 1
 
-			for keywordResult in docModel.extractionKeywordResults:
-				if keywordResult[0] in sentences:
-					sentences[keywordResult[0]].keywordResults.append(keywordResult)
+				for keywordResult in paragraph.extractionKeywordResults:
+					if keywordResult[0] in sentences:
+						sentences[keywordResult[0]].keywordResults.append(keywordResult)
 
-			for triple in docModel.extractionTriples:
-				sentences[triple[0]].triples.append(triple)
+				for triple in paragraph.extractionTriples:
+					sentences[triple[0]].triples.append(triple)
 
-			for entity in docModel.extractionEntities:
-				sentences[entity[0]].entities.append(entity)
+				for entity in paragraph.extractionEntities:
+					sentences[entity[0]].entities.append(entity)
 
-			for fact in docModel.extractionFacts:
-				sentences[fact[0]].facts.append(fact)
+				for fact in paragraph.extractionFacts:
+					sentences[fact[0]].facts.append(fact)
 
-			for phrase in docModel.extractionTextPhrases:
-				sentences[phrase[0]].phrases.append(phrase)
+				for phrase in paragraph.extractionTextPhrases:
+					sentences[phrase[0]].phrases.append(phrase)
 
-			for sentence in sentences:
-				allSentences[sentences[sentence].uniqueId] = sentences[sentence]
+				for sentence in sentences:
+					allSentences[sentences[sentence].uniqueId] = sentences[sentence]
 
 		print "doing clustering now on summarization..."
 
