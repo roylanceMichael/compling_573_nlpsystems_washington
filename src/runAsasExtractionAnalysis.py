@@ -146,8 +146,8 @@ for fileName in os.listdir(cachePath):
 
 			# for keywordResult in compareSentence.keywordResults:
 				# print keywordResult
-			print compareSentence.simple
-			print "-------------------------"
+			# print compareSentence.simple
+			# print "-------------------------"
 			for otherUniqueSentenceId in allSentences:
 				if uniqueSentenceId == otherUniqueSentenceId:
 					continue
@@ -155,7 +155,7 @@ for fileName in os.listdir(cachePath):
 				score = compareSentence.distanceToOtherSentence(allSentences[otherUniqueSentenceId])
 				scoreDictionary[uniqueSentenceId] += score
 
-		maxSentences = 7
+		maxSentences = 5
 		sentenceIdx = 0
 		uniqueSummaries = {}
 		bestSentences = []
