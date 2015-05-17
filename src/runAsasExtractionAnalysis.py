@@ -61,7 +61,7 @@ for fileName in os.listdir(cachePath):
 			sentenceNum = 0
 			for sentence in docModel.extractionSentences:
 				text = docModel.text
-				actualSentence = text[sentence[1]:sentence[1] + sentence[2] + 1]
+				actualSentence = text[sentence[1]:sentence[1] + sentence[2]]
 				sentences[sentence[0]] = \
 					extractionclustering.sentence.Sentence(
 						actualSentence,
@@ -70,10 +70,15 @@ for fileName in os.listdir(cachePath):
 						docModel)
 				sentenceNum += 1
 
+			for keywordResult in docModel.extractionKeywordResults:
+				if keywordResult[0] in sentences:
+					sentences[keywordResult[0]].keywordResults.append(keywordResult)
+
 			for triple in docModel.extractionTriples:
-					sentences[triple[0]].triples.append(triple)
+				sentences[triple[0]].triples.append(triple)
+
 			for entity in docModel.extractionEntities:
-					sentences[entity[0]].entities.append(entity)
+				sentences[entity[0]].entities.append(entity)
 
 			for fact in docModel.extractionFacts:
 				sentences[fact[0]].facts.append(fact)
@@ -89,9 +94,12 @@ for fileName in os.listdir(cachePath):
 		scoreDictionary = {}
 		for uniqueSentenceId in allSentences:
 			scoreDictionary[uniqueSentenceId] = 0
-
 			compareSentence = allSentences[uniqueSentenceId]
 
+			# for keywordResult in compareSentence.keywordResults:
+				# print keywordResult
+			print compareSentence.simple
+			print "-------------------------"
 			for otherUniqueSentenceId in allSentences:
 				if uniqueSentenceId == otherUniqueSentenceId:
 					continue

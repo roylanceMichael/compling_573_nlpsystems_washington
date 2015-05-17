@@ -15,6 +15,8 @@ class Sentence:
 		self.entities = []
 		self.facts = []
 		self.phrases = []
+		self.keywordResults = []
+		self.factRelations = []
 		self.beginningScore = 0
 		self.uniqueId = str(uuid.uuid1())
 
