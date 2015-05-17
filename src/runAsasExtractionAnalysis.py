@@ -168,9 +168,14 @@ for fileName in os.listdir(cachePath):
 
 		print "now calculating the best order..."
 		bestOrder = getBestSummaryOrder(bestSentences, docIndex)
+
 		summary = ""
+		uniqueSummaries = {}
 		for newSentence in bestOrder:
-			summary += re.sub("\s+", " ", newSentence.simple) + "\n"
+			actualText = re.sub("\s+", " ", newSentence.simple) + "\n"
+			if actualText not in uniqueSummaries:
+				uniqueSummaries[actualSentence] = None
+				summary += actualText
 
 		if summary is not None:
 			summaryFileName = reorderedSummaryOutputPath + "/" + fileName
