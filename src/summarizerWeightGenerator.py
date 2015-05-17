@@ -176,7 +176,7 @@ for topic in topics[0:1]:
 
 	initsumm = InitialSummarizer(docCluster, idf, True, True, True, True)
 
-
+	"""
 	for w_tfidf in divisions(0.0, 1.0, 3):
 		for w_sd in divisions(0.0, 1.0, 3):
 			for w_sl in divisions(0.0, 1.0, 3):
@@ -196,7 +196,7 @@ for topic in topics[0:1]:
 
 	print "Max Row, weights:"
 	print maxRow
-
+	"""
 	weightsMatrixArray = []
 
 	for w_cosign in divisions(0.0, 1.0, 3):
