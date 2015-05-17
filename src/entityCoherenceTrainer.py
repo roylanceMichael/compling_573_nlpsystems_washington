@@ -30,6 +30,7 @@ import nltk.data
 import svmlight
 from nltk.corpus import reuters
 import time
+import os
 
 # get parser args and set up global variables
 parser = argparse.ArgumentParser(description='Basic Document Summarizer.')
@@ -61,6 +62,21 @@ def writeBufferToFile(path, buffer):
 	outFile.write(buffer)
 	outFile.close()
 
+def readSentencesFromFile(fileName):
+	allSentences = []
+	inFile = open(fileName, 'r')
+	for line in inFile:
+		allSentences.append(line.strip())
+	inFile.close()
+	return allSentences
+
+def writeSentencesToFile(sentences, fileName):
+	file = open(fileName, 'w')
+	for sentence in sentences:
+		file.write(sentence + "\n")
+	file.close()
+
+
 def getSentencesFromCorpusDocument(document):
 	sentences = []
 	cleanDoc = document.replace('\n', ' ')
@@ -86,8 +102,21 @@ def getFullTextAsSentencesFromDocModel(document):
 docIndex = 1
 featureVectors = []
 firstDocument = None
-files = reuters.fileids()
-numDocs = len(files)
+
+
+def getAllFileNames():
+	directories = ["/opt/dropbox/14-15/573/Data/models/devtest",
+				   "/opt/dropbox/14-15/573/Data/models/training/2009",
+				   "/opt/dropbox/14-15/573/Data/mydata"]
+	fileNames = []
+	for directory in directories:
+		files = os.listdir(directory)
+		for file in files:
+			fileNames.append(os.path.join(directory, file))
+
+	for fileName in fileNames:
+		print fileName
+	return fileNames
 
 
 def getSentenceText(sentences):
@@ -96,17 +125,19 @@ def getSentenceText(sentences):
 		plainSentences.append(" ".join(sentence))
 	return plainSentences
 
+files = getAllFileNames()
+numDocs = len(files)
 startTime = time.time()
 fNumDocs = float(numDocs)
 numDocsTried = 1
 maxN = 5000
-for fileid in files:
-	sentences = getSentencesFromCorpusDocument(reuters.raw("test/15387"))
+for fileName in files:
+	sentences = readSentencesFromFile(fileName)
 
 	# get the doc objects, and build doc models from them
 	secs = time.time() - startTime
 	docsPerSec = numDocsTried / secs
-	print "processing doc(" + str(docIndex) + "/" + str(numDocsTried) + "): " + str(fileid) + ", rate=" + str(round(docsPerSec, 4)) + " docs per second."
+	print "processing doc(" + str(docIndex) + "/" + str(numDocsTried) + "): " + fileName + ", rate=" + str(round(docsPerSec, 4)) + " docs per second."
 
 	if len(sentences) > 1:  # because there have to be transitions
 		docModel = DummyDocModel(sentences)
