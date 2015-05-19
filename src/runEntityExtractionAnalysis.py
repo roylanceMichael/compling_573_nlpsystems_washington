@@ -118,9 +118,13 @@ for fileName in os.listdir(cachePath):
 				sentence = allSentences[tupleResult[0]]
 				score = tupleResult[1]
 				strippedSentence = re.sub("\s+", " ", sentence.simple)
+
+				if strippedSentence in uniqueSummaries:
+					continue
+
 				totalWords += len(strippedSentence.split(" "))
 
-				if totalWords > 100:
+				if totalWords > 110:
 					break
 
 				uniqueSummaries[strippedSentence] = None
