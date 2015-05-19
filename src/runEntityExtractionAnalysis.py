@@ -108,13 +108,9 @@ for fileName in os.listdir(cachePath):
 					scoreDictionary[uniqueSentenceId] += score
 
 			totalWords = 0
-			maxSentences = 15
 			sentenceIdx = 0
 			uniqueSummaries = {}
 			for tupleResult in sorted(scoreDictionary.items(), key=operator.itemgetter(1), reverse=True):
-				if sentenceIdx > maxSentences:
-					break
-
 				sentence = allSentences[tupleResult[0]]
 				score = tupleResult[1]
 				strippedSentence = re.sub("\s+", " ", sentence.simple)
@@ -124,7 +120,7 @@ for fileName in os.listdir(cachePath):
 
 				totalWords += len(strippedSentence.split(" "))
 
-				if totalWords > 110:
+				if totalWords > 500:
 					break
 
 				uniqueSummaries[strippedSentence] = None
