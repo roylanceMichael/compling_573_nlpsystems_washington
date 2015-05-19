@@ -107,6 +107,7 @@ for fileName in os.listdir(cachePath):
 					score = compareSentence.distanceToOtherSentence(allSentences[otherUniqueSentenceId])
 					scoreDictionary[uniqueSentenceId] += score
 
+			totalWords = 0
 			maxSentences = 15
 			sentenceIdx = 0
 			uniqueSummaries = {}
@@ -117,6 +118,11 @@ for fileName in os.listdir(cachePath):
 				sentence = allSentences[tupleResult[0]]
 				score = tupleResult[1]
 				strippedSentence = re.sub("\s+", " ", sentence.simple)
+				totalWords += len(strippedSentence.split(" "))
+
+				if totalWords > 100:
+					break
+
 				uniqueSummaries[strippedSentence] = None
 
 				print (strippedSentence, score)

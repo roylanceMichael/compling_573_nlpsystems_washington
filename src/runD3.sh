@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-python2.7 printExtractions.py
+python2.7 runEntityExtractionAnalysis.py
