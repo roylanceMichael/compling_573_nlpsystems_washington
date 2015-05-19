@@ -130,7 +130,7 @@ for fileName in os.listdir(cachePath):
 
 			summary = ""
 			for uniqueSentence in uniqueSummaries:
-				summary += uniqueSentence
+				summary += uniqueSentence + "\n"
 
 			if summary is not None:
 				summaryFileName = summaryOutputPath + "/" + fileName
