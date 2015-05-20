@@ -120,7 +120,7 @@ for fileName in os.listdir(cachePath):
 
 				totalWords += len(strippedSentence.split(" "))
 
-				if totalWords > 500:
+				if totalWords > 100:
 					break
 
 				uniqueSummaries[strippedSentence] = None
