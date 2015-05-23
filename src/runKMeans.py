@@ -153,7 +153,8 @@ for topic in topics:
 	clusters = npclustering.kmeans.performKMeans(initialPoints, allPoints)
 
 	summary = ""
-	for cluster in clusters:
+	# we receive a tuple back, currently
+	for cluster in clusters[0]:
 		summary += cluster.highestScoringPoint().sentence.simple
 
 	if summary is not None:
