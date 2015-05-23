@@ -36,10 +36,10 @@ class Cluster:
 		highestPoint = None
 		highestScore = 0
 
-		for point in self.points:
-			score = self.calculateSimilarity(point)
+		for pointKey in self.points:
+			score = self.calculateSimilarity(self.points[pointKey])
 			if score > highestScore:
-				highestPoint = point
+				highestPoint = self.points[pointKey]
 				highestScore = score
 
 		return highestPoint
