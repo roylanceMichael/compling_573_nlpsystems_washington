@@ -6,10 +6,13 @@
 # http://stackoverflow.com/questions/1732438/how-to-run-all-python-unit-tests-in-a-directory - thank you!
 import unittest
 
-testModules = [  # 'tests.documentTests',  #'tests.topicReaderTests',  #'tests.documentRepositoryTests',
+testModules = [  'tests.kmeansTests'
+				#'tests.documentTests',
+				 #'tests.topicReaderTests',
+				 #'tests.documentRepositoryTests',
 				 # 'tests.documentIndexerTests',
 				 # 'tests.npClusteringTests',
-				 'tests.coreferenceTests',
+				 # 'tests.coreferenceTests',
 				 # 'tests.coherenceTests'
 				 ]
 

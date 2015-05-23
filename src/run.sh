@@ -29,10 +29,10 @@ if [ -z "$5" ]; then
 fi
 if [ -z "$6" ]; then
 	#rougePath="/opt/dropbox/14-15/573/code/ROUGE"
-	rougePath="../ROUGE"
+	rougePath="../ROUGE"˚
 fi
 
 # remove all outputs first
 rm -rf ../outputs/*
 
-python2.7 runPerfectOrdering.py --doc-input-path $firstCorporaPath --doc-input-path2 $secondCorporaPath --topic-xml $topicXmlFile --output-path $outputPath --gold-standard-summary-path $modelSummaryPath --rouge-path $rougePath
+python2.7 runKMeans.py --doc-input-path $firstCorporaPath --doc-input-path2 $secondCorporaPath --topic-xml $topicXmlFile --output-path $outputPath --gold-standard-summary-path $modelSummaryPath --rouge-path $rougePath

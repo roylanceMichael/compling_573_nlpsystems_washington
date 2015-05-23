@@ -5,6 +5,7 @@ from sentenceDistanceSummaryTechnique import SentenceDistanceSummaryTechnique
 from sentenceLengthSummaryTechnique import SentenceLengthSummaryTechnique
 from topicSimSummaryTechnique import TopicSimSummaryTechnique
 from tfidfSummaryTechnique import TfidfSummaryTechnique
+from kmeansTechnique import KMeansTechnique
 from graphSummaryTechnique import GraphSummaryTechnique
 from model.doc_model import Cluster
 from highestFrequencyTechnique import HighestFrequencyTechnique
@@ -23,7 +24,7 @@ import operator
 # from that, we can add up weighted votes for each sentence and select the best one.
 #
 class InitialSummarizer:
-	def __init__(self, docCluster, idf, tryTfIdf, trySentenceDistance, trySentenceLength, tryTopicSim, tryHighestFrequency):
+	def __init__(self, docCluster, idf, tryTfIdf, trySentenceDistance, trySentenceLength, tryTopicSim, tryHighestFrequency, tryKmeans=False):
 		self.docCluster = docCluster
 		self.idf = idf
 		self.N = 10  # keep the top N sentences for each technique
@@ -40,6 +41,7 @@ class InitialSummarizer:
 		self.techniques.append(self.sentenceLength)
 		self.highestFrequency = HighestFrequencyTechnique(tryHighestFrequency, 1.0, docCluster, "highest")
 		self.techniques.append(self.highestFrequency)
+		self.kmeans = KMeansTechnique(tryKmeans, 1.0, docCluster, "kmeans")
 		self.summarize(None)
 
 	def summarize(self, parameters):
@@ -49,11 +51,6 @@ class InitialSummarizer:
 	
 	def getBestSentences(self, w_tfidf=None, w_sd=None, w_sl=None, w_topic=None, w_cosign=0.0, w_np=0.0,
 		pullfactor=-1.0, initialwindow=2, initialbonus=4, topicsize=75, parameters=None):
-		
-		# actualSentences = ""
-		# for sentence in self.highestFrequency:
-		# 	actualSentences = sentence + " " 
-		# return actualSentences
 
 		if w_tfidf is not None:
 			self.tfIdf.weight = w_tfidf
@@ -63,7 +60,6 @@ class InitialSummarizer:
 			self.sentenceLength.weight = w_sl
 		if w_topic is not None:
 			self.topicSim.weight = w_topic
-		# self.highestFrequency.weight = 1.0
 
 		aggregateSentences = {}
 		for model in self.docCluster:
@@ -83,9 +79,6 @@ class InitialSummarizer:
 		self.graph.rankSentences(parameters)
 
 		sortedAggregateSentences = sorted(self.graph.items(), key=operator.itemgetter(1), reverse=True)
-		#topNSortedAggregateSentences = sortedAggregateSentences[:self.N]  # tuples here... convert to sentences
-		#justTopNSentences = [seq[0] for seq in topNSortedAggregateSentences]
-		#justTopNSentences = [seq[0] for seq in sortedAggregateSentences]
 
 		# maximum summary length is measured in words
 		summary = ""
