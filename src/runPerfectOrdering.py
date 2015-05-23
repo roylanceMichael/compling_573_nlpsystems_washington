@@ -73,7 +73,7 @@ summaries = {}
 for fileName in os.listdir(args.goldStandardSummaryPath):
 	filePath = os.path.join(args.goldStandardSummaryPath, fileName)
 
-	outputFileName = re.sub("-", "", fileName)[0:6]
+	outputFileName = fileName[0:5] + fileName[len(fileName)-1]
 
 	with open(filePath, 'r') as docFile:
 		entireContent = docFile.read()
