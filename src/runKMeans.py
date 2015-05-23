@@ -155,7 +155,9 @@ for topic in topics:
 	summary = ""
 	# we receive a tuple back, currently
 	for cluster in clusters[0]:
-		summary += cluster.highestScoringPoint().sentence
+		highestPoint = cluster.highestScoringPoint()
+		if highestPoint is not None:
+			summary += highestPoint.sentence
 
 	if summary is not None:
 		summaryFileName = summaryOutputPath + "/" + topic.id

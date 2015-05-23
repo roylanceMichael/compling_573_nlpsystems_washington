@@ -146,4 +146,7 @@ class KmeansTests(unittest.TestCase):
 				print cluster.points[pointKey]
 				print " "
 
+			print "highest is:"
+			print cluster.highestScoringPoint().sentence
+
 		self.assertTrue(True)
