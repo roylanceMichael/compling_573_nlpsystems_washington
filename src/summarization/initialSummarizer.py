@@ -49,6 +49,12 @@ class InitialSummarizer:
 	
 	def getBestSentences(self, w_tfidf=None, w_sd=None, w_sl=None, w_topic=None, w_cosign=0.0, w_np=0.0,
 		pullfactor=-1.0, initialwindow=2, initialbonus=4, topicsize=75, parameters=None):
+		
+		# actualSentences = ""
+		# for sentence in self.highestFrequency:
+		# 	actualSentences = sentence + " " 
+		# return actualSentences
+
 		if w_tfidf is not None:
 			self.tfIdf.weight = w_tfidf
 		if w_sd is not None:
@@ -57,7 +63,7 @@ class InitialSummarizer:
 			self.sentenceLength.weight = w_sl
 		if w_topic is not None:
 			self.topicSim.weight = w_topic
-		self.highestFrequency.weight = 1.0
+		# self.highestFrequency.weight = 1.0
 
 		aggregateSentences = {}
 		for model in self.docCluster:

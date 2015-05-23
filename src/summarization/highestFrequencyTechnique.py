@@ -1,6 +1,7 @@
 __author__ = 'mroylance'
 
 import operator
+import re
 from summaryTechnique import SummaryTechnique
 
 nounPhraseKey = "NP"
@@ -16,6 +17,9 @@ class HighestFrequencyTechnique(SummaryTechnique):
 					previousChunk = None
 					for chunk in sentence:
 						currentChunk = str(chunk).lower()
+						if not re.match("[A-Za-z]+", currentChunk) or chunk.tag != nounPhraseKey:
+							continue
+
 						if previousChunk is None:
 							previousChunk = currentChunk
 							continue
@@ -32,11 +36,12 @@ class HighestFrequencyTechnique(SummaryTechnique):
 		for tupleResult in sorted(frequencyDict.items(), key=operator.itemgetter(1), reverse=True):
 			i = 0
 			while i < tupleResult[1]:
-				summary += tupleResult[0] + " "
+				summary = summary + str(tupleResult[0][0]) + " " + str(tupleResult[0][1]) + " " 
 				i += 1
 				words += 2
 
 			if words > 100:
 				break
 
+		print "current summary: " + summary
 		self[summary] = 1
