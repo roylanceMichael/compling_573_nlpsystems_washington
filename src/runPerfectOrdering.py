@@ -17,12 +17,12 @@ import argparse
 import re
 import os
 import os.path
+import extract
+import extract.topicReader
+import extract.documentRepository
 
 from evaluate.rougeEvaluator import RougeEvaluator
-import model.idf
 from evaluate.evaluationCompare import EvaluationCompare
-
-
 
 
 # get parser args and set up global variables
@@ -56,7 +56,18 @@ meadCacheDir = "../cache/meadCache"
 rougeCacheDir = "../cache/rougeCache"
 
 rouge = RougeEvaluator(args.rougePath, args.goldStandardSummaryPath, summaryOutputPath, modelSummaryCachePath, rougeCacheDir)
-idf = model.idf.Idf(idfCachePath)
+
+topics = []
+for topic in extract.topicReader.Topic.factoryMultiple(args.topicXml):
+	topics.append(topic)
+
+documentRepository = extract.documentRepository.DocumentRepository(args.docInputPath, args.docInputPath2, topics)
+
+# load the cached docs
+documentRepository.readFileIdDictionaryFromFileCache(documentCachePath)
+
+# cache the model summaries
+rouge.cacheModelSummaries(topics)
 
 summaries = {}
 for fileName in os.listdir(args.goldStandardSummaryPath):
@@ -80,7 +91,7 @@ for summaryId in summaries:
 print "running the rouge evaluator"
 evaluationResults = rouge.evaluate()
 evaluation = evaluationResults[0]
-writeBufferToFile(os.path.join(evaluationOutputPath, "D4.results"), evaluation)
+writeBufferToFile(os.path.join(evaluationOutputPath, "D3.results"), evaluation)
 
 # call the evaluation comparison routine.
 # note:  this will only print the summaries you have on your machine.
