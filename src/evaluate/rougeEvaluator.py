@@ -1,6 +1,6 @@
 __author__ = 'thomas'
 
-from pyrouge import Rouge155
+# from pyrouge import Rouge155
 import os
 import glob
 import re
@@ -53,7 +53,7 @@ class RougeEvaluator():
 		self.rougeCachePath = rougeCachePath
 		self.rougeConfigFileName = os.path.join(self.rougeCachePath, "rouge_config.xml")
 		self.abspath = os.path.abspath(self.rougeDir)
-		self.rouge = Rouge155(self.abspath)
+		# self.rouge = Rouge155(self.abspath)
 
 
 	def reset(self):
@@ -99,10 +99,10 @@ class RougeEvaluator():
 		outputFile.close()
 
 	def evaluate(self):
-		self.rouge.system_filename_pattern = 'D(\d+)[A-Z]'
-		self.rouge.model_filename_pattern = 'D#ID#-A.M.100.[A-Z].[A-Z]'
-		self.rouge.system_dir = os.path.abspath(self.systemSummaryDir)
-		self.rouge.model_dir = os.path.abspath(self.modelSummaryCachePath)
+		#self.rouge.system_filename_pattern = 'D(\d+)[A-Z]'
+		#self.rouge.model_filename_pattern = 'D#ID#-A.M.100.[A-Z].[A-Z]'
+		#self.rouge.system_dir = os.path.abspath(self.systemSummaryDir)
+		#self.rouge.model_dir = os.path.abspath(self.modelSummaryCachePath˚)
 
 		rougeCommand = list()
 		rougeCommand.append(os.path.join(self.rougeDir, "ROUGE-1.5.5.pl"))
@@ -134,6 +134,6 @@ class RougeEvaluator():
 		output = check_output(rougeCommand)
 
 		# print output
-		outputDict = self.rouge.output_to_dict(output)
+		#outputDict = self.rouge.output_to_dict(output)
 
-		return [output, outputDict]
+		return [output, {}]
