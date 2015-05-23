@@ -53,7 +53,7 @@ class RougeEvaluator():
 		self.rougeCachePath = rougeCachePath
 		self.rougeConfigFileName = os.path.join(self.rougeCachePath, "rouge_config.xml")
 		self.abspath = os.path.abspath(self.rougeDir)
-		self.rouge = Rouge155(self.abspath)
+		self.rouge = Rouge155(self.abspath.encode("utf8"))
 
 
 	def reset(self):
