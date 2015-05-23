@@ -75,9 +75,9 @@ def getModel(docData):
 # summarize
 ##############################################################
 def summarize(docModels):
-	initialSummarizer = InitialSummarizer(docModels, idf, False, False, False, False)
-	return initialSummarizer.getBestSentences(w_tfidf=0.0, w_sd=0.0, w_sl=0.0, w_topic=0.0, w_cosign=0.0, w_np=1.0,
-		pullfactor=1.0, initialwindow=1, initialbonus=1, topicsize=0, paramaters=None)
+	initialSummarizer = InitialSummarizer(docModels, idf, False, False, False, False, True)
+	return initialSummarizer.getBestSentences(w_tfidf=0.0, w_sd=0.0, w_sl=0.0, w_topic=0.0, w_cosign=0.0, w_np=0.0,
+		pullfactor=0.0, initialwindow=1, initialbonus=1, topicsize=0, parameters=None)
 
 
 ##############################################################

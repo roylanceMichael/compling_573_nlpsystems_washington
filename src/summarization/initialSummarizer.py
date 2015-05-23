@@ -7,6 +7,7 @@ from topicSimSummaryTechnique import TopicSimSummaryTechnique
 from tfidfSummaryTechnique import TfidfSummaryTechnique
 from graphSummaryTechnique import GraphSummaryTechnique
 from model.doc_model import Cluster
+from highestFrequencyTechnique import HighestFrequencyTechnique
 from graphSummaryTechnique import GraphSummaryTechnique
 
 import operator
@@ -22,12 +23,11 @@ import operator
 # from that, we can add up weighted votes for each sentence and select the best one.
 #
 class InitialSummarizer:
-	def __init__(self, docCluster, idf, tryTfIdf, trySentenceDistance, trySentenceLength, tryTopicSim):
+	def __init__(self, docCluster, idf, tryTfIdf, trySentenceDistance, trySentenceLength, tryTopicSim, tryHighestFrequency):
 		self.docCluster = docCluster
 		self.idf = idf
 		self.N = 10  # keep the top N sentences for each technique
 		self.wordCount = 100
-
 
 		self.techniques = list()
 		self.tfIdf = TfidfSummaryTechnique(tryTfIdf, 1.0, self.docCluster, "tf-idf")
@@ -38,15 +38,17 @@ class InitialSummarizer:
 		self.techniques.append(self.sentenceLength)
 		self.topicSim = TopicSimSummaryTechnique(tryTopicSim, 1.0, docCluster, "topic")
 		self.techniques.append(self.sentenceLength)
+		self.highestFrequency = HighestFrequencyTechnique(tryHighestFrequency, 1.0, docCluster, "highest")
+		self.techniques.append(self.highestFrequency)
 		self.summarize(None)
 
-	def summarize(self, paramaters):
+	def summarize(self, parameters):
 		for technique in self.techniques:
 			if technique.enabled:
-				technique.rankSentences(paramaters)
+				technique.rankSentences(parameters)
 	
 	def getBestSentences(self, w_tfidf=None, w_sd=None, w_sl=None, w_topic=None, w_cosign=0.0, w_np=0.0,
-		pullfactor=-1.0, initialwindow=2, initialbonus=4, topicsize=75, paramaters=None):
+		pullfactor=-1.0, initialwindow=2, initialbonus=4, topicsize=75, parameters=None):
 		if w_tfidf is not None:
 			self.tfIdf.weight = w_tfidf
 		if w_sd is not None:
@@ -55,6 +57,7 @@ class InitialSummarizer:
 			self.sentenceLength.weight = w_sl
 		if w_topic is not None:
 			self.topicSim.weight = w_topic
+		self.highestFrequency.weight = 1.0
 
 		aggregateSentences = {}
 		for model in self.docCluster:
@@ -62,8 +65,6 @@ class InitialSummarizer:
 				sum = 0.0
 				for technique in self.techniques:
 					res = technique[sentence]
-					#print sentence
-					#print "technique: " + technique.techniqueName + ", score: " + str(res) + ", sentence: " + sentence
 					sum += res
 				aggregateSentences[sentence] = sum
 
@@ -73,7 +74,7 @@ class InitialSummarizer:
 		topicvocab = self.docCluster.gettopicvocab(topicsize) if topicsize else None
 		self.graph = GraphSummaryTechnique(True, graphweight, self.docCluster, "cosign+np", cosignweight, pullfactor,
 			initialwindow, initialbonus, topicvocab, independentweights=aggregateSentences)
-		self.graph.rankSentences(paramaters)
+		self.graph.rankSentences(parameters)
 
 		sortedAggregateSentences = sorted(self.graph.items(), key=operator.itemgetter(1), reverse=True)
 		#topNSortedAggregateSentences = sortedAggregateSentences[:self.N]  # tuples here... convert to sentences
