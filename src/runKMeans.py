@@ -20,6 +20,7 @@ from evaluate.rougeEvaluator import RougeEvaluator
 import extract
 import extract.topicReader
 import extract.documentRepository
+import coherence.scorer
 import model.idf
 import model.doc_model as doc_model
 import npclustering.npClustering
