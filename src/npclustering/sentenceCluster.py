@@ -27,9 +27,8 @@ class SentenceCluster:
 
 		self.uniqueId = str(uuid.uuid1())
 
-		self.beginningScore = 0
-
-
+		if sentenceNumber < 2:
+			self.beginningScore += 20
 
 	def buildBigramChunkDict(self):
 		chunkDict = {}
@@ -51,19 +50,13 @@ class SentenceCluster:
 
 		return chunkDict
 
-
 	def getRootAnaphora(self, chunk):
 		if chunk.anaphora is None:
 			return chunk
 		return self.getRootAnaphora(chunk.anaphora)
 
-
 	def distance(self, otherSentence):
 		sameTotal = self.beginningScore
-
-		# give preference to beginning sentences
-		if self.sentenceNumber < 2:
-			sameTotal += 4 - self.sentenceNumber
 
 		for otherChunk in otherSentence.chunkDict:
 			if otherChunk in self.chunkDict:
