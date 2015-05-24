@@ -148,7 +148,7 @@ for topic in topics:
 	for point in npclustering.kmeans.buildPointForEachSentence(models):
 		allPoints.append(point)
 
-	initialPoints = npclustering.kmeans.getInitialKPoints(allPoints, 4)
+	initialPoints = npclustering.kmeans.getInitialKPoints(allPoints, 5)
 
 	clusters = npclustering.kmeans.performKMeans(initialPoints, allPoints)
 
@@ -157,7 +157,7 @@ for topic in topics:
 	for cluster in clusters[0]:
 		highestPoint = cluster.highestScoringPoint()
 		if highestPoint is not None:
-			summary += highestPoint.sentence.simple
+			summary += highestPoint.sentence.simple + "\n"
 
 	if summary is not None:
 		summaryFileName = summaryOutputPath + "/" + topic.id
