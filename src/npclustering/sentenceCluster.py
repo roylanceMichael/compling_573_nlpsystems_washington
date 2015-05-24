@@ -6,16 +6,29 @@ nounPhraseKey = "NP"
 
 
 class SentenceCluster:
-	def __init__(self, sentence, sentenceNumber):
+	def __init__(self, sentence, sentenceNumber, useUnigram=True):
 		self.sentenceNumber = sentenceNumber
 		self.sentence = sentence
 		self.simple = sentence.simple
 		self.coherencePreviousSentence = sentence.coherencePreviousSentence
 		self.coherenceNextSentence = sentence.coherenceNextSentence
 		self.coherenceTypes = sentence.coherenceTypes
-		self.chunkDict = self.buildChunkDict()
+		if useUnigram:
+			self.chunkDict = self.buildChunkDict()
+		else:
+			self.chunkDict = self.buildBigramChunkDict()
 		self.uniqueId = str(uuid.uuid1())
 
+	def buildBigramChunkDict(self):
+		chunkDict = {}
+		previousChunk = "none"
+		for chunk in self.sentence:
+			rootChunk = self.getRootAnaphora(chunk)
+			if rootChunk.tag == nounPhraseKey:
+				normalizedChunk = str(rootChunk).lower()
+				chunkDict[(str(previousChunk), normalizedChunk)] = None
+				previousChunk = normalizedChunk
+		return chunkDict
 
 	def buildChunkDict(self):
 		chunkDict = {}

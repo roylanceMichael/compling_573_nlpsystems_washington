@@ -16,7 +16,7 @@ class NpClustering:
 			for paragraph in docModel.paragraphs:
 				for sentence in paragraph:
 					sentenceNumber += 1
-					newSentence = sentenceCluster.SentenceCluster(sentence, sentenceNumber)
+					newSentence = sentenceCluster.SentenceCluster(sentence, sentenceNumber, False)
 					sentences[sentence.uniqueId] = newSentence
 
 		distancePairs = {}
