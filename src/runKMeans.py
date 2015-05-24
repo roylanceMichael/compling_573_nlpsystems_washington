@@ -146,11 +146,11 @@ for topic in topics:
 	print topic.category + " : " + topic.title + " : building summary for " + str(len(models)) + " models"
 	allPoints = []
 
-	for point in npclustering.kmeans.buildPointForEachSentence(models):
-		allPoints.append(point)
-
-	initialPoints = npclustering.kmeans.getInitialKPoints(allPoints, 5)
-	clusters = npclustering.kmeans.performKMeans(initialPoints, allPoints)
+	# for point in npclustering.kmeans.buildPointForEachSentence(models):
+	# 	allPoints.append(point)
+	#
+	# initialPoints = npclustering.kmeans.getInitialKPoints(allPoints, 5)
+	# clusters = npclustering.kmeans.performKMeans(initialPoints, allPoints)
 
 	instance = NpClustering(models)
 
@@ -162,22 +162,26 @@ for topic in topics:
 			break
 
 		topSentences.append(sentenceTuple[0].simple)
-		maxSentences += 1
+		sentenceNum += 1
 
-	selectedSentences = {}
+	# selectedSentences = {}
 	summary = ""
-	# we receive a tuple back, currently
-	for cluster in clusters[0]:
-		selectedSentences[cluster.number] = []
-		for pointKey in cluster.points:
-			for topSentence in topSentences:
-				if topSentence == cluster.points[pointKey].sentence.simple:
-					selectedSentences[cluster.number].append(topSentence)
-					break
 
-	for clusterNumber in selectedSentences:
-		for sentence in selectedSentences[clusterNumber]:
-			summary += sentence + "\n"
+	for sentence in topSentences:
+		summary = summary + sentence + "\n"
+
+	# we receive a tuple back, currently
+	# for cluster in clusters[0]:
+	# 	selectedSentences[cluster.number] = []
+	# 	for pointKey in cluster.points:
+	# 		for topSentence in topSentences:
+	# 			if topSentence == cluster.points[pointKey].sentence.simple:
+	# 				selectedSentences[cluster.number].append(topSentence)
+	# 				break
+	#
+	# for clusterNumber in selectedSentences:
+	# 	for sentence in selectedSentences[clusterNumber]:
+	# 		summary += sentence + "\n"
 
 	if summary is not None:
 		summaryFileName = summaryOutputPath + "/" + topic.id
