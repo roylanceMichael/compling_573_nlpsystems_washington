@@ -172,7 +172,7 @@ for topic in topics:
 		for pointKey in cluster.points:
 			for topSentence in topSentences:
 				if topSentence == cluster.points[pointKey].sentence.simple:
-					selectedSentences[cluster.cluster.number].append(topSentence)
+					selectedSentences[cluster.number].append(topSentence)
 					break
 
 	for clusterNumber in selectedSentences:
