@@ -64,6 +64,24 @@ class Document:
 		return beginningOfTime
 
 	@staticmethod
+	def cleanseParagraph(paragraph):
+		beginningArticles = ["--", "_"]
+		altParagraph = paragraph
+
+		for beginningArticle in beginningArticles:
+			result = altParagraph.find(beginningArticle, 0)
+
+			if result > -1:
+				subStr = altParagraph[0:result]
+				uppers = [l for l in subStr if l.isupper()]
+
+				if float(len(uppers)) > float(len(subStr) / 2):
+					altParagraph = altParagraph[result+len(beginningArticle):]
+					break
+
+		return altParagraph
+
+	@staticmethod
 	def build(objectDictionary):
 		"""
 			build the document object given a dictionary with string keys and array of strings values: { 'key', [ 'first', 'second' ]}
@@ -104,7 +122,7 @@ class Document:
 				newDocument.paragraphs.append(item)
 		elif textKey in objectDictionary:
 			for item in objectDictionary[textKey]:
-				newDocument.paragraphs.append(item)
+				newDocument.paragraphs.append(Document.cleanseParagraph(item))
 
 		if bodyKey in objectDictionary:
 			for item in objectDictionary[bodyKey]:
