@@ -154,7 +154,7 @@ for topic in topics:
 	# initialPoints = npclustering.kmeans.getInitialKPoints(allPoints, 5)
 	# clusters = npclustering.kmeans.performKMeans(initialPoints, allPoints)
 
-	instance = NpClustering(models)
+	instance = NpClustering(models, topic.title)
 
 	maxWords = 100
 	totalWords = 0

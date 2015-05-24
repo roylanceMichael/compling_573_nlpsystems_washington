@@ -18,7 +18,7 @@ docKey = "DOC"
 class Document:
 	def __init__(self):
 		"""
-			Initilize the document
+			Initialize the document
 		"""
 		self.docNo = ""
 		self.dateTime = ""
