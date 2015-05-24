@@ -15,7 +15,7 @@ class SentenceCluster:
 		self.coherenceTypes = sentence.coherenceTypes
 		self.beginningScore = 0
 		self.cleansedTopicTitle = topicTitle.lower().strip()
-		self.cleansedHeadline = headline.lower().strip()
+		self.cleansedHeadline = str(headline).lower().strip()
 
 		if useUnigram:
 			self.chunkDict = self.buildChunkDict()
