@@ -13,19 +13,23 @@ class SentenceCluster:
 		self.coherencePreviousSentence = sentence.coherencePreviousSentence
 		self.coherenceNextSentence = sentence.coherenceNextSentence
 		self.coherenceTypes = sentence.coherenceTypes
-
+		self.beginningScore = 0
 		if useUnigram:
 			self.chunkDict = self.buildChunkDict()
+			for chunk in self.chunkDict:
+				if chunk in topicTitle:
+					self.beginningScore += 1
 		else:
 			self.chunkDict = self.buildBigramChunkDict()
+			for chunk in self.chunkDict:
+				if chunk[1] in topicTitle:
+					self.beginningScore += 1
 
 		self.uniqueId = str(uuid.uuid1())
 
 		self.beginningScore = 0
 
-		for chunk in self.chunkDict:
-			if chunk in topicTitle:
-				self.beginningScore += 1
+
 
 	def buildBigramChunkDict(self):
 		chunkDict = {}
