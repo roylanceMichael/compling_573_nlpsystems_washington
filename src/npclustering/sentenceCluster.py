@@ -18,12 +18,12 @@ class SentenceCluster:
 			self.chunkDict = self.buildChunkDict()
 			for chunk in self.chunkDict:
 				if chunk in topicTitle:
-					self.beginningScore += 1
+					self.beginningScore += 20
 		else:
 			self.chunkDict = self.buildBigramChunkDict()
 			for chunk in self.chunkDict:
 				if chunk[1] in topicTitle:
-					self.beginningScore += 1
+					self.beginningScore += 20
 
 		self.uniqueId = str(uuid.uuid1())
 
