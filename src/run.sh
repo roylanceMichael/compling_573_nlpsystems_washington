@@ -28,8 +28,7 @@ if [ -z "$5" ]; then
 	modelSummaryPath="/opt/dropbox/14-15/573/Data/models/devtest"
 fi
 if [ -z "$6" ]; then
-	#rougePath="/opt/dropbox/14-15/573/code/ROUGE"
-	rougePath="../ROUGE"˚
+	rougePath="../ROUGE"
 fi
 
 # remove all outputs first
