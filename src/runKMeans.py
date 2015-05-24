@@ -167,12 +167,11 @@ for topic in topics:
 		topSentences.append(sentenceTuple[0].simple)
 		totalWords += len(cleansedSentence.split(" "))
 
-	# selectedSentences = {}
 	summary = ""
-
 	for sentence in topSentences:
 		summary = summary + sentence + "\n"
 
+	# selectedSentences = {}
 	# we receive a tuple back, currently
 	# for cluster in clusters[0]:
 	# 	selectedSentences[cluster.number] = []
@@ -199,7 +198,7 @@ print "running the rouge evaluator"
 evaluationResults = evaluate()
 evaluation = evaluationResults[0]
 writeBufferToFile(os.path.join(evaluationOutputPath, "D3.results"), evaluation)
-
+writeBufferToFile(os.path.join(evaluationOutputPath, "D3.results_reordered"), evaluation)
 # call the evaluation comparison routine.
 # note:  this will only print the summaries you have on your machine.
 # 		 i.e. you should have run the meadSummaryGenerator.py first

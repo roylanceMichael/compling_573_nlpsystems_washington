@@ -1,13 +1,17 @@
 __author__ = 'mroylance'
+
 import paragraphCluster
 import sentenceCluster
 import operator
 import coherence.types
+import re
 
 
 class NpClustering:
-	def __init__(self, docModels):
+	def __init__(self, docModels, topicTitle):
 		self.docModels = docModels
+		self.topicTitle = topicTitle.lower().strip()
+		self.topicWordDict = {}
 
 	def buildSentenceDistances(self):
 		sentences = {}
@@ -16,7 +20,7 @@ class NpClustering:
 			for paragraph in docModel.paragraphs:
 				for sentence in paragraph:
 					sentenceNumber += 1
-					newSentence = sentenceCluster.SentenceCluster(sentence, sentenceNumber, False)
+					newSentence = sentenceCluster.SentenceCluster(sentence, sentenceNumber, self.topicTitle, False)
 					sentences[sentence.uniqueId] = newSentence
 
 		distancePairs = {}

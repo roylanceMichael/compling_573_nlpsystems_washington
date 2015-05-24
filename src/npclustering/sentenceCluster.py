@@ -6,18 +6,26 @@ nounPhraseKey = "NP"
 
 
 class SentenceCluster:
-	def __init__(self, sentence, sentenceNumber, useUnigram=True):
+	def __init__(self, sentence, sentenceNumber, topicTitle, useUnigram=True):
 		self.sentenceNumber = sentenceNumber
 		self.sentence = sentence
 		self.simple = sentence.simple
 		self.coherencePreviousSentence = sentence.coherencePreviousSentence
 		self.coherenceNextSentence = sentence.coherenceNextSentence
 		self.coherenceTypes = sentence.coherenceTypes
+
 		if useUnigram:
 			self.chunkDict = self.buildChunkDict()
 		else:
 			self.chunkDict = self.buildBigramChunkDict()
+
 		self.uniqueId = str(uuid.uuid1())
+
+		self.beginningScore = 0
+
+		for chunk in self.chunkDict:
+			if chunk in topicTitle:
+				self.beginningScore += 1
 
 	def buildBigramChunkDict(self):
 		chunkDict = {}
@@ -41,13 +49,13 @@ class SentenceCluster:
 
 
 	def getRootAnaphora(self, chunk):
-		if chunk.anaphora == None:
+		if chunk.anaphora is None:
 			return chunk
 		return self.getRootAnaphora(chunk.anaphora)
 
 
 	def distance(self, otherSentence):
-		sameTotal = 0
+		sameTotal = self.beginningScore
 
 		# give preference to beginning sentences
 		if self.sentenceNumber < 2:
