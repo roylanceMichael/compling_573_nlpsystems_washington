@@ -169,9 +169,9 @@ for topic in topics:
 	# we receive a tuple back, currently
 	for cluster in clusters[0]:
 		selectedSentences[cluster.number] = []
-		for point in cluster.points:
+		for pointKey in cluster.points:
 			for topSentence in topSentences:
-				if topSentence == point.sentence.simple:
+				if topSentence == cluster.points[pointKey].sentence.simple:
 					selectedSentences[cluster.cluster.number].append(topSentence)
 					break
 
