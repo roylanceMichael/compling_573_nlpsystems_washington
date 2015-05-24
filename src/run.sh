@@ -34,5 +34,6 @@ fi
 
 # remove all outputs first
 rm -rf ../outputs/*
+rm -rf ../results/*
 
 python2.7 runKMeans.py --doc-input-path $firstCorporaPath --doc-input-path2 $secondCorporaPath --topic-xml $topicXmlFile --output-path $outputPath --gold-standard-summary-path $modelSummaryPath --rouge-path $rougePath
