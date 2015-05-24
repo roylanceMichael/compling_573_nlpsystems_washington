@@ -6,7 +6,7 @@ nounPhraseKey = "NP"
 
 
 class SentenceCluster:
-	def __init__(self, sentence, sentenceNumber, topicTitle, useUnigram=True):
+	def __init__(self, sentence, sentenceNumber, topicTitle, headline, useUnigram=True):
 		self.sentenceNumber = sentenceNumber
 		self.sentence = sentence
 		self.simple = sentence.simple
@@ -14,15 +14,24 @@ class SentenceCluster:
 		self.coherenceNextSentence = sentence.coherenceNextSentence
 		self.coherenceTypes = sentence.coherenceTypes
 		self.beginningScore = 0
+		self.cleansedTopicTitle = topicTitle.lower().strip()
+		self.cleansedHeadline = headline.lower().strip()
+
 		if useUnigram:
 			self.chunkDict = self.buildChunkDict()
 			for chunk in self.chunkDict:
-				if chunk in topicTitle:
+				if chunk in self.cleansedTopicTitle:
+					self.beginningScore += 20
+
+				if chunk in self.cleansedHeadline:
 					self.beginningScore += 20
 		else:
 			self.chunkDict = self.buildBigramChunkDict()
 			for chunk in self.chunkDict:
-				if chunk[1] in topicTitle:
+				if chunk[1] in self.cleansedTopicTitle:
+					self.beginningScore += 20
+
+				if chunk[1] in self.cleansedHeadline:
 					self.beginningScore += 20
 
 		self.uniqueId = str(uuid.uuid1())
