@@ -17,6 +17,7 @@ import argparse
 import os
 
 from evaluate.rougeEvaluator import RougeEvaluator
+from npclustering.npClustering import NpClustering
 import extract
 import extract.topicReader
 import extract.documentRepository
@@ -149,15 +150,34 @@ for topic in topics:
 		allPoints.append(point)
 
 	initialPoints = npclustering.kmeans.getInitialKPoints(allPoints, 5)
-
 	clusters = npclustering.kmeans.performKMeans(initialPoints, allPoints)
 
+	instance = NpClustering(models)
+
+	maxSentences = 10
+	sentenceNum = 0
+	topSentences = []
+	for sentenceTuple in instance.buildSentenceDistances():
+		if sentenceNum >= maxSentences:
+			break
+
+		topSentences.append(sentenceTuple[0].simple)
+		maxSentences += 1
+
+	selectedSentences = {}
 	summary = ""
 	# we receive a tuple back, currently
 	for cluster in clusters[0]:
-		highestPoint = cluster.highestScoringPoint()
-		if highestPoint is not None:
-			summary += highestPoint.sentence.simple + "\n"
+		selectedSentences[cluster.number] = []
+		for point in cluster.points:
+			for topSentence in topSentences:
+				if topSentence == point.sentence.simple:
+					selectedSentences[cluster.cluster.number].append(topSentence)
+					break
+
+	for clusterNumber in selectedSentences:
+		for sentence in selectedSentences[clusterNumber]:
+			summary += sentence + "\n"
 
 	if summary is not None:
 		summaryFileName = summaryOutputPath + "/" + topic.id
