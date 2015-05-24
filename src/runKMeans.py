@@ -15,9 +15,8 @@ __author__ = 'mroylance'
 
 import argparse
 import os
+import re
 
-from evaluate.rougeEvaluator import RougeEvaluator
-from npclustering.npClustering import NpClustering
 import extract
 import extract.topicReader
 import extract.documentRepository
@@ -25,6 +24,9 @@ import coherence.scorer
 import model.idf
 import model.doc_model as doc_model
 import npclustering.npClustering
+
+from evaluate.rougeEvaluator import RougeEvaluator
+from npclustering.npClustering import NpClustering
 from summarization.initialSummarizer import InitialSummarizer
 from evaluate.evaluationCompare import EvaluationCompare
 
@@ -154,15 +156,16 @@ for topic in topics:
 
 	instance = NpClustering(models)
 
-	maxSentences = 10
-	sentenceNum = 0
+	maxWords = 100
+	totalWords = 0
 	topSentences = []
 	for sentenceTuple in instance.buildSentenceDistances():
-		if sentenceNum >= maxSentences:
+		if totalWords > maxWords:
 			break
 
+		cleansedSentence = re.sub("\s+", " ", sentenceTuple[0].simple)
 		topSentences.append(sentenceTuple[0].simple)
-		sentenceNum += 1
+		totalWords += len(cleansedSentence.split(" "))
 
 	# selectedSentences = {}
 	summary = ""
