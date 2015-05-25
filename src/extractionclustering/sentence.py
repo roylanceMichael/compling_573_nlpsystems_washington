@@ -66,12 +66,7 @@ class Sentence:
 			result = self.simple.find(beginningArticle, 0)
 
 			if result > -1:
-				subStr = self.simple[0:result]
-				uppers = [l for l in subStr if l.isupper()]
-
-				if float(len(uppers)) > float(len(subStr) / 2):
-					self.simple = self.simple[result+len(beginningArticle):]
-					break
+				self.simple = self.simple[result+len(beginningArticle):]
 
 		self.simple = self.simple.strip()
 
