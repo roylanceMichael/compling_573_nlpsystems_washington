@@ -116,8 +116,7 @@ for fileName in os.listdir(cachePath):
 							actualSentence,
 							sentence[0],
 							sentenceNum,
-							docModel,
-							3)
+							docModel)
 					sentenceNum += 1
 
 				for keywordResult in paragraph.extractionKeywordResults:
@@ -142,6 +141,8 @@ for fileName in os.listdir(cachePath):
 
 				for sentence in sentences:
 					sentences[sentence].assignEntityScores()
+					sentences[sentence].determineNounChunks()
+					sentences[sentence].createChunks(1)
 					allSentences[sentences[sentence].uniqueId] = sentences[sentence]
 
 		print "doing clustering now on summarization..."

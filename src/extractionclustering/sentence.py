@@ -12,7 +12,7 @@ passiveBe = ["were", "was"]
 allPosTypes = {u'INFINITIVE_TO': None, u'REC_PRONOUN': None, u'PRES_PART': None, u'INTERJ': None, u'MODAL': None, u'PAST_PART': None, u'POSS_PRONOUN': None, u'CONJ': None, u'NOUN': None, u'DEMONSTRATIVE': None, u'REF_PRONOUN': None, u'ARTICLE': None, u'AUX': None, u'GERUND': None, u'REL_PRONOUN': None, u'COPULAR': None, u'VERB': None, u'PARTICLE': None, u'CLAUSE_MARKER': None, u'QUANTIFIER': None, u'QUESTION_MARKER': None, u'ADVERB': None, u'PRONOUN': None, u'ADJECTIVE': None, u'PREP': None}
 
 class Sentence:
-	def __init__(self, text, id, sentenceNum, docModel, chunkMethod=1):
+	def __init__(self, text, id, sentenceNum, docModel):
 		self.simple = text.strip()
 		self.id = id
 		self.sentenceNum = sentenceNum
@@ -26,9 +26,20 @@ class Sentence:
 		self.factRelations = []
 		self.beginningScore = 0
 		self.uniqueId = str(uuid.uuid1())
+		self.nounChunks = []
 
 		self.chunkDict = {}
 
+		if self.sentenceNum < 2:
+			self.beginningScore = 5 - self.sentenceNum
+
+		self.assignEntityScores()
+		self.removeArticleHeader()
+
+		for chunk in self.nounChunks:
+			print chunk
+
+	def createChunks(self, chunkMethod):
 		if chunkMethod == 1:
 			for keywordResult in self.keywordResults:
 				self.chunkDict[keywordResult[1]] = None
@@ -44,12 +55,28 @@ class Sentence:
 				self.chunkDict[(previousPreviousKeyword, previousKeyword, keywordResult[1])] = None
 				previousPreviousKeyword = previousKeyword
 				previousKeyword = keywordResult[1]
+		elif chunkMethod == 4:
+			for chunk in self.nounChunks:
+				self.chunkDict[chunk] = None
+		elif chunkMethod == 5:
+			previousChunk = "none"
+			for chunk in self.nounChunks:
+				self.chunkDict[(previousChunk, chunk)] = None
+				previousChunk = chunk
 
-		if self.sentenceNum < 2:
-			self.beginningScore = 20 - self.sentenceNum
+	def determineNounChunks(self):
+		nounChunk = []
+		for keyword in self.keywordResults:
+			foundNounyThing = False
 
-		self.assignEntityScores()
-		self.removeArticleHeader()
+			for pos in keyword[3]:
+				if pos == 'NOUN' or pos == 'ADJECTIVE':
+					nounChunk.append(keyword[1])
+					foundNounyThing = True
+
+			if foundNounyThing == False and len(nounChunk) > 0:
+				self.nounChunks.append(nounChunk)
+				nounChunk = []
 
 	def assignEntityScores(self):
 		# 40 40 20 split
