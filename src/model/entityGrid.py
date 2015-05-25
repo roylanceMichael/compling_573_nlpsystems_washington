@@ -1,6 +1,6 @@
 __author__ = 'thomas'
 
-from textrazor.textrazor import TextRazor
+from textrazor import textRazorEntityExtraction
 import numpy
 import random
 import re
@@ -9,9 +9,6 @@ subjectScore = 3.0
 objectScore = 2.0
 obliqueScore = 1.0
 
-# textrazor keys
-thomasKey = "99cb513961595f163f4ab253a8aaf167970f8a49981e229a3c8505a0"
-mikeKey = "a40db69a54fa0905294e6b604b5dca251e9df8b912de4924d4254421"
 
 #
 # FeatureVector:  class for generating and holding the feature vector as svmlight expects it
@@ -107,20 +104,23 @@ class FeatureVector:
 #
 class EntityGrid:
 	# build entity grid
-	def __init__(self, docModel):
+	def __init__(self, docModel, textrazorEntities=None, textrazorSentences=None):
 		self.docModel = docModel
 		self.sentences = self.docModel.cleanSentences()
-		self.fullText = " \n".join(self.sentences)
-		self.textRazor = TextRazor(api_key=thomasKey, extractors=["entities", "topics", "words", "dependency-trees"])
-		self.nerResults = self.textRazor.analyze(re.sub(r'[^\x00-\x7F]', ' ', self.fullText))
-		self.allEntities = self.nerResults.entities()
+		if textrazorEntities is None or textrazorSentences is None:
+			nerResults = textRazorEntityExtraction.getTextRazorInfo(self.sentences)
+			self.textrazorSentences = nerResults.sentences
+			self.textrazorEntities = nerResults.entities()
+		else:
+			self.textrazorEntities = textrazorEntities
+			self.textrazorSentences = textrazorSentences
 		self.matrixIndices = self.getMatrixIndices()
 		self.numUniqueEntities = len(self.matrixIndices)
 		self.grid = self.fillMatrix()
 
 	def makeEmptyMatrix(self):
 		numpyMatrix = list()
-		for sentence in self.nerResults.sentences:
+		for sentence in self.textrazorSentences:
 			numpyMatrix.append(numpy.zeros(self.numUniqueEntities))
 		return numpyMatrix
 
@@ -130,7 +130,7 @@ class EntityGrid:
 	def fillMatrix(self):
 		matrix = self.makeEmptyMatrix()
 		sNum = 0
-		for sentence in self.nerResults.sentences:
+		for sentence in self.textrazorSentences:
 			for word in sentence.words:
 				if "NN" in word.part_of_speech and len(word.entities) > 0:
 					entityId = self.getLongestEntity(word.entities)
@@ -160,7 +160,7 @@ class EntityGrid:
 	def getMatrixIndices(self):
 		matrixIndices = {}
 		i = 0
-		for entity in self.allEntities:
+		for entity in self.textrazorEntities:
 			if entity.id not in matrixIndices.keys():
 				matrixIndices[entity.id] = i
 				i += 1

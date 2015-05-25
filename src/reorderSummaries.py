@@ -116,9 +116,9 @@ def getBestSummaryOrder(sentences, fileName, docIndex, numDocs):
 	return bestOrder
 
 
-#
+#####################################################################################
 # script starts here
-#
+#####################################################################################
 # copy all the files over.
 files = os.listdir(summaryOutputPath)
 docIndex = 1

@@ -99,12 +99,11 @@ def getFullTextAsSentencesFromDocModel(document):
 # Script Starts Here
 ###############################################################
 
-# recache documents for later
-# documentRepository.writefileIdDictionaryToFileCache(documentCachePath)
+
 docIndex = 1
 featureVectors = []
 firstDocument = None
-
+summaryEntityMap = None
 
 def getAllFileNames():
 	directories = ["/opt/dropbox/14-15/573/Data/models/devtest",
@@ -116,10 +115,12 @@ def getAllFileNames():
 		for file in files:
 			fileNames.append(os.path.join(directory, file))
 
+	print "Training on %d files: " % len(fileNames)
+	n = 1
 	for fileName in fileNames:
-		print fileName
+		print "[%d]%s" % (n, fileName)
+		n += 1
 	return fileNames
-
 
 def getSentenceText(sentences):
 	plainSentences = []
@@ -127,36 +128,53 @@ def getSentenceText(sentences):
 		plainSentences.append(" ".join(sentence))
 	return plainSentences
 
+def loadEntityMap():
+	global summaryEntityMap
+	pickleFileName = "../cache/textrazorCache/summaryEntityMap.pickle"
+	pickleFile = open(pickleFileName, 'rb')
+	summaryEntityMap = pickle.load(pickleFile)
+
+
 files = getAllFileNames()
 numDocs = len(files)
 startTime = time.time()
 fNumDocs = float(numDocs)
 numDocsTried = 1
 maxN = 5000
+loadEntityMap()
+
 for fileName in files:
 	sentences = readSentencesFromFile(fileName)
+
+	try:
+		textRazorInfo = summaryEntityMap[fileName]
+		textrazorEntities = textRazorInfo[0]
+		textrazorSentences = textRazorInfo[1]
+	except KeyError:
+		textrazorEntities = None
+		textrazorSentences = None
 
 	# get the doc objects, and build doc models from them
 	secs = time.time() - startTime
 	docsPerSec = numDocsTried / secs
 	print "processing doc(" + str(docIndex) + "/" + str(numDocsTried) + "): " + fileName + ", rate=" + str(round(docsPerSec, 4)) + " docs per second."
-
+	nskipped = 1
 	if len(sentences) > 1:  # because there have to be transitions
 		docModel = DummyDocModel(sentences)
-		grid = EntityGrid(docModel)
+		grid = EntityGrid(docModel, textrazorEntities, textrazorSentences)
 		if len(grid.matrixIndices) > 0:
-			# grid.printMatrix()
+			grid.printMatrix()
 			featureVector = FeatureVector(grid, docIndex)
-			# featureVector.printVector()
-			# featureVector.printVectorWithIndices()
+			featureVector.printVector()
+			featureVector.printVectorWithIndices()
 			vector = featureVector.getVector(2)
 
 			docModel.randomizeSentences()
-			badGrid = EntityGrid(docModel)
-			# grid.printMatrix()
+			badGrid = EntityGrid(docModel, textrazorEntities, textrazorSentences)
+			badGrid.printMatrix()
 			badFeatureVector = FeatureVector(badGrid, docIndex)
-			# featureVector.printVector()
-			# featureVector.printVectorWithIndices()
+			badFeatureVector.printVector()
+			badFeatureVector.printVectorWithIndices()
 			vector = featureVector.getVector(2)
 			badVector = badFeatureVector.getVector(1)
 			print vector
@@ -164,10 +182,13 @@ for fileName in files:
 			featureVectors.append(vector)
 			featureVectors.append(badVector)
 			docIndex += 1
+	else:
+		print "SKIPPING %s, nskipped=(%d)" % (fileName, nskipped)
+		nskipped += 1
 
-	pickleFile = open("../cache/svmlightCache/featureVectors.pickle", 'wb')
-	pickle.dump(featureVectors, pickleFile, pickle.HIGHEST_PROTOCOL)
-	pickleFile.close()
+	# pickleFile = open("../cache/svmlightCache/featureVectors.pickle", 'wb')
+	# pickle.dump(featureVectors, pickleFile, pickle.HIGHEST_PROTOCOL)
+	# pickleFile.close()
 	if docIndex >= maxN:
 		break
 	numDocsTried += 1
