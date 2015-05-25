@@ -35,7 +35,7 @@ from evaluate.rougeEvaluator import RougeEvaluator
 from evaluate.evaluationCompare import EvaluationCompare
 
 
-cachePath = "../cache/docModelCacheOld"
+cachePath = "../cache/asasCache"
 summaryOutputPath = "../outputs"
 reorderedSummaryOutputPath = summaryOutputPath + "_reordered"
 evaluationOutputPath = "../results"
@@ -155,12 +155,12 @@ for fileName in os.listdir(cachePath):
 				score = compareSentence.distanceToOtherSentence(allSentences[otherUniqueSentenceId])
 				scoreDictionary[uniqueSentenceId] += score
 
-		maxSentences = 5
-		sentenceIdx = 0
+		maxWords = 100
+		wordCount = 0
 		uniqueSummaries = {}
 		bestSentences = []
 		for tupleResult in sorted(scoreDictionary.items(), key=operator.itemgetter(1), reverse=True):
-			if sentenceIdx > maxSentences:
+			if wordCount > maxWords:
 				break
 
 			sentence = allSentences[tupleResult[0]]
@@ -169,8 +169,9 @@ for fileName in os.listdir(cachePath):
 			strippedSentence = re.sub("\s+", " ", sentence.simple)
 			uniqueSummaries[strippedSentence] = None
 
-			# print (strippedSentence, score)
-			sentenceIdx += 1
+			wordSize = len(strippedSentence.split(" "))
+			wordCount += wordSize
+			print wordSize
 
 		summary = ""
 		for uniqueSentence in uniqueSummaries:
