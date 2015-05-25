@@ -154,22 +154,25 @@ for topic in topics:
 	# initialPoints = npclustering.kmeans.getInitialKPoints(allPoints, 5)
 	# clusters = npclustering.kmeans.performKMeans(initialPoints, allPoints)
 
-	instance = NpClustering(models, topic.title)
+	# instance = NpClustering(models, topic.title)
+	#
+	# maxWords = 100
+	# totalWords = 0
+	# topSentences = []
+	# for sentenceTuple in instance.buildSentenceDistances():
+	# 	if totalWords > maxWords:
+	# 		break
+	#
+	# 	cleansedSentence = re.sub("\s+", " ", sentenceTuple[0].simple)
+	# 	topSentences.append(sentenceTuple[0].simple)
+	# 	totalWords += len(cleansedSentence.split(" "))
 
-	maxWords = 100
-	totalWords = 0
-	topSentences = []
-	for sentenceTuple in instance.buildSentenceDistances():
-		if totalWords > maxWords:
-			break
+	summary = topic.title
+	# for sentence in topSentences:
+	# 	summary = summary + sentence + "\n"
 
-		cleansedSentence = re.sub("\s+", " ", sentenceTuple[0].simple)
-		topSentences.append(sentenceTuple[0].simple)
-		totalWords += len(cleansedSentence.split(" "))
-
-	summary = ""
-	for sentence in topSentences:
-		summary = summary + sentence + "\n"
+	for docModel in models:
+		summary += str(docModel.headline).strip() + "\n"
 
 	# selectedSentences = {}
 	# we receive a tuple back, currently

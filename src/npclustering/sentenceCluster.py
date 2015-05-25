@@ -6,6 +6,8 @@ import math
 
 nounPhraseKey = "NP"
 
+topicTitleScoreAdjuster = 1
+
 minimalStopWordsFile = "minimalStopWords.txt"
 stopWords = {}
 if os.path.isfile(minimalStopWordsFile):
@@ -39,7 +41,7 @@ class SentenceCluster:
 		self.uniqueId = str(uuid.uuid1())
 
 		if sentenceNumber < 2:
-			self.beginningScore += 2
+			self.beginningScore += 5
 
 	def buildBigramChunkDict(self):
 		chunkDict = {}
@@ -52,10 +54,10 @@ class SentenceCluster:
 				previousChunk = normalizedChunk
 		for chunk in chunkDict:
 			if chunk[1] in self.cleansedTopicTitle:
-				self.beginningScore += 5
+				self.beginningScore += topicTitleScoreAdjuster
 
 			if chunk[1] in self.cleansedHeadline:
-				self.beginningScore += 5
+				self.beginningScore += topicTitleScoreAdjuster
 
 		return chunkDict
 
@@ -67,10 +69,10 @@ class SentenceCluster:
 				chunkDict[str(rootChunk).lower().strip()] = None
 		for chunk in chunkDict:
 			if chunk in self.cleansedTopicTitle:
-				self.beginningScore += 5
+				self.beginningScore += topicTitleScoreAdjuster
 
 			if chunk in self.cleansedHeadline:
-				self.beginningScore += 5
+				self.beginningScore += topicTitleScoreAdjuster
 
 		return chunkDict
 
@@ -87,10 +89,10 @@ class SentenceCluster:
 
 		for chunk in chunkDict:
 			if chunk in self.cleansedTopicTitle:
-				self.beginningScore += 5
+				self.beginningScore += topicTitleScoreAdjuster
 
 			if chunk in self.cleansedHeadline:
-				self.beginningScore += 5
+				self.beginningScore += topicTitleScoreAdjuster
 
 		return chunkDict
 
@@ -109,10 +111,10 @@ class SentenceCluster:
 
 		for chunk in chunkDict:
 			if chunk[1] in self.cleansedTopicTitle:
-				self.beginningScore += 5
+				self.beginningScore += topicTitleScoreAdjuster
 
 			if chunk[1] in self.cleansedHeadline:
-				self.beginningScore += 5
+				self.beginningScore += topicTitleScoreAdjuster
 
 		return chunkDict
 
