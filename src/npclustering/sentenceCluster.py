@@ -39,7 +39,7 @@ class SentenceCluster:
 		self.uniqueId = str(uuid.uuid1())
 
 		if sentenceNumber < 2:
-			self.beginningScore += 20
+			self.beginningScore += 2
 
 	def buildBigramChunkDict(self):
 		chunkDict = {}
@@ -52,10 +52,10 @@ class SentenceCluster:
 				previousChunk = normalizedChunk
 		for chunk in chunkDict:
 			if chunk[1] in self.cleansedTopicTitle:
-				self.beginningScore += 2
+				self.beginningScore += 5
 
 			if chunk[1] in self.cleansedHeadline:
-				self.beginningScore += 2
+				self.beginningScore += 5
 
 		return chunkDict
 
@@ -67,10 +67,10 @@ class SentenceCluster:
 				chunkDict[str(rootChunk).lower().strip()] = None
 		for chunk in chunkDict:
 			if chunk in self.cleansedTopicTitle:
-				self.beginningScore += 2
+				self.beginningScore += 5
 
 			if chunk in self.cleansedHeadline:
-				self.beginningScore += 2
+				self.beginningScore += 5
 
 		return chunkDict
 
@@ -87,10 +87,10 @@ class SentenceCluster:
 
 		for chunk in chunkDict:
 			if chunk in self.cleansedTopicTitle:
-				self.beginningScore += 2
+				self.beginningScore += 5
 
 			if chunk in self.cleansedHeadline:
-				self.beginningScore += 2
+				self.beginningScore += 5
 
 		return chunkDict
 
@@ -109,10 +109,10 @@ class SentenceCluster:
 
 		for chunk in chunkDict:
 			if chunk[1] in self.cleansedTopicTitle:
-				self.beginningScore += 2
+				self.beginningScore += 5
 
 			if chunk[1] in self.cleansedHeadline:
-				self.beginningScore += 2
+				self.beginningScore += 5
 
 		return chunkDict
 
