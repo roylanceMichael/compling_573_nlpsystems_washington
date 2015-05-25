@@ -22,7 +22,7 @@ if os.path.isfile(minimalStopWordsFile):
 			word = f.readline()
 
 class Sentence:
-	def __init__(self, text, id, sentenceNum, docModel):
+	def __init__(self, text, id, sentenceNum, docModel, topicTitleDict,keywordTopicMatchScore=5):
 		self.simple = text.strip()
 		self.id = id
 		self.sentenceNum = sentenceNum
@@ -37,6 +37,9 @@ class Sentence:
 		self.beginningScore = 0
 		self.uniqueId = str(uuid.uuid1())
 		self.nounChunks = []
+		self.topicTitleDict = topicTitleDict
+
+		self.keywordTopicMatchScore = keywordTopicMatchScore
 
 		self.chunkDict = {}
 
@@ -50,6 +53,10 @@ class Sentence:
 		if chunkMethod == 1:
 			for keywordResult in self.keywordResults:
 				normalizedKeyword = keywordResult[1].strip().lower()
+
+				if normalizedKeyword in self.topicTitleDict:
+					self.beginningScore += self.keywordTopicMatchScore
+
 				if len(normalizedKeyword) == 0 or normalizedKeyword in stopWords:
 					continue
 				self.chunkDict[normalizedKeyword] = None
@@ -57,6 +64,10 @@ class Sentence:
 			previousKeyword = None
 			for keywordResult in self.keywordResults:
 				normalizedKeyword = keywordResult[1].strip().lower()
+
+				if normalizedKeyword in self.topicTitleDict:
+					self.beginningScore += self.keywordTopicMatchScore
+
 				if len(normalizedKeyword) == 0 or normalizedKeyword in stopWords:
 					continue
 				if previousKeyword is None:
@@ -70,6 +81,10 @@ class Sentence:
 			previousPreviousKeyword = None
 			for keywordResult in self.keywordResults:
 				normalizedKeyword = keywordResult[1].strip().lower()
+
+				if normalizedKeyword in self.topicTitleDict:
+					self.beginningScore += self.keywordTopicMatchScore
+
 				if len(normalizedKeyword) == 0 or normalizedKeyword in stopWords:
 					continue
 
@@ -101,7 +116,12 @@ class Sentence:
 
 			for pos in keyword[3]:
 				if pos == 'NOUN' or pos == 'ADJECTIVE' and len(keyword[1].strip()) > 0:
-					nounChunk.append(keyword[1].lower().strip())
+					normalizedKeyword = keyword[1].lower().strip()
+
+					if normalizedKeyword in self.topicTitleDict:
+						self.beginningScore += self.keywordTopicMatchScore
+
+					nounChunk.append(normalizedKeyword)
 					foundNounyThing = True
 					break
 
