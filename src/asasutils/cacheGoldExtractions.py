@@ -60,10 +60,15 @@ for directory in directories:
 			for extraction in ext.extractions():
 				if extraction.type == attensity.ExtractionMessage_pb2.Extraction.KEYWORD_RESULTS:
 					roots = {}
+					i = 0
 					for item in extraction.keyword_results.root:
-						roots[item.id] = {"root": item.root, "word": item.word, "pos": item.pos}
+						roots[i] = {"root": item.root, "word": item.word, "pos": item.pos}
+						i += 1
+					i = 0
 					for item in extraction.keyword_results.location:
-						roots[item.id]["sentence"] = item.sentence
+						roots[i]["sentence"] = item.sentence
+						i += 1
+
 					for key in roots:
 						if "sentence" not in roots[key]:
 							continue
@@ -73,7 +78,8 @@ for directory in directories:
 							root = str(roots[key]["root"])
 							word = str(roots[key]["word"])
 							pos = list(roots[key]["pos"])
-							newParagraph.extractionKeywordResults.append((sentenceId, root, word, pos))
+							cacheTuple = (sentenceId, root, word, pos)
+							newParagraph.extractionKeywordResults.append(cacheTuple)
 						except Exception:
 							print "error happened"
 				if extraction.type == attensity.ExtractionMessage_pb2.Extraction.FACT_RELATION:
