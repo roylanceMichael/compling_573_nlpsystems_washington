@@ -30,8 +30,8 @@ import coherence.scorer
 import coreference.rules
 import pickle
 
-ss = attensity.semantic_server.SemanticServer()
-configUrl = ss.configurations().config_url(7)
+ss = attensity.semantic_server.SemanticServer("http://192.168.1.11:8888")
+configUrl = ss.configurations().config_url(3)
 
 topics = []
 for topic in extract.topicReader.Topic.factoryMultiple("../doc/Documents/devtest/GuidedSumm10_test_topics.xml"):
@@ -106,7 +106,7 @@ for topic in topics:
 		docModelCache[docNo] = docModel
 
 	# cache
-	pickleFileName = os.path.join("../cache/docModelCacheOld", topic.id)
+	pickleFileName = os.path.join("../cache/asasCache", topic.id)
 	pickleFile = open(pickleFileName, 'wb')
 	pickle.dump(docModelCache, pickleFile, pickle.HIGHEST_PROTOCOL)
 	docModelCache = {}
