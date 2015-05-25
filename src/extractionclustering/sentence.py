@@ -12,7 +12,7 @@ passiveBe = ["were", "was"]
 allPosTypes = {u'INFINITIVE_TO': None, u'REC_PRONOUN': None, u'PRES_PART': None, u'INTERJ': None, u'MODAL': None, u'PAST_PART': None, u'POSS_PRONOUN': None, u'CONJ': None, u'NOUN': None, u'DEMONSTRATIVE': None, u'REF_PRONOUN': None, u'ARTICLE': None, u'AUX': None, u'GERUND': None, u'REL_PRONOUN': None, u'COPULAR': None, u'VERB': None, u'PARTICLE': None, u'CLAUSE_MARKER': None, u'QUANTIFIER': None, u'QUESTION_MARKER': None, u'ADVERB': None, u'PRONOUN': None, u'ADJECTIVE': None, u'PREP': None}
 
 class Sentence:
-	def __init__(self, text, id, sentenceNum, docModel):
+	def __init__(self, text, id, sentenceNum, docModel, chunkMethod=1):
 		self.simple = text.strip()
 		self.id = id
 		self.sentenceNum = sentenceNum
@@ -26,6 +26,17 @@ class Sentence:
 		self.factRelations = []
 		self.beginningScore = 0
 		self.uniqueId = str(uuid.uuid1())
+
+		self.chunkDict = {}
+
+		if chunkMethod == 1:
+			for keywordResult in self.keywordResults:
+				self.chunkDict[keywordResult[1]] = None
+		elif chunkMethod == 2:
+			previousKeyword = "none"
+			for keywordResult in self.keywordResults:
+				self.chunkDict[(previousKeyword, keywordResult[1])] = None
+				previousKeyword = keywordResult[1]
 
 		if self.sentenceNum < 2:
 			self.beginningScore = 20 - self.sentenceNum
@@ -74,21 +85,9 @@ class Sentence:
 	def distanceToOtherSentence(self, otherSentence):
 		score = self.beginningScore
 
-		for keyword in self.keywordResults:
-			normalizedWord = keyword[1]
-			posTypes = keyword[3]
-
-			for otherKeyword in otherSentence.keywordResults:
-				otherNormalizedWord = otherKeyword[1]
-
-				foundMatch = False
-				for otherPos in otherKeyword[3]:
-					if otherPos in posTypes:
-						foundMatch = True
-						break
-
-				if otherNormalizedWord == normalizedWord and foundMatch:
-					score += 1
+		for otherChunk in otherSentence.chunkDict:
+			if otherChunk in self.chunkDict:
+				score += 1
 
 		return score
 
