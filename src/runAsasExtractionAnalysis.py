@@ -116,7 +116,8 @@ for fileName in os.listdir(cachePath):
 							actualSentence,
 							sentence[0],
 							sentenceNum,
-							docModel)
+							docModel,
+							2)
 					sentenceNum += 1
 
 				for keywordResult in paragraph.extractionKeywordResults:
