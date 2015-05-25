@@ -42,16 +42,32 @@ class Sentence:
 	def createChunks(self, chunkMethod):
 		if chunkMethod == 1:
 			for keywordResult in self.keywordResults:
+				if len(keywordResult[1].strip()) == 0:
+					continue
 				self.chunkDict[keywordResult[1]] = None
 		elif chunkMethod == 2:
-			previousKeyword = "none"
+			previousKeyword = None
 			for keywordResult in self.keywordResults:
+				if len(keywordResult[1].strip()) == 0:
+					continue
+				if previousKeyword is None:
+					previousKeyword = keywordResult[1]
+					continue
+
 				self.chunkDict[(previousKeyword, keywordResult[1])] = None
 				previousKeyword = keywordResult[1]
 		elif chunkMethod == 3:
-			previousKeyword = "none"
-			previousPreviousKeyword = "none"
+			previousKeyword = None
+			previousPreviousKeyword = None
 			for keywordResult in self.keywordResults:
+				if len(keywordResult[1].strip()) == 0:
+					continue
+
+				if previousKeyword is None or previousPreviousKeyword is None:
+					previousPreviousKeyword = previousKeyword
+					previousKeyword = keywordResult[1]
+					continue
+
 				self.chunkDict[(previousPreviousKeyword, previousKeyword, keywordResult[1])] = None
 				previousPreviousKeyword = previousKeyword
 				previousKeyword = keywordResult[1]
@@ -59,8 +75,12 @@ class Sentence:
 			for chunk in self.nounChunks:
 				self.chunkDict[chunk] = None
 		elif chunkMethod == 5:
-			previousChunk = "none"
+			previousChunk = None
 			for chunk in self.nounChunks:
+				if previousChunk is None:
+					previousChunk = chunk
+					continue
+
 				self.chunkDict[(previousChunk, chunk)] = None
 				previousChunk = chunk
 
@@ -70,7 +90,7 @@ class Sentence:
 			foundNounyThing = False
 
 			for pos in keyword[3]:
-				if pos == 'NOUN' or pos == 'ADJECTIVE':
+				if pos == 'NOUN' or pos == 'ADJECTIVE' and len(keyword[1].strip()) > 0:
 					nounChunk.append(keyword[1])
 					foundNounyThing = True
 
