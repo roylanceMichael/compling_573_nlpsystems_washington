@@ -35,7 +35,7 @@ from evaluate.rougeEvaluator import RougeEvaluator
 from evaluate.evaluationCompare import EvaluationCompare
 
 
-cachePath = "../cache/docModelCacheOld"
+cachePath = "../cache/asasCache"
 summaryOutputPath = "../outputs"
 reorderedSummaryOutputPath = summaryOutputPath + "_reordered"
 evaluationOutputPath = "../results"
@@ -205,16 +205,16 @@ for fileName in os.listdir(cachePath):
 	docIndex += 1
 
 print "running the rouge evaluator"
-evaluationResults = rouge.evaluate()
-evaluation = evaluationResults[0]
-writeBufferToFile(os.path.join(evaluationOutputPath, "D3.results"), evaluation)
-
-# call the evaluation comparison routine.
-# note:  this will only print t
-# he summaries you have on your machine.
-# 		 i.e. you should have run the meadSummaryGenerator.py first
-# 		 (though defaults are checked into git)
-comparator = EvaluationCompare(evaluationOutputPath, meadCacheDir, rouge)
-comparison = comparator.getComparison()
-print "\n" + comparison
-writeBufferToFile(os.path.join(evaluationOutputPath, "results_compare.txt"), comparison)
+# evaluationResults = rouge.evaluate()
+# evaluation = evaluationResults[0]
+# writeBufferToFile(os.path.join(evaluationOutputPath, "D3.results"), evaluation)
+#
+# # call the evaluation comparison routine.
+# # note:  this will only print t
+# # he summaries you have on your machine.
+# # 		 i.e. you should have run the meadSummaryGenerator.py first
+# # 		 (though defaults are checked into git)
+# comparator = EvaluationCompare(evaluationOutputPath, meadCacheDir, rouge)
+# comparison = comparator.getComparison()
+# print "\n" + comparison
+# writeBufferToFile(os.path.join(evaluationOutputPath, "results_compare.txt"), comparison)
