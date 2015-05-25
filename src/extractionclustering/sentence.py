@@ -1,5 +1,6 @@
 __author__ = 'mroylance'
 
+import os
 import uuid
 
 ignoreTriples = {"<empty>": None, "<unspecified>": None}
@@ -10,6 +11,15 @@ obliqueScore = 1.0
 passiveBe = ["were", "was"]
 
 allPosTypes = {u'INFINITIVE_TO': None, u'REC_PRONOUN': None, u'PRES_PART': None, u'INTERJ': None, u'MODAL': None, u'PAST_PART': None, u'POSS_PRONOUN': None, u'CONJ': None, u'NOUN': None, u'DEMONSTRATIVE': None, u'REF_PRONOUN': None, u'ARTICLE': None, u'AUX': None, u'GERUND': None, u'REL_PRONOUN': None, u'COPULAR': None, u'VERB': None, u'PARTICLE': None, u'CLAUSE_MARKER': None, u'QUANTIFIER': None, u'QUESTION_MARKER': None, u'ADVERB': None, u'PRONOUN': None, u'ADJECTIVE': None, u'PREP': None}
+
+minimalStopWordsFile = "minimalStopWords.txt"
+stopWords = {}
+if os.path.isfile(minimalStopWordsFile):
+	with open(minimalStopWordsFile) as f:
+		word = f.readline()
+		while word:
+			stopWords[word.strip().lower()] = None
+			word = f.readline()
 
 class Sentence:
 	def __init__(self, text, id, sentenceNum, docModel):
@@ -39,35 +49,38 @@ class Sentence:
 	def createChunks(self, chunkMethod):
 		if chunkMethod == 1:
 			for keywordResult in self.keywordResults:
-				if len(keywordResult[1].strip()) == 0:
+				normalizedKeyword = keywordResult[1].strip().lower()
+				if len(normalizedKeyword) == 0 or normalizedKeyword in stopWords:
 					continue
-				self.chunkDict[keywordResult[1]] = None
+				self.chunkDict[normalizedKeyword] = None
 		elif chunkMethod == 2:
 			previousKeyword = None
 			for keywordResult in self.keywordResults:
-				if len(keywordResult[1].strip()) == 0:
+				normalizedKeyword = keywordResult[1].strip().lower()
+				if len(normalizedKeyword) == 0 or normalizedKeyword in stopWords:
 					continue
 				if previousKeyword is None:
-					previousKeyword = keywordResult[1]
+					previousKeyword = normalizedKeyword
 					continue
 
-				self.chunkDict[(previousKeyword, keywordResult[1])] = None
-				previousKeyword = keywordResult[1]
+				self.chunkDict[(previousKeyword, normalizedKeyword)] = None
+				previousKeyword = normalizedKeyword
 		elif chunkMethod == 3:
 			previousKeyword = None
 			previousPreviousKeyword = None
 			for keywordResult in self.keywordResults:
-				if len(keywordResult[1].strip()) == 0:
+				normalizedKeyword = keywordResult[1].strip().lower()
+				if len(normalizedKeyword) == 0 or normalizedKeyword in stopWords:
 					continue
 
 				if previousKeyword is None or previousPreviousKeyword is None:
 					previousPreviousKeyword = previousKeyword
-					previousKeyword = keywordResult[1]
+					previousKeyword = normalizedKeyword
 					continue
 
-				self.chunkDict[(previousPreviousKeyword, previousKeyword, keywordResult[1])] = None
+				self.chunkDict[(previousPreviousKeyword, previousKeyword, normalizedKeyword)] = None
 				previousPreviousKeyword = previousKeyword
-				previousKeyword = keywordResult[1]
+				previousKeyword = normalizedKeyword
 		elif chunkMethod == 4:
 			for chunk in self.nounChunks:
 				self.chunkDict[chunk] = None

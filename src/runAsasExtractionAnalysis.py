@@ -175,7 +175,7 @@ for fileName in os.listdir(cachePath):
 			bestSentences.append(sentence)
 			score = tupleResult[1]
 
-			print (sentence.simple, score)
+			# print (sentence.simple, score)
 			strippedSentence = re.sub("\s+", " ", sentence.simple)
 			strippedSentenceNormalized = re.sub("[^a-zA-Z0-9 -]", "", strippedSentence)
 
