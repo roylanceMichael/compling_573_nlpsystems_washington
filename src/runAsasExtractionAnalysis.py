@@ -142,7 +142,10 @@ for fileName in os.listdir(cachePath):
 				for sentence in sentences:
 					sentences[sentence].assignEntityScores()
 					sentences[sentence].determineNounChunks()
-					sentences[sentence].createChunks(2)
+					sentences[sentence].createChunks(4)
+
+					print sentences[sentence].chunkDict
+
 					allSentences[sentences[sentence].uniqueId] = sentences[sentence]
 
 		print "doing clustering now on summarization..."

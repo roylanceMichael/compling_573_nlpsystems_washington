@@ -36,9 +36,6 @@ class Sentence:
 		self.assignEntityScores()
 		self.removeArticleHeader()
 
-		for chunk in self.nounChunks:
-			print chunk
-
 	def createChunks(self, chunkMethod):
 		if chunkMethod == 1:
 			for keywordResult in self.keywordResults:
@@ -91,11 +88,12 @@ class Sentence:
 
 			for pos in keyword[3]:
 				if pos == 'NOUN' or pos == 'ADJECTIVE' and len(keyword[1].strip()) > 0:
-					nounChunk.append(keyword[1])
+					nounChunk.append(keyword[1].lower().strip())
 					foundNounyThing = True
+					break
 
 			if foundNounyThing == False and len(nounChunk) > 0:
-				self.nounChunks.append(nounChunk)
+				self.nounChunks.append(tuple(nounChunk))
 				nounChunk = []
 
 	def assignEntityScores(self):
