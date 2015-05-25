@@ -1,12 +1,22 @@
 __author__ = 'mroylance'
+
+import os
 import uuid
 import math
 
 nounPhraseKey = "NP"
 
+minimalStopWordsFile = "minimalStopWords.txt"
+stopWords = {}
+if os.path.isfile(minimalStopWordsFile):
+	with open(minimalStopWordsFile) as f:
+		word = f.readline()
+		while word:
+			stopWords[word.strip().lower()] = None
+			word = f.readline()
 
 class SentenceCluster:
-	def __init__(self, sentence, sentenceNumber, topicTitle, headline, useUnigram=True):
+	def __init__(self, sentence, sentenceNumber, topicTitle, headline, mode=1):
 		self.sentenceNumber = sentenceNumber
 		self.sentence = sentence
 		self.simple = sentence.simple
@@ -17,22 +27,14 @@ class SentenceCluster:
 		self.cleansedTopicTitle = topicTitle.lower().strip()
 		self.cleansedHeadline = str(headline).lower().strip()
 
-		if useUnigram:
+		if mode == 1:
 			self.chunkDict = self.buildChunkDict()
-			for chunk in self.chunkDict:
-				if chunk in self.cleansedTopicTitle:
-					self.beginningScore += 2
-
-				if chunk in self.cleansedHeadline:
-					self.beginningScore += 2
-		else:
+		elif mode == 2:
 			self.chunkDict = self.buildBigramChunkDict()
-			for chunk in self.chunkDict:
-				if chunk[1] in self.cleansedTopicTitle:
-					self.beginningScore += 2
-
-				if chunk[1] in self.cleansedHeadline:
-					self.beginningScore += 2
+		elif mode == 3:
+			self.chunkDict = self.buildChunkDictAll()
+		elif mode == 3:
+			self.chunkDict = self.buildBigramChunkDictAll()
 
 		self.uniqueId = str(uuid.uuid1())
 
@@ -48,6 +50,13 @@ class SentenceCluster:
 				normalizedChunk = str(rootChunk).lower()
 				chunkDict[(str(previousChunk), normalizedChunk)] = None
 				previousChunk = normalizedChunk
+		for chunk in chunkDict:
+			if chunk[1] in self.cleansedTopicTitle:
+				self.beginningScore += 2
+
+			if chunk[1] in self.cleansedHeadline:
+				self.beginningScore += 2
+
 		return chunkDict
 
 	def buildChunkDict(self):
@@ -55,7 +64,55 @@ class SentenceCluster:
 		for chunk in self.sentence:
 			rootChunk = self.getRootAnaphora(chunk)
 			if rootChunk.tag == nounPhraseKey:
-				chunkDict[str(chunk).lower()] = None
+				chunkDict[str(rootChunk).lower().strip()] = None
+		for chunk in chunkDict:
+			if chunk in self.cleansedTopicTitle:
+				self.beginningScore += 2
+
+			if chunk in self.cleansedHeadline:
+				self.beginningScore += 2
+
+		return chunkDict
+
+	def buildChunkDictAll(self):
+		chunkDict = {}
+		for chunk in self.sentence:
+			rootChunk = self.getRootAnaphora(chunk)
+			normalizedChunk = str(rootChunk).lower().strip()
+
+			if normalizedChunk in stopWords:
+				continue
+
+			chunkDict[normalizedChunk] = None
+
+		for chunk in chunkDict:
+			if chunk in self.cleansedTopicTitle:
+				self.beginningScore += 2
+
+			if chunk in self.cleansedHeadline:
+				self.beginningScore += 2
+
+		return chunkDict
+
+	def buildBigramChunkDictAll(self):
+		chunkDict = {}
+		previousChunk = "none"
+		for chunk in self.sentence:
+			rootChunk = self.getRootAnaphora(chunk)
+			normalizedChunk = str(rootChunk).lower().strip()
+
+			if normalizedChunk in stopWords:
+				continue
+
+			chunkDict[(str(previousChunk), normalizedChunk)] = None
+			previousChunk = normalizedChunk
+
+		for chunk in chunkDict:
+			if chunk[1] in self.cleansedTopicTitle:
+				self.beginningScore += 2
+
+			if chunk[1] in self.cleansedHeadline:
+				self.beginningScore += 2
 
 		return chunkDict
 
