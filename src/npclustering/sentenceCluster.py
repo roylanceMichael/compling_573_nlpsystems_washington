@@ -33,7 +33,7 @@ class SentenceCluster:
 			self.chunkDict = self.buildBigramChunkDict()
 		elif mode == 3:
 			self.chunkDict = self.buildChunkDictAll()
-		elif mode == 3:
+		elif mode == 4:
 			self.chunkDict = self.buildBigramChunkDictAll()
 
 		self.uniqueId = str(uuid.uuid1())
