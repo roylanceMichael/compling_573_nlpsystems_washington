@@ -91,6 +91,8 @@ def writeBufferToFile(path, buffer):
 	outFile.close()
 docIndex = 0
 
+domainOfKeywordTypes = {}
+
 for fileName in os.listdir(cachePath):
 	pickleFilePath = os.path.join(cachePath, fileName)
 	if os.path.exists(pickleFilePath):
@@ -118,6 +120,10 @@ for fileName in os.listdir(cachePath):
 					sentenceNum += 1
 
 				for keywordResult in paragraph.extractionKeywordResults:
+
+					for pos in keywordResult[3]:
+						domainOfKeywordTypes[pos] = None
+
 					if keywordResult[0] in sentences:
 						sentences[keywordResult[0]].keywordResults.append(keywordResult)
 
@@ -128,7 +134,6 @@ for fileName in os.listdir(cachePath):
 					sentences[entity[0]].entities.append(entity)
 
 				for fact in paragraph.extractionFacts:
-					print fact
 					sentences[fact[0]].facts.append(fact)
 
 				for phrase in paragraph.extractionTextPhrases:
@@ -145,8 +150,7 @@ for fileName in os.listdir(cachePath):
 			scoreDictionary[uniqueSentenceId] = 0
 			compareSentence = allSentences[uniqueSentenceId]
 
-			# for keywordResult in compareSentence.keywordResults:
-				# print keywordResult
+			#for keywordResult in compareSentence.keywordResults:
 			# print compareSentence.simple
 			# print "-------------------------"
 			for otherUniqueSentenceId in allSentences:
@@ -168,7 +172,15 @@ for fileName in os.listdir(cachePath):
 			bestSentences.append(sentence)
 			score = tupleResult[1]
 			strippedSentence = re.sub("\s+", " ", sentence.simple)
-			uniqueSummaries[strippedSentence] = None
+			strippedSentenceNormalized = re.sub("[^a-zA-Z0-9 -]", "", strippedSentence)
+
+			if strippedSentence in uniqueSummaries:
+				continue
+
+			uniqueSummaries[strippedSentenceNormalized] = strippedSentence
+
+			#for keywordResult in sentence.keywordResults:
+				#print keywordResult
 
 			wordSize = len(strippedSentence.split(" "))
 			wordCount += wordSize
@@ -176,7 +188,7 @@ for fileName in os.listdir(cachePath):
 
 		summary = ""
 		for uniqueSentence in uniqueSummaries:
-			summary += uniqueSentence + "\n"
+			summary += uniqueSummaries[uniqueSentence] + "\n"
 
 		print summary
 		if summary is not None:
@@ -205,6 +217,7 @@ for fileName in os.listdir(cachePath):
 		print summary
 
 	docIndex += 1
+
 
 print "running the rouge evaluator"
 evaluationResults = rouge.evaluate()

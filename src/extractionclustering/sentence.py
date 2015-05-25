@@ -9,6 +9,7 @@ obliqueScore = 1.0
 
 passiveBe = ["were", "was"]
 
+allPosTypes = {u'INFINITIVE_TO': None, u'REC_PRONOUN': None, u'PRES_PART': None, u'INTERJ': None, u'MODAL': None, u'PAST_PART': None, u'POSS_PRONOUN': None, u'CONJ': None, u'NOUN': None, u'DEMONSTRATIVE': None, u'REF_PRONOUN': None, u'ARTICLE': None, u'AUX': None, u'GERUND': None, u'REL_PRONOUN': None, u'COPULAR': None, u'VERB': None, u'PARTICLE': None, u'CLAUSE_MARKER': None, u'QUANTIFIER': None, u'QUESTION_MARKER': None, u'ADVERB': None, u'PRONOUN': None, u'ADJECTIVE': None, u'PREP': None}
 
 class Sentence:
 	def __init__(self, text, id, sentenceNum, docModel):
@@ -72,6 +73,22 @@ class Sentence:
 
 	def distanceToOtherSentence(self, otherSentence):
 		score = self.beginningScore
+
+		for keyword in self.keywordResults:
+			normalizedWord = keyword[1]
+			posTypes = keyword[3]
+
+			for otherKeyword in otherSentence.keywordResults:
+				otherNormalizedWord = otherKeyword[1]
+
+				foundMatch = False
+				for otherPos in otherKeyword[3]:
+					if otherPos in posTypes:
+						foundMatch = True
+						break
+
+				if otherNormalizedWord == normalizedWord and foundMatch:
+					score += 1
 
 		return score
 
