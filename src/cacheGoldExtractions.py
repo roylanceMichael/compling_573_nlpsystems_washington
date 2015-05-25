@@ -1,21 +1,5 @@
 __author__ = 'mroylance'
 
-"""
-  Python Source Code for ling573 Deliverable 3: Summarizer with Ordering
-  Author: Thomas Marsh
-  Team: Thomas Marsh, Brandon Gaylor, Michael Roylance
-  Date: 5/16/2015
-
-  Extracts entities and other data using attensity parser
-
-  This code does the following:
-  1. reads through documents
-  2. pulls out entities and semantic information
-  3. saves extractions into pickle file
-
-"""
-
-
 import os
 import re
 import sys
@@ -24,32 +8,41 @@ import attensity.semantic_server
 import model.doc_model
 import extract.topicReader
 import extract.documentRepository
+import extractionclustering.topicSummary
 import extractionclustering.docModel
 import extractionclustering.paragraph
+import extractionclustering.sentence
 import coherence.scorer
 import coreference.rules
 import pickle
 
+cachePath = "../cache/docModelCacheOld"
+summaryOutputPath = "../outputs"
+reorderedSummaryOutputPath = summaryOutputPath + "_reordered"
+evaluationOutputPath = "../results"
+modelSummaryCachePath = "../cache/modelSummaryCache"
+documentCachePath = "../cache/documentCache"
+idfCachePath = "../cache/idfCache"
+meadCacheDir = "../cache/meadCache"
+rougeCacheDir = "../cache/rougeCache"
+
 ss = attensity.semantic_server.SemanticServer("http://192.168.1.11:8888")
 configUrl = ss.configurations().config_url(3)
 
-topics = []
-for topic in extract.topicReader.Topic.factoryMultiple("../doc/Documents/devtest/GuidedSumm10_test_topics.xml"):
-	topics.append(topic)
+directories = ["/opt/dropbox/14-15/573/Data/models/devtest","/opt/dropbox/14-15/573/Data/models/training/2009","/opt/dropbox/14-15/573/Data/mydata"]
 
-documentRepository = extract.documentRepository.DocumentRepository("/corpora/LDC/LDC02T31/", "/corpora/LDC/LDC08T25/data/", topics)
+fileNames = []
+for directory in directories:
+	files = os.listdir(directory)
+	for file in files:
+		fileToPickle = os.path.join(directory, file)
+		text = ""
+		with open(fileToPickle, "r") as myFile:
+			text = unicode(myFile.read(), errors='ignore')
 
-# load and cache the docs if they are not loaded.  just get them if they are.
-docModelCache = {}
-for topic in topics:
-	transformedTopicId = topic.docsetAId[:-3] + '-A'
-	print "caching topicId: " + transformedTopicId
-	# let's get all the documents associated with this topic
-
-	# get the doc objects, and build doc models from them
-	for foundDocument in documentRepository.getDocumentsByTopic(topic.id):
-		initialModel = model.doc_model.Doc_Model(foundDocument)
-		docNo = initialModel.docNo
+		rawDocument = extract.document.Document()
+		rawDocument.paragraphs.append(text)
+		initialModel = model.doc_model.Doc_Model(rawDocument)
 		coreference.rules.updateDocumentWithCoreferences(initialModel)
 		coherence.scorer.determineDoc(initialModel)
 
@@ -67,10 +60,15 @@ for topic in topics:
 			for extraction in ext.extractions():
 				if extraction.type == attensity.ExtractionMessage_pb2.Extraction.KEYWORD_RESULTS:
 					roots = {}
+					i = 0
 					for item in extraction.keyword_results.root:
-						roots[item.id] = {"root": item.root, "word": item.word, "pos": item.pos}
+						roots[i] = {"root": item.root, "word": item.word, "pos": item.pos}
+						i += 1
+					i = 0
 					for item in extraction.keyword_results.location:
-						roots[item.id]["sentence"] = item.sentence
+						roots[i]["sentence"] = item.sentence
+						i += 1
+
 					for key in roots:
 						if "sentence" not in roots[key]:
 							continue
@@ -80,7 +78,8 @@ for topic in topics:
 							root = str(roots[key]["root"])
 							word = str(roots[key]["word"])
 							pos = list(roots[key]["pos"])
-							newParagraph.extractionKeywordResults.append((sentenceId, root, word, pos))
+							cacheTuple = (sentenceId, root, word, pos)
+							newParagraph.extractionKeywordResults.append(cacheTuple)
 						except Exception:
 							print "error happened"
 				if extraction.type == attensity.ExtractionMessage_pb2.Extraction.FACT_RELATION:
@@ -103,10 +102,8 @@ for topic in topics:
 					# print extraction
 					newParagraph.extractionTextPhrases.append((extraction.text_phrase.sentence_ID, extraction.text_phrase.head, extraction.text_phrase.root))
 
-		docModelCache[docNo] = docModel
-
-	# cache
-	pickleFileName = os.path.join("../cache/asasCache", topic.id)
-	pickleFile = open(pickleFileName, 'wb')
-	pickle.dump(docModelCache, pickleFile, pickle.HIGHEST_PROTOCOL)
-	docModelCache = {}
+		# cache
+		pickleFileName = os.path.join("../cache/asasGoldCache", file)
+		pickleFile = open(pickleFileName, 'wb')
+		pickle.dump(docModel, pickleFile, pickle.HIGHEST_PROTOCOL)
+		print "pickled " + pickleFileName

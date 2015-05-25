@@ -128,6 +128,7 @@ for fileName in os.listdir(cachePath):
 					sentences[entity[0]].entities.append(entity)
 
 				for fact in paragraph.extractionFacts:
+					print fact
 					sentences[fact[0]].facts.append(fact)
 
 				for phrase in paragraph.extractionTextPhrases:
@@ -209,6 +210,7 @@ print "running the rouge evaluator"
 evaluationResults = rouge.evaluate()
 evaluation = evaluationResults[0]
 writeBufferToFile(os.path.join(evaluationOutputPath, "D3.results"), evaluation)
+writeBufferToFile(os.path.join(evaluationOutputPath, "D3.results_reordered"), evaluation)
 
 # call the evaluation comparison routine.
 # note:  this will only print t

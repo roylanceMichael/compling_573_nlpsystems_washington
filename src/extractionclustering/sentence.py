@@ -73,6 +73,8 @@ class Sentence:
 	def distanceToOtherSentence(self, otherSentence):
 		score = self.beginningScore
 
+		return score
+
 		"""
 		for phrase in self.phrases:
 			root = phrase[2].lower()
@@ -80,7 +82,7 @@ class Sentence:
 				otherRoot = otherPhrase[2].lower()
 				if root == otherRoot:
 					score += 1
-		"""
+
 		for fact in self.facts:
 			element = fact[1].lower()
 			mode = fact[2].lower()
@@ -128,3 +130,4 @@ class Sentence:
 					score += 1
 
 		return score
+		"""
