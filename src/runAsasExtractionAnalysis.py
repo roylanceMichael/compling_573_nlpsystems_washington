@@ -117,7 +117,7 @@ for fileName in os.listdir(cachePath):
 							sentence[0],
 							sentenceNum,
 							docModel,
-							2)
+							3)
 					sentenceNum += 1
 
 				for keywordResult in paragraph.extractionKeywordResults:
@@ -223,8 +223,8 @@ for fileName in os.listdir(cachePath):
 print "running the rouge evaluator"
 evaluationResults = rouge.evaluate()
 evaluation = evaluationResults[0]
-writeBufferToFile(os.path.join(evaluationOutputPath, "D4.results"), evaluation)
-writeBufferToFile(os.path.join(evaluationOutputPath, "D4.results_reordered"), evaluation)
+writeBufferToFile(os.path.join(evaluationOutputPath, "D3.results"), evaluation)
+writeBufferToFile(os.path.join(evaluationOutputPath, "D3.results_reordered"), evaluation)
 
 # call the evaluation comparison routine.
 # note:  this will only print t

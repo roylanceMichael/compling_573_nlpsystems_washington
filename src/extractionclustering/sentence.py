@@ -37,6 +37,13 @@ class Sentence:
 			for keywordResult in self.keywordResults:
 				self.chunkDict[(previousKeyword, keywordResult[1])] = None
 				previousKeyword = keywordResult[1]
+		elif chunkMethod == 3:
+			previousKeyword = "none"
+			previousPreviousKeyword = "none"
+			for keywordResult in self.keywordResults:
+				self.chunkDict[(previousPreviousKeyword, previousKeyword, keywordResult[1])] = None
+				previousPreviousKeyword = previousKeyword
+				previousKeyword = keywordResult[1]
 
 		if self.sentenceNum < 2:
 			self.beginningScore = 20 - self.sentenceNum
