@@ -17,6 +17,7 @@ __author__ = 'thomas'
 
 """
 
+import random
 import argparse
 import pickle
 import svmlight
@@ -168,7 +169,9 @@ for fileName in files:
 			featureVector.printVectorWithIndices()
 			vector = featureVector.getVector(2)
 
-			docModel.randomizeSentences()
+			# docModel.randomizeSentences() <--- this makes no difference anymore.   kinda misleading, but I don't know
+			# 								     how to fix for now, so just leaving it out.
+			random.shuffle(textrazorSentences)  # <--- instead I'm randomizing here
 			badGrid = TextrazorEntityGrid(docModel.cleanSentences(), textrazorEntities, textrazorSentences)
 			badGrid.printMatrix()
 			badFeatureVector = FeatureVector(badGrid, docIndex)

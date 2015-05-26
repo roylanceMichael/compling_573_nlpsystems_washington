@@ -167,7 +167,7 @@ class Sentence:
 
 	def removeArticleHeader(self):
 		beginningArticles = ["--", "_"]
-		allCapsOrNotLowerAlpha = "[^A-Z0-9 -_]{4,}"
+		allCapsOrNotLowerAlpha = "[[:upper:]0-9-]{5,}"
 
 		for beginningArticle in beginningArticles:
 			result = self.simple.find(beginningArticle, 0)
@@ -292,7 +292,9 @@ def factory(topicDictionary, topicTitleDict):
 				sentences[sentence].determineNounChunks()
 				sentences[sentence].createChunks(2)
 
-				if len(sentences[sentence].triples) != 0:
+				if len(sentences[sentence].triples) != 0 \
+						and not "''" in sentences[sentence].simple \
+						and not "``" in sentences[sentence].simple:
 					allSentences[sentences[sentence].uniqueId] = sentences[sentence]
 
 	return allSentences

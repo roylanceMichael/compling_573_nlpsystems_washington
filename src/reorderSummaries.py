@@ -98,7 +98,8 @@ def getBestSummaryOrder(sentences, fileName, docIndex, numDocs):
 	testVectors = []
 
 
-	permutations = itertools.permutations(sentences)
+	permutations = [perm for perm in itertools.permutations(sentences)]
+	print "numPermutations: " + str(len(permutations))
 	for permutation in permutations:
 		permList.append(permutation)
 		doc = DummyDocModel(permutation)
@@ -110,12 +111,13 @@ def getBestSummaryOrder(sentences, fileName, docIndex, numDocs):
 	predictions = svmlight.classify(rankModel, testVectors)
 
 
-	#for p in predictions:
-	#	print str(p) + " ",
+	for p in predictions:
+		print str(p) + " ",
+
 
 	maxInList = max(predictions)
 	maxIndex = predictions.index(maxInList)
-	print "reordering document(" + str(docIndex) + "/" + str(numDocs) + "): " + fileName + ", best permutation index=" + str(maxIndex)
+	print "\nreordering document(" + str(docIndex) + "/" + str(numDocs) + "): " + fileName + ", best permutation index=" + str(maxIndex)
 	bestOrder = permList[maxIndex]
 	return bestOrder
 
