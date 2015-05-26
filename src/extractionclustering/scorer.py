@@ -1,9 +1,27 @@
 __author__ = 'mroylance'
 
-# first, go through each docModel
-# find the paragraphs
-# get the entities per sentence
-# get the triples per sentence
-# normalize
-# then compare
-# use the sentence with the most in common among all
+import re
+import operator
+
+def handleScoring(allSentences):
+	scoreDictionary = {}
+	for uniqueSentenceId in allSentences:
+		scoreDictionary[uniqueSentenceId] = 0
+		compareSentence = allSentences[uniqueSentenceId]
+
+		#for keywordResult in compareSentence.keywordResults:
+		# print compareSentence.simple
+		# print "-------------------------"
+		for otherUniqueSentenceId in allSentences:
+			if uniqueSentenceId == otherUniqueSentenceId:
+				continue
+
+			score = compareSentence.distanceToOtherSentence(allSentences[otherUniqueSentenceId])
+			scoreDictionary[uniqueSentenceId] += score
+
+	maxWords = 100
+	wordCount = 0
+	uniqueSummaries = {}
+	bestSentences = []
+	for tupleResult in sorted(scoreDictionary.items(), key=operator.itemgetter(1), reverse=True):
+		yield tupleResult

@@ -1,13 +1,10 @@
 __author__ = 'mroylance'
 
-import uuid
-
-
 class Point:
 	def __init__(self, sentence):
 		self.sentence = sentence
 		self.features = sentence.chunkDict
-		self.uid = str(uuid.uuid1())
+		self.uid = sentence.uuid
 
 	def calculateSimilarity(self, otherPoint):
 		# union over intersection
@@ -26,7 +23,7 @@ class Point:
 			if feature not in otherPoint.features and feature in self.features:
 				score += 1
 
-		return score / float(len(self.features) + len(otherPoint.features))
+		return score / float(len(self.features) + len(otherPoint.features) + 1)
 
 	def __str__(self):
 		return str(self.sentence)

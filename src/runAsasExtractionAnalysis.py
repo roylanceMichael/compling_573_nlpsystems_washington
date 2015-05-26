@@ -18,19 +18,18 @@ __author__ = 'mroylance'
 
 import os
 import re
-import svmlight
 import itertools
 import pickle
-import operator
 
+import svmlight
 import extract
 import extract.topicReader
 import extract.documentRepository
 import entitygrid.asasEntityGrid
 import extractionclustering.sentence
+import extractionclustering.scorer
 from evaluate.rougeEvaluator import RougeEvaluator
 from evaluate.evaluationCompare import EvaluationCompare
-
 
 cachePath = "../cache/asasCache"
 summaryOutputPath = "../outputs"
@@ -107,26 +106,11 @@ for fileName in os.listdir(cachePath):
 
 		print "doing clustering now on summarization..."
 
-		scoreDictionary = {}
-		for uniqueSentenceId in allSentences:
-			scoreDictionary[uniqueSentenceId] = 0
-			compareSentence = allSentences[uniqueSentenceId]
-
-			#for keywordResult in compareSentence.keywordResults:
-			# print compareSentence.simple
-			# print "-------------------------"
-			for otherUniqueSentenceId in allSentences:
-				if uniqueSentenceId == otherUniqueSentenceId:
-					continue
-
-				score = compareSentence.distanceToOtherSentence(allSentences[otherUniqueSentenceId])
-				scoreDictionary[uniqueSentenceId] += score
-
 		maxWords = 100
 		wordCount = 0
 		uniqueSummaries = {}
 		bestSentences = []
-		for tupleResult in sorted(scoreDictionary.items(), key=operator.itemgetter(1), reverse=True):
+		for tupleResult in extractionclustering.scorer.handleScoring(allSentences):
 			if wordCount > maxWords:
 				break
 
@@ -142,9 +126,6 @@ for fileName in os.listdir(cachePath):
 				continue
 
 			uniqueSummaries[strippedSentenceNormalized] = strippedSentence
-
-			#for keywordResult in sentence.keywordResults:
-				#print keywordResult
 
 			wordSize = len(strippedSentence.split(" "))
 			wordCount += wordSize

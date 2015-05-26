@@ -48,12 +48,17 @@ class ExtractionClusteringTests(unittest.TestCase):
 		for cluster in clusters[0]:
 			print "----------CLUSTER " + str(cluster.number) + " SIZE (" + str(len(cluster.points)) + ")"
 			# print cluster.currentFeatures
-			#clusterSummary = ""
-			#for pointKey in cluster.points:
-			#	clusterSummary = clusterSummary + cluster.points[pointKey].sentence.simple + " \n"
+			clusterSummary = ""
+			iterNum = 0
+			for pointKey in cluster.points:
 
-			#print clusterSummary
-			print "highest is:"
-			print cluster.highestScoringPoint().sentence.simple
+				if iterNum > 5:
+					break
+
+				clusterSummary = clusterSummary + cluster.points[pointKey].sentence.simple + " \n"
+				iterNum += 1
+
+			print clusterSummary
+			print "highest is: " + cluster.highestScoringPoint().sentence.simple
 
 		self.assertTrue(True)

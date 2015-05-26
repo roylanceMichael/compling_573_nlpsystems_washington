@@ -25,6 +25,7 @@ if os.path.isfile(minimalStopWordsFile):
 class Sentence:
 	def __init__(self, text, id, sentenceNum, docModel, topicTitleDict, keywordTopicMatchScore=5):
 		self.simple = re.sub("[^a-zA-Z0-9 -]", "",  re.sub("\s+", " ", text))
+		self.uuid = str(uuid.uuid1())
 		self.id = id
 		self.sentenceNum = sentenceNum
 		self.docModel = docModel
