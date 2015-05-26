@@ -294,6 +294,6 @@ def factory(topicDictionary, topicTitleDict):
 				if len(sentences[sentence].triples) != 0 \
 						and not "''" in sentences[sentence].simple \
 						and not "``" in sentences[sentence].simple:
-					allSentences[sentences[sentence].uniqueId] = sentences[sentence]
+					allSentences[sentences[sentence].uuid] = sentences[sentence]
 
 	return allSentences
