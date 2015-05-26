@@ -210,3 +210,8 @@ class DummyDocModel:
 	def randomizeSentences(self):
 		random.shuffle(self.sentences)
 
+	def printSentences(self):
+		for sentence in self.sentences:
+			print sentence
+
+
