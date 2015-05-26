@@ -19,20 +19,19 @@ __author__ = 'thomas'
 
 import argparse
 import pickle
-
-import extract
-import extract.topicReader
-import extract.documentRepository
-import model.idf
-from model.entityGrid import EntityGrid
-from model.entityGrid import FeatureVector
-from model.entityGrid import DummyDocModel
-import nltk
-import nltk.data
 import svmlight
-from nltk.corpus import reuters
 import time
 import os
+
+import nltk
+import nltk.data
+
+import model.idf
+from entitygrid.textrazorEntityGrid import TextrazorEntityGrid
+from entitygrid.entityGrid import FeatureVector
+from entitygrid.entityGrid import DummyDocModel
+
+
 
 # get parser args and set up global variables
 parser = argparse.ArgumentParser(description='Basic Document Summarizer.')
@@ -161,7 +160,7 @@ for fileName in files:
 	nskipped = 1
 	if len(sentences) > 1:  # because there have to be transitions
 		docModel = DummyDocModel(sentences)
-		grid = EntityGrid(docModel, textrazorEntities, textrazorSentences)
+		grid = TextrazorEntityGrid(docModel.cleanSentences(), textrazorEntities, textrazorSentences)
 		if len(grid.matrixIndices) > 0:
 			grid.printMatrix()
 			featureVector = FeatureVector(grid, docIndex)
@@ -170,7 +169,7 @@ for fileName in files:
 			vector = featureVector.getVector(2)
 
 			docModel.randomizeSentences()
-			badGrid = EntityGrid(docModel, textrazorEntities, textrazorSentences)
+			badGrid = TextrazorEntityGrid(docModel.cleanSentences(), textrazorEntities, textrazorSentences)
 			badGrid.printMatrix()
 			badFeatureVector = FeatureVector(badGrid, docIndex)
 			badFeatureVector.printVector()

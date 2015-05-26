@@ -18,18 +18,15 @@ __author__ = 'mroylance'
 
 import os
 import re
-import extract
-import extract.topicReader
-import extract.documentRepository
-import model.doc_model
-import model.asasEntityGrid
-import model.entityGrid
-import coherence.scorer
-import coreference.rules
 import svmlight
 import itertools
 import pickle
 import operator
+
+import extract
+import extract.topicReader
+import extract.documentRepository
+import entitygrid.asasEntityGrid
 import extractionclustering.sentence
 from evaluate.rougeEvaluator import RougeEvaluator
 from evaluate.evaluationCompare import EvaluationCompare
@@ -71,8 +68,8 @@ def getBestSummaryOrder(sentences, docIndex):
 	permutations = itertools.permutations(sentences)
 	for permutation in permutations:
 		permList.append(permutation)
-		grid = model.asasEntityGrid.AsasEntityGrid(permutation)
-		featureVector = model.entityGrid.FeatureVector(grid, docIndex)
+		grid = entitygrid.asasEntityGrid.AsasEntityGrid(permutation)
+		featureVector = entitygrid.entityGrid.FeatureVector(grid, docIndex)
 		vector = featureVector.getVector(1)
 		testVectors.append(vector)
 

@@ -19,23 +19,18 @@ __author__ = 'mroylance'
 
 import argparse
 import pickle
-
-import extract
-import extract.topicReader
-import extract.documentRepository
-import extractionclustering.topicSummary
-import model.asasEntityGrid
-import model.idf
-from model.entityGrid import EntityGrid
-from model.entityGrid import FeatureVector
-from model.entityGrid import DummyDocModel
-import nltk
-import nltk.data
 import svmlight
-from nltk.corpus import reuters
 import random
 import time
 import os
+
+import nltk
+import nltk.data
+
+import entitygrid.asasEntityGrid
+import model.idf
+from model.entityGrid import FeatureVector
+
 
 # get parser args and set up global variables
 parser = argparse.ArgumentParser(description='Basic Document Summarizer.')
@@ -137,7 +132,7 @@ for fileName in files:
 	print "processing doc(" + str(docIndex) + "/" + str(numDocsTried) + "): " + fileName + ", rate=" + str(round(docsPerSec, 4)) + " docs per second."
 
 	if len(sentences) > 1:  # because there have to be transitions
-		grid = model.asasEntityGrid.AsasEntityGrid(sentences)
+		grid = entitygrid.asasEntityGrid.AsasEntityGrid(sentences)
 		if len(grid.matrixIndices) > 0:
 			# grid.printMatrix()
 			featureVector = FeatureVector(grid, docIndex)
@@ -150,7 +145,7 @@ for fileName in files:
 
 			clone = sentences[:]
 			random.shuffle(clone)
-			badGrid = model.asasEntityGrid.AsasEntityGrid(clone)
+			badGrid = entitygrid.asasEntityGrid.AsasEntityGrid(clone)
 			badFeatureVector = FeatureVector(badGrid, docIndex)
 			# badGrid.printMatrix()
 			# badFeatureVector.printVector()

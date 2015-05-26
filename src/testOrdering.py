@@ -18,17 +18,18 @@ __author__ = 'thomas'
 """
 
 import argparse
+import svmlight
+
+import nltk
+import nltk.data
 
 import extract
 import extract.topicReader
 import extract.documentRepository
 import model.idf
-from model.entityGrid import EntityGrid
-from model.entityGrid import FeatureVector
-from model.entityGrid import DummyDocModel
-import nltk
-import nltk.data
-import svmlight
+from entitygrid.entityGrid import TextrazorEntityGrid
+from entitygrid.entityGrid import FeatureVector
+from entitygrid.entityGrid import DummyDocModel
 
 # get parser args and set up global variables
 parser = argparse.ArgumentParser(description='Basic Document Summarizer.')
@@ -85,7 +86,7 @@ def testDoc(document):
 		return
 
 	goodDoc = DummyDocModel(sentences)
-	goodGrid = EntityGrid(goodDoc)
+	goodGrid = TextrazorEntityGrid(goodDoc.cleanSentences())
 	goodFeatureVector = FeatureVector(goodGrid, docIndex)
 	vector = goodFeatureVector.getVector(1)
 	testVectors.append(vector)
@@ -94,7 +95,7 @@ def testDoc(document):
 	for i in range(0, 1):
 		badDoc = DummyDocModel(getFullTextAsSentencesFromDocModel(document))
 		badDoc.randomizeSentences()
-		badGrid = EntityGrid(badDoc)
+		badGrid = TextrazorEntityGrid(badDoc.cleanSentences())
 		badFeatureVector = FeatureVector(badGrid, docIndex)
 		vector = badFeatureVector.getVector(1)
 		testVectors.append(vector)
