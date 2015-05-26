@@ -1,6 +1,7 @@
 __author__ = 'mroylance'
 
 import os
+import re
 import uuid
 
 ignoreTriples = {"<empty>": None, "<unspecified>": None}
@@ -23,7 +24,7 @@ if os.path.isfile(minimalStopWordsFile):
 
 class Sentence:
 	def __init__(self, text, id, sentenceNum, docModel, topicTitleDict, keywordTopicMatchScore=5):
-		self.simple = text.strip()
+		self.simple = re.sub("[^a-zA-Z0-9 -]", "",  re.sub("\s+", " ", text))
 		self.id = id
 		self.sentenceNum = sentenceNum
 		self.docModel = docModel

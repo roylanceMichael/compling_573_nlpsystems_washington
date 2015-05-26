@@ -3,9 +3,10 @@ __author__ = 'mroylance'
 import re
 import unittest
 import pickle
+import extract.topicReader
 import extract.document
 import extractionclustering.sentence
-import model.doc_model
+import extractionclustering.kmeans
 import npclustering.npClustering
 import npclustering.kmeans
 
@@ -18,8 +19,7 @@ def cacheTopicTitles():
 		topicTitles[topic.id] = re.sub("\s+", " ", topic.title)
 
 
-
-class KmeansTests(unittest.TestCase):
+class ExtractionClusteringTests(unittest.TestCase):
 	def test_parseSingleDocument(self):
 		# arrange
 		if len(topicTitles) == 0:
@@ -33,31 +33,27 @@ class KmeansTests(unittest.TestCase):
 		for word in topicTitle.split(" "):
 			topicTitleDict[word] = None
 
-		allSentences = extractionclustering.sentence.factory()
-
-		foundDocument = extract.document.Document.factory(docXml)
-		otherFoundDocument = extract.document.Document.factory(otherDocXml)
-		docModel = model.doc_model.Doc_Model(foundDocument)
-		otherDocModel = model.doc_model.Doc_Model(otherFoundDocument)
+		allSentences = extractionclustering.sentence.factory(topicDictionary, topicTitleDict)
 
 		allPoints = []
 
-		for point in npclustering.kmeans.buildPointForEachSentence([docModel, otherDocModel]):
+		for point in extractionclustering.kmeans.buildPointForEachSentence(allSentences):
 			allPoints.append(point)
 
-		initialPoints = npclustering.kmeans.getInitialKPoints(allPoints, 3)
+		initialPoints = npclustering.kmeans.getInitialKPoints(allPoints, 10)
 
 		clusters = npclustering.kmeans.performKMeans(initialPoints, allPoints)
 
 		# act
 		for cluster in clusters[0]:
 			print "----------CLUSTER " + str(cluster.number) + " SIZE (" + str(len(cluster.points)) + ")"
-			print cluster.currentFeatures
-			for pointKey in cluster.points:
-				print cluster.points[pointKey]
-				print " "
+			# print cluster.currentFeatures
+			#clusterSummary = ""
+			#for pointKey in cluster.points:
+			#	clusterSummary = clusterSummary + cluster.points[pointKey].sentence.simple + " \n"
 
+			#print clusterSummary
 			print "highest is:"
-			print cluster.highestScoringPoint().sentence
+			print cluster.highestScoringPoint().sentence.simple
 
 		self.assertTrue(True)
