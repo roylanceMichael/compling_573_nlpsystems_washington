@@ -170,6 +170,7 @@ for fileName in os.listdir(cachePath):
 		# 		uniqueSummaries[actualText] = None
 		# 		summary += actualText
 
+
 		if summary is not None:
 			summaryFileName = reorderedSummaryOutputPath + "/" + fileName
 			summaryFile = open(summaryFileName, 'wb')
