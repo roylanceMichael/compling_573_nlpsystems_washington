@@ -26,7 +26,7 @@ class Point:
 			if feature not in otherPoint.features and feature in self.features:
 				score += 1
 
-		return score
+		return score / float(len(self.features) + len(otherPoint.features))
 
 	def __str__(self):
 		return str(self.sentence)

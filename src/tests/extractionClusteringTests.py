@@ -40,7 +40,7 @@ class ExtractionClusteringTests(unittest.TestCase):
 		for point in extractionclustering.kmeans.buildPointForEachSentence(allSentences):
 			allPoints.append(point)
 
-		initialPoints = npclustering.kmeans.getInitialKPoints(allPoints, 10)
+		initialPoints = npclustering.kmeans.getInitialKPoints(allPoints, 20)
 
 		clusters = npclustering.kmeans.performKMeans(initialPoints, allPoints)
 

@@ -39,6 +39,7 @@ class Sentence:
 		self.uniqueId = str(uuid.uuid1())
 		self.nounChunks = []
 		self.topicTitleDict = topicTitleDict
+		self.chunDictLen = 0
 
 		self.keywordTopicMatchScore = keywordTopicMatchScore
 
@@ -110,6 +111,8 @@ class Sentence:
 				self.chunkDict[(previousChunk, chunk)] = None
 				previousChunk = chunk
 
+		self.chunDictLen = float(len(self.chunkDict))
+
 	def determineNounChunks(self):
 		nounChunk = []
 		for keyword in self.keywordResults:
@@ -175,7 +178,7 @@ class Sentence:
 			if otherChunk in self.chunkDict:
 				score += 1
 
-		return score
+		return score / (self.chunDictLen + otherSentence.chunkDictLen)
 
 		"""
 		for phrase in self.phrases:
