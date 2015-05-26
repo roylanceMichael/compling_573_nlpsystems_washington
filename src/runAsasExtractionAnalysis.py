@@ -29,6 +29,7 @@ import entitygrid.asasEntityGrid
 import npclustering.kmeans
 import extractionclustering.kmeans
 import extractionclustering.scorer
+import extractionclustering.point
 import extractionclustering.sentence
 from evaluate.rougeEvaluator import RougeEvaluator
 from evaluate.evaluationCompare import EvaluationCompare
@@ -122,8 +123,8 @@ for fileName in os.listdir(cachePath):
 			scoredSentenceDictionary[key] = (allSentences[key], tupleResult[1])
 
 		allPoints = []
-		for point in extractionclustering.kmeans.buildPointForEachSentence(allSentences):
-			allPoints.append(point)
+		for sentenceId in allSentences:
+			allPoints.append(extractionclustering.point.Point(allSentences[sentenceId]))
 
 		initialPoints = npclustering.kmeans.getInitialKPoints(allPoints, totalClusters)
 		clusters = npclustering.kmeans.performKMeans(initialPoints, allPoints)

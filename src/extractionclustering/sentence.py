@@ -38,7 +38,6 @@ class Sentence:
 		self.keywordResults = []
 		self.factRelations = []
 		self.beginningScore = 0
-		self.uniqueId = str(uuid.uuid1())
 		self.nounChunks = []
 		self.topicTitleDict = topicTitleDict
 		self.chunkDictLen = 0
@@ -293,6 +292,6 @@ def factory(topicDictionary, topicTitleDict):
 				sentences[sentence].createChunks(2)
 
 				if len(sentences[sentence].triples) != 0:
-					allSentences[sentences[sentence].uniqueId] = sentences[sentence]
+					allSentences[sentences[sentence].uuid] = sentences[sentence]
 
 	return allSentences
