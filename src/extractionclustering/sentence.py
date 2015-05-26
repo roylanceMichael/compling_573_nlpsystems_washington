@@ -22,7 +22,7 @@ if os.path.isfile(minimalStopWordsFile):
 			word = f.readline()
 
 class Sentence:
-	def __init__(self, text, id, sentenceNum, docModel, topicTitleDict,keywordTopicMatchScore=5):
+	def __init__(self, text, id, sentenceNum, docModel, topicTitleDict, keywordTopicMatchScore=5):
 		self.simple = text.strip()
 		self.id = id
 		self.sentenceNum = sentenceNum
@@ -232,3 +232,51 @@ class Sentence:
 
 		return score
 		"""
+
+
+def factory(topicDictionary, topicTitleDict):
+	allSentences = {}
+
+	for docNo in topicDictionary:
+		print docNo
+
+		docModel = topicDictionary[docNo]
+		for paragraph in docModel.paragraphs:
+			sentences = {}
+			sentenceNum = 0
+			for sentence in paragraph.extractionSentences:
+				text = paragraph.text
+				actualSentence = text[sentence[1]:sentence[1] + sentence[2]]
+				sentences[sentence[0]] = \
+					Sentence(
+						actualSentence,
+						sentence[0],
+						sentenceNum,
+						docModel,
+						topicTitleDict)
+				sentenceNum += 1
+
+			for keywordResult in paragraph.extractionKeywordResults:
+				if keywordResult[0] in sentences:
+					sentences[keywordResult[0]].keywordResults.append(keywordResult)
+
+			for triple in paragraph.extractionTriples:
+				sentences[triple[0]].triples.append(triple)
+
+			for entity in paragraph.extractionEntities:
+				sentences[entity[0]].entities.append(entity)
+
+			for fact in paragraph.extractionFacts:
+				sentences[fact[0]].facts.append(fact)
+
+			for phrase in paragraph.extractionTextPhrases:
+				sentences[phrase[0]].phrases.append(phrase)
+
+			for sentence in sentences:
+				sentences[sentence].assignEntityScores()
+				sentences[sentence].determineNounChunks()
+				sentences[sentence].createChunks(2)
+
+				allSentences[sentences[sentence].uniqueId] = sentences[sentence]
+
+	return allSentences

@@ -106,53 +106,7 @@ for fileName in os.listdir(cachePath):
 		for word in topicTitle.split(" "):
 			topicTitleDict[word] = None
 
-		allSentences = {}
-
-		for docNo in topicDictionary:
-			print docNo
-
-			docModel = topicDictionary[docNo]
-			for paragraph in docModel.paragraphs:
-				sentences = {}
-				sentenceNum = 0
-				for sentence in paragraph.extractionSentences:
-					text = paragraph.text
-					actualSentence = text[sentence[1]:sentence[1] + sentence[2]]
-					sentences[sentence[0]] = \
-						extractionclustering.sentence.Sentence(
-							actualSentence,
-							sentence[0],
-							sentenceNum,
-							docModel,
-							topicTitleDict)
-					sentenceNum += 1
-
-				for keywordResult in paragraph.extractionKeywordResults:
-
-					for pos in keywordResult[3]:
-						domainOfKeywordTypes[pos] = None
-
-					if keywordResult[0] in sentences:
-						sentences[keywordResult[0]].keywordResults.append(keywordResult)
-
-				for triple in paragraph.extractionTriples:
-					sentences[triple[0]].triples.append(triple)
-
-				for entity in paragraph.extractionEntities:
-					sentences[entity[0]].entities.append(entity)
-
-				for fact in paragraph.extractionFacts:
-					sentences[fact[0]].facts.append(fact)
-
-				for phrase in paragraph.extractionTextPhrases:
-					sentences[phrase[0]].phrases.append(phrase)
-
-				for sentence in sentences:
-					sentences[sentence].assignEntityScores()
-					sentences[sentence].determineNounChunks()
-					sentences[sentence].createChunks(1)
-
-					allSentences[sentences[sentence].uniqueId] = sentences[sentence]
+		allSentences = extractionclustering.sentence.factory(topicDictionary, topicTitleDict)
 
 		print "doing clustering now on summarization..."
 
@@ -218,7 +172,7 @@ for fileName in os.listdir(cachePath):
 		for newSentence in bestOrder:
 			actualText = re.sub("\s+", " ", newSentence.simple) + "\n"
 			if actualText not in uniqueSummaries:
-				uniqueSummaries[actualSentence] = None
+				uniqueSummaries[actualText] = None
 				summary += actualText
 
 		if summary is not None:
