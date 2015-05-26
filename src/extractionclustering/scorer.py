@@ -24,9 +24,8 @@ def returnTopSentencesFromDifferentClusters(scoredSentenceDictionary, clusters):
 	# go through each cluster
 	# get the highest scored sentence from it
 	# can possibly do two per cluster
-	returnSentences = {}
 
-	print scoredSentenceDictionary
+	returnSentences = {}
 
 	for cluster in clusters[0]:
 		highestSentence = None
@@ -34,16 +33,6 @@ def returnTopSentencesFromDifferentClusters(scoredSentenceDictionary, clusters):
 
 		for pointId in cluster.points:
 			point = cluster.points[pointId]
-			# print point.uid
-			# print point.sentence.uuid
-			# print (point.sentence.uuid in scoredSentenceDictionary)
-			# print (point.uid in scoredSentenceDictionary)
-			# for key in scoredSentenceDictionary:
-			# 	print key
-			# 	if key == point.uid:
-			# 		print "FOUND"
-			# 	if key == point.sentence.uuid:
-			# 		print "FOUND"
 
 			if point.uid in scoredSentenceDictionary and scoredSentenceDictionary[point.uid] > highestScore:
 				highestScore = scoredSentenceDictionary[point.uid]
@@ -52,5 +41,5 @@ def returnTopSentencesFromDifferentClusters(scoredSentenceDictionary, clusters):
 		if highestSentence is not None:
 			returnSentences[highestSentence] = highestScore
 
-	for sentence in returnSentences:
-		yield sentence
+	for tupleResult in sorted(returnSentences.items(), key=operator.itemgetter(1), reverse=True):
+		yield tupleResult

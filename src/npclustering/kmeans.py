@@ -6,11 +6,11 @@ import random
 
 
 
-def buildPointForEachSentence(docModels):
-	for docModel in docModels:
-		for paragraph in docModel.paragraphs:
-			for sentence in paragraph:
-				yield point.Point(sentence)
+# def buildPointForEachSentence(docModels):
+# 	for docModel in docModels:
+# 		for paragraph in docModel.paragraphs:
+# 			for sentence in paragraph:
+# 				yield point.Point(sentence)
 
 
 def getInitialKPoints(points, k):

@@ -7,6 +7,8 @@ import extract.topicReader
 import extract.document
 import extractionclustering.sentence
 import extractionclustering.kmeans
+import extractionclustering.scorer
+import extractionclustering.point
 import npclustering.npClustering
 import npclustering.kmeans
 
@@ -35,23 +37,42 @@ class ExtractionClusteringTests(unittest.TestCase):
 
 		allSentences = extractionclustering.sentence.factory(topicDictionary, topicTitleDict)
 
-		for sentenceId in allSentences:
-			print allSentences[sentenceId]
+		scoredSentenceDictionary = {}
+		for tupleResult in extractionclustering.scorer.handleScoring(allSentences):
+			key = tupleResult[0]
+			scoredSentenceDictionary[key] = (allSentences[key], tupleResult[1])
 
 		# similarity stuff
 		# clustering stuff
 		allPoints = []
-		for point in extractionclustering.kmeans.buildPointForEachSentence(allSentences):
-			allPoints.append(point)
+		for sentenceId in allSentences:
+			allPoints.append(extractionclustering.point.Point(allSentences[sentenceId]))
 
 		initialPoints = npclustering.kmeans.getInitialKPoints(allPoints, 20)
 
 		clusters = npclustering.kmeans.performKMeans(initialPoints, allPoints)
 
+		maxWords = 100
+		wordCount = 0
+		uniqueSummaries = {}
+		bestSentences = []
+		for topSentenceResult in extractionclustering.scorer.returnTopSentencesFromDifferentClusters(scoredSentenceDictionary, clusters):
+			if wordCount > maxWords:
+				break
+
+			bestSentences.append(topSentenceResult)
+
+			if topSentenceResult.simple in uniqueSummaries:
+				continue
+
+			uniqueSummaries[topSentenceResult.simple] = None
+
+			wordSize = len(topSentenceResult.simple.split(" "))
+			wordCount += wordSize
+
 		# act
 		for cluster in clusters[0]:
 			print "----------CLUSTER " + str(cluster.number) + " SIZE (" + str(len(cluster.points)) + ")"
-			# print cluster.currentFeatures
 			clusterSummary = ""
 			iterNum = 0
 			for pointKey in cluster.points:

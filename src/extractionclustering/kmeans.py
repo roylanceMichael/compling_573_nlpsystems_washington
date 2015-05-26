@@ -1,12 +1,6 @@
 __author__ = 'mroylance'
 
-import point
 import random
-
-
-def buildPointForEachSentence(sentences):
-	for sentenceId in sentences:
-		yield point.Point(sentences[sentenceId])
 
 def getInitialKPoints(points, k):
 	# just grabbing a random initial point, for now

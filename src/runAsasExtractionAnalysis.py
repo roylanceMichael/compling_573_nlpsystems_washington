@@ -29,6 +29,7 @@ import entitygrid.asasEntityGrid
 import npclustering.kmeans
 import extractionclustering.kmeans
 import extractionclustering.scorer
+import extractionclustering.point
 import extractionclustering.sentence
 from evaluate.rougeEvaluator import RougeEvaluator
 from evaluate.evaluationCompare import EvaluationCompare
@@ -116,35 +117,51 @@ for fileName in os.listdir(cachePath):
 
 		print "doing clustering now on summarization..."
 
-		scoredSentenceDictionary = {}
-		for tupleResult in extractionclustering.scorer.handleScoring(allSentences):
-			key = tupleResult[0]
-			scoredSentenceDictionary[key] = (allSentences[key], tupleResult[1])
+		# scoredSentenceDictionary = {}
+		# for tupleResult in extractionclustering.scorer.handleScoring(allSentences):
+		# 	key = tupleResult[0]
+		# 	scoredSentenceDictionary[key] = (allSentences[key], tupleResult[1])
 
-		allPoints = []
-		for point in extractionclustering.kmeans.buildPointForEachSentence(allSentences):
-			allPoints.append(point)
-
-		initialPoints = npclustering.kmeans.getInitialKPoints(allPoints, totalClusters)
-		clusters = npclustering.kmeans.performKMeans(initialPoints, allPoints)
+		# allPoints = []
+		# for sentenceId in allSentences:
+		# 	allPoints.append(extractionclustering.point.Point(allSentences[sentenceId]))
+		#
+		# initialPoints = npclustering.kmeans.getInitialKPoints(allPoints, totalClusters)
+		# clusters = npclustering.kmeans.performKMeans(initialPoints, allPoints)
 
 		wordCount = 0
 		uniqueSummaries = {}
 		bestSentences = []
-		for topSentenceResult in extractionclustering.scorer.returnTopSentencesFromDifferentClusters(scoredSentenceDictionary, clusters):
-			print topSentenceResult
+		for tupleResult in extractionclustering.scorer.handleScoring(allSentences):
+			print tupleResult
 			if wordCount > maxWords:
 				break
 
-			bestSentences.append(topSentenceResult)
+			sentence = allSentences[tupleResult[0]]
+			bestSentences.append(sentence)
 
-			if topSentenceResult.simple in uniqueSummaries:
+			if sentence.simple in uniqueSummaries:
 				continue
 
-			uniqueSummaries[topSentenceResult.simple] = None
+			uniqueSummaries[sentence.simple] = None
 
-			wordSize = len(topSentenceResult.simple.split(" "))
+			wordSize = len(sentence.simple.split(" "))
 			wordCount += wordSize
+
+		# for topSentenceResult in extractionclustering.scorer.returnTopSentencesFromDifferentClusters(scoredSentenceDictionary, clusters):
+		# 	print topSentenceResult
+		# 	if wordCount > maxWords:
+		# 		break
+		#
+		# 	bestSentences.append(topSentenceResult)
+		#
+		# 	if topSentenceResult.simple in uniqueSummaries:
+		# 		continue
+		#
+		# 	uniqueSummaries[topSentenceResult.simple] = None
+		#
+		# 	wordSize = len(topSentenceResult.simple.split(" "))
+		# 	wordCount += wordSize
 
 		summary = ""
 		for uniqueSentence in uniqueSummaries:
@@ -168,6 +185,7 @@ for fileName in os.listdir(cachePath):
 		# 	if actualText not in uniqueSummaries:
 		# 		uniqueSummaries[actualText] = None
 		# 		summary += actualText
+
 
 		if summary is not None:
 			summaryFileName = reorderedSummaryOutputPath + "/" + fileName

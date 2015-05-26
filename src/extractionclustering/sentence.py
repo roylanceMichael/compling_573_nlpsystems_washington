@@ -38,7 +38,6 @@ class Sentence:
 		self.keywordResults = []
 		self.factRelations = []
 		self.beginningScore = 0
-		self.uniqueId = str(uuid.uuid1())
 		self.nounChunks = []
 		self.topicTitleDict = topicTitleDict
 		self.chunkDictLen = 0
@@ -189,7 +188,8 @@ class Sentence:
 				score += 1
 
 		# smoothing
-		return score / (self.chunkDictLen + otherSentence.chunkDictLen + 1)
+		return score
+		# return score / (self.chunkDictLen + otherSentence.chunkDictLen + 1)
 
 		"""
 		for phrase in self.phrases:
