@@ -26,8 +26,10 @@ import extract
 import extract.topicReader
 import extract.documentRepository
 import entitygrid.asasEntityGrid
-import extractionclustering.sentence
+import npclustering.kmeans
+import extractionclustering.kmeans
 import extractionclustering.scorer
+import extractionclustering.sentence
 from evaluate.rougeEvaluator import RougeEvaluator
 from evaluate.evaluationCompare import EvaluationCompare
 
@@ -45,6 +47,8 @@ rankModel = svmlight.read_model('../cache/svmlightCache/svmlightModel.dat')
 
 rouge = RougeEvaluator("../ROUGE", "/opt/dropbox/14-15/573/Data/models/devtest", summaryOutputPath, modelSummaryCachePath, rougeCacheDir)
 
+totalClusters = 20
+maxWords = 130
 topics = []
 topicTitles = {}
 for topic in extract.topicReader.Topic.factoryMultiple("../doc/Documents/devtest/GuidedSumm10_test_topics.xml"):
@@ -87,12 +91,17 @@ def writeBufferToFile(path, buffer):
 	outFile = open(path, 'w')
 	outFile.write(buffer)
 	outFile.close()
+
 docIndex = 0
 
 domainOfKeywordTypes = {}
 
+# fileName refers to cache/asasCache/D1001A ...
 for fileName in os.listdir(cachePath):
+	# grab the topic dictionary with docModels inside of it
 	pickleFilePath = os.path.join(cachePath, fileName)
+
+	# open
 	if os.path.exists(pickleFilePath):
 		pickleFile = open(pickleFilePath, 'rb')
 		topicDictionary = pickle.load(pickleFile)
@@ -102,38 +111,44 @@ for fileName in os.listdir(cachePath):
 		for word in topicTitle.split(" "):
 			topicTitleDict[word] = None
 
+		# all the cached sentences from the topic
 		allSentences = extractionclustering.sentence.factory(topicDictionary, topicTitleDict)
 
 		print "doing clustering now on summarization..."
 
-		maxWords = 100
+		scoredSentenceDictionary = {}
+		for tupleResult in extractionclustering.scorer.handleScoring(allSentences):
+			key = tupleResult[0]
+			scoredSentenceDictionary[key] = (allSentences[key], tupleResult[1])
+
+		allPoints = []
+		for point in extractionclustering.kmeans.buildPointForEachSentence(allSentences):
+			allPoints.append(point)
+
+		initialPoints = npclustering.kmeans.getInitialKPoints(allPoints, totalClusters)
+		clusters = npclustering.kmeans.performKMeans(initialPoints, allPoints)
+
 		wordCount = 0
 		uniqueSummaries = {}
 		bestSentences = []
-		for tupleResult in extractionclustering.scorer.handleScoring(allSentences):
+		for topSentenceResult in extractionclustering.scorer.returnTopSentencesFromDifferentClusters(scoredSentenceDictionary, clusters):
+			print topSentenceResult
 			if wordCount > maxWords:
 				break
 
-			sentence = allSentences[tupleResult[0]]
-			bestSentences.append(sentence)
-			score = tupleResult[1]
+			bestSentences.append(topSentenceResult)
 
-			# print (sentence.simple, score)
-			strippedSentence = re.sub("\s+", " ", sentence.simple)
-			strippedSentenceNormalized = re.sub("[^a-zA-Z0-9 -]", "", strippedSentence)
-
-			if strippedSentence in uniqueSummaries:
+			if topSentenceResult.simple in uniqueSummaries:
 				continue
 
-			uniqueSummaries[strippedSentenceNormalized] = strippedSentence
+			uniqueSummaries[topSentenceResult.simple] = None
 
-			wordSize = len(strippedSentence.split(" "))
+			wordSize = len(topSentenceResult.simple.split(" "))
 			wordCount += wordSize
-			print wordSize
 
 		summary = ""
 		for uniqueSentence in uniqueSummaries:
-			summary += uniqueSummaries[uniqueSentence] + "\n"
+			summary += uniqueSentence + "\n"
 
 		print summary
 		if summary is not None:

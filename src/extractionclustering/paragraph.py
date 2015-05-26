@@ -1,5 +1,6 @@
 __author__ = 'mroylance'
 
+
 class Paragraph:
 	def __init__(self):
 		self.extractions = []

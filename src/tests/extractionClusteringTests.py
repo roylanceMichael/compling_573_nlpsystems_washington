@@ -35,8 +35,12 @@ class ExtractionClusteringTests(unittest.TestCase):
 
 		allSentences = extractionclustering.sentence.factory(topicDictionary, topicTitleDict)
 
-		allPoints = []
+		for sentenceId in allSentences:
+			print allSentences[sentenceId]
 
+		# similarity stuff
+		# clustering stuff
+		allPoints = []
 		for point in extractionclustering.kmeans.buildPointForEachSentence(allSentences):
 			allPoints.append(point)
 

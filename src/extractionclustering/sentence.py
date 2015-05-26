@@ -24,7 +24,8 @@ if os.path.isfile(minimalStopWordsFile):
 
 class Sentence:
 	def __init__(self, text, id, sentenceNum, docModel, topicTitleDict, keywordTopicMatchScore=5):
-		self.simple = re.sub("[^a-zA-Z0-9 -]", "",  re.sub("\s+", " ", text))
+		# self.simple = re.sub("[^a-zA-Z0-9 -]", "",  re.sub("\s+", " ", text))
+		self.simple = re.sub("\s+", " ", text)
 		self.uuid = str(uuid.uuid1())
 		self.id = id
 		self.sentenceNum = sentenceNum
@@ -51,6 +52,9 @@ class Sentence:
 
 		self.assignEntityScores()
 		self.removeArticleHeader()
+
+	def __str__(self):
+		return self.uuid + " " + self.simple
 
 	def createChunks(self, chunkMethod):
 		if chunkMethod == 1:
@@ -163,12 +167,17 @@ class Sentence:
 
 	def removeArticleHeader(self):
 		beginningArticles = ["--", "_"]
+		allCapsOrNotLowerAlpha = "[^A-Z0-9 -_]{4,}"
 
 		for beginningArticle in beginningArticles:
 			result = self.simple.find(beginningArticle, 0)
 
 			if result > -1:
 				self.simple = self.simple[result+len(beginningArticle):]
+
+		allCapsOrNotLowerAlphaResult = self.simple.find(allCapsOrNotLowerAlpha, 0)
+		if allCapsOrNotLowerAlphaResult > -1:
+			self.simple = self.simple[allCapsOrNotLowerAlphaResult:]
 
 		self.simple = self.simple.strip()
 
@@ -283,6 +292,7 @@ def factory(topicDictionary, topicTitleDict):
 				sentences[sentence].determineNounChunks()
 				sentences[sentence].createChunks(2)
 
-				allSentences[sentences[sentence].uniqueId] = sentences[sentence]
+				if len(sentences[sentence].triples) != 0:
+					allSentences[sentences[sentence].uniqueId] = sentences[sentence]
 
 	return allSentences
