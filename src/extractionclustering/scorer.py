@@ -40,5 +40,5 @@ def returnTopSentencesFromDifferentClusters(scoredSentenceDictionary, clusters):
 		if highestSentence is not None:
 			returnSentences[highestSentence] = highestScore
 
-	for sentence in returnSentences:
-		yield sentence
+	for tupleResult in sorted(returnSentences.items(), key=operator.itemgetter(1), reverse=True):
+		yield tupleResult
