@@ -47,8 +47,10 @@ rankModel = svmlight.read_model('../cache/svmlightCache/svmlightModel.dat')
 rouge = RougeEvaluator("../ROUGE", "/opt/dropbox/14-15/573/Data/models/devtest", summaryOutputPath, modelSummaryCachePath, rougeCacheDir)
 
 topics = []
+topicTitles = {}
 for topic in extract.topicReader.Topic.factoryMultiple("../doc/Documents/devtest/GuidedSumm10_test_topics.xml"):
 	topics.append(topic)
+	topicTitles[topic.id] = re.sub("\s+", " ", topic.title)
 
 documentRepository = extract.documentRepository.DocumentRepository("/corpora/LDC/LDC02T31/", "/corpora/LDC/LDC08T25/data/", topics)
 
@@ -95,6 +97,11 @@ for fileName in os.listdir(cachePath):
 	if os.path.exists(pickleFilePath):
 		pickleFile = open(pickleFilePath, 'rb')
 		topicDictionary = pickle.load(pickleFile)
+		topicTitle = topicTitles[fileName].lower().strip()
+
+		topicTitleDict = {}
+		for word in topicTitle.split(" "):
+			topicTitleDict[word] = None
 
 		allSentences = {}
 
@@ -113,7 +120,8 @@ for fileName in os.listdir(cachePath):
 							actualSentence,
 							sentence[0],
 							sentenceNum,
-							docModel)
+							docModel,
+							topicTitleDict)
 					sentenceNum += 1
 
 				for keywordResult in paragraph.extractionKeywordResults:
@@ -138,6 +146,9 @@ for fileName in os.listdir(cachePath):
 
 				for sentence in sentences:
 					sentences[sentence].assignEntityScores()
+					sentences[sentence].determineNounChunks()
+					sentences[sentence].createChunks(1)
+
 					allSentences[sentences[sentence].uniqueId] = sentences[sentence]
 
 		print "doing clustering now on summarization..."
@@ -168,6 +179,8 @@ for fileName in os.listdir(cachePath):
 			sentence = allSentences[tupleResult[0]]
 			bestSentences.append(sentence)
 			score = tupleResult[1]
+
+			# print (sentence.simple, score)
 			strippedSentence = re.sub("\s+", " ", sentence.simple)
 			strippedSentenceNormalized = re.sub("[^a-zA-Z0-9 -]", "", strippedSentence)
 

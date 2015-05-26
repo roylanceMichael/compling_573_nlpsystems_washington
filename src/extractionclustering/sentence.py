@@ -1,5 +1,6 @@
 __author__ = 'mroylance'
 
+import os
 import uuid
 
 ignoreTriples = {"<empty>": None, "<unspecified>": None}
@@ -11,8 +12,17 @@ passiveBe = ["were", "was"]
 
 allPosTypes = {u'INFINITIVE_TO': None, u'REC_PRONOUN': None, u'PRES_PART': None, u'INTERJ': None, u'MODAL': None, u'PAST_PART': None, u'POSS_PRONOUN': None, u'CONJ': None, u'NOUN': None, u'DEMONSTRATIVE': None, u'REF_PRONOUN': None, u'ARTICLE': None, u'AUX': None, u'GERUND': None, u'REL_PRONOUN': None, u'COPULAR': None, u'VERB': None, u'PARTICLE': None, u'CLAUSE_MARKER': None, u'QUANTIFIER': None, u'QUESTION_MARKER': None, u'ADVERB': None, u'PRONOUN': None, u'ADJECTIVE': None, u'PREP': None}
 
+minimalStopWordsFile = "minimalStopWords.txt"
+stopWords = {}
+if os.path.isfile(minimalStopWordsFile):
+	with open(minimalStopWordsFile) as f:
+		word = f.readline()
+		while word:
+			stopWords[word.strip().lower()] = None
+			word = f.readline()
+
 class Sentence:
-	def __init__(self, text, id, sentenceNum, docModel):
+	def __init__(self, text, id, sentenceNum, docModel, topicTitleDict,keywordTopicMatchScore=5):
 		self.simple = text.strip()
 		self.id = id
 		self.sentenceNum = sentenceNum
@@ -26,12 +36,98 @@ class Sentence:
 		self.factRelations = []
 		self.beginningScore = 0
 		self.uniqueId = str(uuid.uuid1())
+		self.nounChunks = []
+		self.topicTitleDict = topicTitleDict
+
+		self.keywordTopicMatchScore = keywordTopicMatchScore
+
+		self.chunkDict = {}
 
 		if self.sentenceNum < 2:
-			self.beginningScore = 20 - self.sentenceNum
+			self.beginningScore = 5 - self.sentenceNum
 
 		self.assignEntityScores()
 		self.removeArticleHeader()
+
+	def createChunks(self, chunkMethod):
+		if chunkMethod == 1:
+			for keywordResult in self.keywordResults:
+				normalizedKeyword = keywordResult[1].strip().lower()
+
+				if normalizedKeyword in self.topicTitleDict:
+					self.beginningScore += self.keywordTopicMatchScore
+
+				if len(normalizedKeyword) == 0 or normalizedKeyword in stopWords:
+					continue
+				self.chunkDict[normalizedKeyword] = None
+		elif chunkMethod == 2:
+			previousKeyword = None
+			for keywordResult in self.keywordResults:
+				normalizedKeyword = keywordResult[1].strip().lower()
+
+				if normalizedKeyword in self.topicTitleDict:
+					self.beginningScore += self.keywordTopicMatchScore
+
+				if len(normalizedKeyword) == 0 or normalizedKeyword in stopWords:
+					continue
+				if previousKeyword is None:
+					previousKeyword = normalizedKeyword
+					continue
+
+				self.chunkDict[(previousKeyword, normalizedKeyword)] = None
+				previousKeyword = normalizedKeyword
+		elif chunkMethod == 3:
+			previousKeyword = None
+			previousPreviousKeyword = None
+			for keywordResult in self.keywordResults:
+				normalizedKeyword = keywordResult[1].strip().lower()
+
+				if normalizedKeyword in self.topicTitleDict:
+					self.beginningScore += self.keywordTopicMatchScore
+
+				if len(normalizedKeyword) == 0 or normalizedKeyword in stopWords:
+					continue
+
+				if previousKeyword is None or previousPreviousKeyword is None:
+					previousPreviousKeyword = previousKeyword
+					previousKeyword = normalizedKeyword
+					continue
+
+				self.chunkDict[(previousPreviousKeyword, previousKeyword, normalizedKeyword)] = None
+				previousPreviousKeyword = previousKeyword
+				previousKeyword = normalizedKeyword
+		elif chunkMethod == 4:
+			for chunk in self.nounChunks:
+				self.chunkDict[chunk] = None
+		elif chunkMethod == 5:
+			previousChunk = None
+			for chunk in self.nounChunks:
+				if previousChunk is None:
+					previousChunk = chunk
+					continue
+
+				self.chunkDict[(previousChunk, chunk)] = None
+				previousChunk = chunk
+
+	def determineNounChunks(self):
+		nounChunk = []
+		for keyword in self.keywordResults:
+			foundNounyThing = False
+
+			for pos in keyword[3]:
+				if pos == 'NOUN' or pos == 'ADJECTIVE' and len(keyword[1].strip()) > 0:
+					normalizedKeyword = keyword[1].lower().strip()
+
+					if normalizedKeyword in self.topicTitleDict:
+						self.beginningScore += self.keywordTopicMatchScore
+
+					nounChunk.append(normalizedKeyword)
+					foundNounyThing = True
+					break
+
+			if foundNounyThing == False and len(nounChunk) > 0:
+				self.nounChunks.append(tuple(nounChunk))
+				nounChunk = []
 
 	def assignEntityScores(self):
 		# 40 40 20 split
@@ -74,21 +170,9 @@ class Sentence:
 	def distanceToOtherSentence(self, otherSentence):
 		score = self.beginningScore
 
-		for keyword in self.keywordResults:
-			normalizedWord = keyword[1]
-			posTypes = keyword[3]
-
-			for otherKeyword in otherSentence.keywordResults:
-				otherNormalizedWord = otherKeyword[1]
-
-				foundMatch = False
-				for otherPos in otherKeyword[3]:
-					if otherPos in posTypes:
-						foundMatch = True
-						break
-
-				if otherNormalizedWord == normalizedWord and foundMatch:
-					score += 1
+		for otherChunk in otherSentence.chunkDict:
+			if otherChunk in self.chunkDict:
+				score += 1
 
 		return score
 
