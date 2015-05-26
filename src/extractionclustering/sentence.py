@@ -249,6 +249,16 @@ class Sentence:
 		"""
 
 
+def hasVerb(sentence):
+	for keyword in sentence.keywordResults:
+		if sentence.simple == "one for each victim.":
+			pass
+		for POS in keyword[3]:
+			if POS == "VERB" or POS == "PAST_PART" or POS == "PRES_PART" or POS == "AUX" or POS == "MODAL" or POS == "GERUND":
+				return True
+	return False
+
+
 def factory(topicDictionary, topicTitleDict):
 	allSentences = {}
 
@@ -293,8 +303,10 @@ def factory(topicDictionary, topicTitleDict):
 				sentences[sentence].createChunks(2)
 
 				if len(sentences[sentence].triples) != 0 \
-						and not "''" in sentences[sentence].simple \
-						and not "``" in sentences[sentence].simple:
+					and not "''" in sentences[sentence].simple \
+					and not "``" in sentences[sentence].simple \
+					and hasVerb(sentences[sentence]):
+
 					allSentences[sentences[sentence].uniqueId] = sentences[sentence]
 
 	return allSentences
