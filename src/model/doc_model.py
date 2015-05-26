@@ -1,5 +1,6 @@
 from collections import defaultdict
 from datetime import datetime
+import uuid
 
 import nltk
 import nltk.data
@@ -9,17 +10,9 @@ from nltk.stem.porter import *
 
 import extract.document as document
 from model import idf
-
 import coreference
 import coreference.rules
 import coherence
-from entityGrid import EntityGrid
-from entityGrid import FeatureVector
-
-
-import uuid
-import math
-
 
 
 sentence_breaker = nltk.data.load('tokenizers/punkt/english.pickle')
@@ -285,13 +278,6 @@ class Doc_Model:
 	# do coherence scoring
 	def scoreWithCoherence(self):
 		coherence.scorer.determineDoc(self)
-
-	# build entity grid
-	def buildEntityGrid(self):
-		self.entityGrid = EntityGrid(self)
-		# self.entityGrid.printMatrix()
-		featureVector = FeatureVector(self.entityGrid)
-		# featureVector.printVector()
 
 
 class Cluster(list):

@@ -19,19 +19,23 @@ __author__ = 'thomas'
 """
 
 import argparse
-import extract
-import extract.topicReader
-import extract.documentRepository
-from model.entityGrid import EntityGrid
-from model.entityGrid import FeatureVector
-from model.entityGrid import DummyDocModel
-import nltk
-import nltk.data
 import svmlight
 import os
 import itertools
+
+import nltk
+import nltk.data
+
+import extract
+import extract.topicReader
+import extract.documentRepository
+from entitygrid.textrazorEntityGrid import TextrazorEntityGrid
+from entitygrid.entityGrid import FeatureVector
+from entitygrid.entityGrid import DummyDocModel
 from evaluate.rougeEvaluator import RougeEvaluator
 from evaluate.evaluationCompare import EvaluationCompare
+
+
 
 
 # get parser args and set up global variables
@@ -98,7 +102,7 @@ def getBestSummaryOrder(sentences, fileName, docIndex, numDocs):
 	for permutation in permutations:
 		permList.append(permutation)
 		doc = DummyDocModel(permutation)
-		grid = EntityGrid(doc)
+		grid = TextrazorEntityGrid(doc.cleanSentences())
 		featureVector = FeatureVector(grid, docIndex)
 		vector = featureVector.getVector(1)
 		testVectors.append(vector)

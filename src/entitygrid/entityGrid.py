@@ -1,9 +1,6 @@
 __author__ = 'thomas'
 
-from textrazor import textRazorEntityExtraction
-import numpy
 import random
-import re
 
 subjectScore = 3.0
 objectScore = 2.0
@@ -68,7 +65,7 @@ class FeatureVector:
 				try:
 					transitions[fromType][toType] /= numTransitions
 				except ZeroDivisionError:
-					print "wtf?"
+					print "ERROR: No Transitions.  This should have been dealt with.  wtf?"
 		return transitions
 
 	def printVector(self):
@@ -104,65 +101,41 @@ class FeatureVector:
 #
 class EntityGrid:
 	# build entity grid
-	def __init__(self, docModel, textrazorEntities=None, textrazorSentences=None):
-		self.docModel = docModel
-		self.sentences = self.docModel.cleanSentences()
-		if textrazorEntities is None or textrazorSentences is None:
-			nerResults = textRazorEntityExtraction.getTextRazorInfo(self.sentences)
-			self.textrazorSentences = nerResults.sentences
-			self.textrazorEntities = nerResults.entities()
-		else:
-			self.textrazorEntities = textrazorEntities
-			self.textrazorSentences = textrazorSentences
-		self.matrixIndices = self.getMatrixIndices()
-		self.numUniqueEntities = len(self.matrixIndices)
-		self.grid = self.fillMatrix()
-
-	def makeEmptyMatrix(self):
-		numpyMatrix = list()
-		for sentence in self.textrazorSentences:
-			numpyMatrix.append(numpy.zeros(self.numUniqueEntities))
-		return numpyMatrix
+	def __init__(self, sentences):
+		self.sentences = sentences
+		self.numSentences = len(sentences)
+		self.grid = None
+		self.matrixIndices = None
 
 	def setEntityUseType(self, entityId, matrix, sNum, score):
 		matrix[sNum][self.matrixIndices[entityId]] = max(score, matrix[sNum][self.matrixIndices[entityId]])
 
-	def fillMatrix(self):
-		matrix = self.makeEmptyMatrix()
-		sNum = 0
-		for sentence in self.textrazorSentences:
-			for word in sentence.words:
-				if "NN" in word.part_of_speech and len(word.entities) > 0:
-					entityId = self.getLongestEntity(word.entities)
-					if word.relation_to_parent == "nsubj":  # _john_ eats snails
-						self.setEntityUseType(entityId, matrix, sNum, subjectScore)
-					elif word.relation_to_parent == "xsubj":  # _john_ likes to eat snails
-						self.setEntityUseType(entityId, matrix, sNum, subjectScore)
-					elif word.relation_to_parent == "nsubjpass":  # _john_ is eaten by bill
-						self.setEntityUseType(entityId, matrix, sNum, subjectScore)
-					elif word.relation_to_parent == "agent":  # bill was killed by _john_
-						self.setEntityUseType(entityId, matrix, sNum, objectScore)
-					elif word.relation_to_parent == "dobj":  # bill eats _john_
-						self.setEntityUseType(entityId, matrix, sNum, objectScore)
-					elif word.relation_to_parent == "pobj":  # john eats with _bill_
-						self.setEntityUseType(entityId, matrix, sNum, obliqueScore)
-					elif word.relation_to_parent == "npadvmod":  # john is 65 _years_ old
-						self.setEntityUseType(entityId, matrix, sNum, obliqueScore)
-					elif word.relation_to_parent == "iobj":  # john gave _bill_ flowers
-						self.setEntityUseType(entityId, matrix, sNum, obliqueScore)
-					elif word.relation_to_parent == "nn":  # _army_ boots are sexy
-						pass
+	# remove all unused entities and build a new grid
+	def compressMatrix(self):
+		newMatrixIndices = {}
+		usedEntityIds = self.getUsedEntityIds()
+		newMatrix = self.makeEmptyMatrix(len(usedEntityIds))
+		for sNum in range(0, len(self.grid)):
+			idx = 0
+			for entityId in usedEntityIds:
+				newMatrix[sNum][idx] = self.grid[sNum][self.matrixIndices[entityId]]
+				newMatrixIndices[entityId] = idx
+				idx += 1
+		self.grid = newMatrix
+		self.matrixIndices = newMatrixIndices
 
-					# print "[" + entityId + "]" + str(self.tokenFromScore(matrix[sNum][self.matrixIndices[entityId]]))
-			sNum += 1
+	def makeEmptyMatrix(self, width):
+		matrix = list()
+		for i in range(0, self.numSentences):
+			matrix.append([0.0] * width)
 		return matrix
 
-	def getMatrixIndices(self):
+	def getMatrixIndices(self, entityIds):
 		matrixIndices = {}
 		i = 0
-		for entity in self.textrazorEntities:
-			if entity.id not in matrixIndices.keys():
-				matrixIndices[entity.id] = i
+		for entity in entityIds:
+			if entityIds not in matrixIndices.keys():
+				matrixIndices[entity] = i
 				i += 1
 		return matrixIndices
 
@@ -188,15 +161,20 @@ class EntityGrid:
 			scoreToken = "s"
 		return scoreToken
 
-	@staticmethod
-	def getLongestEntity(entities):
-		longestLen = 0
-		longestEntity = None
-		for entity in entities:
-			if len(entity.matched_words) > longestLen:
-				longestLen = len
-				longestEntity = entity.id
-		return longestEntity
+	# get the entity ids that are being used.
+	def getUsedEntityIds(self):
+		usedEntities = []
+		for index in self.matrixIndices:
+			unused = True
+			for sNum in range(0, len(self.grid)):
+				score = self.grid[sNum][self.matrixIndices[index]]
+				if score != 0.0:
+					unused = False
+					break
+			if not unused:
+				usedEntities.append(index)
+		return usedEntities
+
 
 	def printMatrix(self):
 		for index in self.matrixIndices:
@@ -216,6 +194,9 @@ class EntityGrid:
 
 			print row
 
+
+
+
 #
 # DummyDocModel: super duper simple doc model that only has sentences.
 #
@@ -229,28 +210,3 @@ class DummyDocModel:
 	def randomizeSentences(self):
 		random.shuffle(self.sentences)
 
-
-testText = [
-	"The Justice Department is conducting an anti-trust \
-trial against Microsoft Corp. with evidence that \
-the company is increasingly attempting to crush \
-competitors.",
-	"Microsoft is accused of trying to forcefully buy into \
-markets where its own products are not competitive \
-enough to unseat established brands.",
-	"The case revolves around evidence of Microsoft \
-aggressively pressuring Netscape into merging \
-browser software.",
-	"Microsoft claims its tactics are commonplace and \
-good economically.",
-	"The government may file a civil suit ruling \
-that conspiracy to curb competition through \
-collusion is a violation of the Sherman Act.",
-	"Microsoft continues to show increased earnings despite \
-the trial."]
-
-
-# grid = EntityGrid(DummyDocModel(testText))
-# grid.printMatrix()
-# featureVector = FeatureVector(grid)
-# featureVector.printVector()
