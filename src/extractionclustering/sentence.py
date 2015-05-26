@@ -307,6 +307,6 @@ def factory(topicDictionary, topicTitleDict):
 					and not "``" in sentences[sentence].simple \
 					and hasVerb(sentences[sentence]):
 
-					allSentences[sentences[sentence].uniqueId] = sentences[sentence]
+					allSentences[sentences[sentence].uuid] = sentences[sentence]
 
 	return allSentences
