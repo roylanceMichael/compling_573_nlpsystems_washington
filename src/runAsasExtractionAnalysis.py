@@ -158,6 +158,7 @@ for fileName in os.listdir(cachePath):
 			summaryFile.close()
 
 		print "now calculating the best order..."
+
 		# bestOrder = getBestSummaryOrder(bestSentences, docIndex)
 		#
 		# summary = ""
