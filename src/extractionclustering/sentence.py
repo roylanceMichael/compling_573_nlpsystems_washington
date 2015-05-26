@@ -188,7 +188,8 @@ class Sentence:
 				score += 1
 
 		# smoothing
-		return score / (self.chunkDictLen + otherSentence.chunkDictLen + 1)
+		return score
+		# return score / (self.chunkDictLen + otherSentence.chunkDictLen + 1)
 
 		"""
 		for phrase in self.phrases:
