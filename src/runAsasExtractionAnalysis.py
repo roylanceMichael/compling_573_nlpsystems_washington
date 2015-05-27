@@ -132,12 +132,12 @@ for fileName in os.listdir(cachePath):
 			scoredSentenceDictionary[key] = (allSentences[key], tupleResult[1])
 
 		allPoints = []
-		for sentenceId in allSentences:
-			allPoints.append(extractionclustering.point.Point(allSentences[sentenceId]))
-
 		# let's try from 20 - 30
 		currentClusterSize = 20
 		while currentClusterSize < 28:
+			allPoints = []
+			for sentenceId in allSentences:
+				allPoints.append(extractionclustering.point.Point(allSentences[sentenceId]))
 			initialPoints = npclustering.kmeans.getInitialKPoints(allPoints, currentClusterSize)
 			clusters = npclustering.kmeans.performKMeans(initialPoints, allPoints)
 
