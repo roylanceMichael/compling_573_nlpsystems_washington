@@ -174,7 +174,6 @@ class Sentence:
 		# 	if result > -1:
 		# 		self.simple = self.simple[result+len(beginningArticle):]
 
-
 		allCapsOrNotLowerAlphaResult = self.simple.find(allCapsOrNotLowerAlpha, 0)
 		if allCapsOrNotLowerAlphaResult > -1:
 			self.simple = self.simple[allCapsOrNotLowerAlphaResult:]

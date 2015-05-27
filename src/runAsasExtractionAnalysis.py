@@ -50,6 +50,8 @@ rouge = RougeEvaluator("../ROUGE", "/opt/dropbox/14-15/573/Data/models/devtest",
                        modelSummaryCachePath, rougeCacheDir)
 
 totalClusters = 15
+minimumAverageClusterRange = 40
+maximumAverageClusterRange = 48
 maxWords = 130
 topics = []
 topicTitles = {}
@@ -133,16 +135,25 @@ for fileName in os.listdir(cachePath):
 		for sentenceId in allSentences:
 			allPoints.append(extractionclustering.point.Point(allSentences[sentenceId]))
 
-		initialPoints = npclustering.kmeans.getInitialKPoints(allPoints, totalClusters)
-		clusters = npclustering.kmeans.performKMeans(initialPoints, allPoints)
+		# let's try from 20 - 30
+		currentClusterSize = 20
+		while currentClusterSize < 28:
+			initialPoints = npclustering.kmeans.getInitialKPoints(allPoints, totalClusters)
+			clusters = npclustering.kmeans.performKMeans(initialPoints, allPoints)
 
-		print "cluster sizes:"
-		runningClusterSize = 0
-		for cluster in clusters[0]:
-			runningClusterSize += len(cluster.points)
+			print "cluster sizes:"
+			runningClusterSize = 0
 
-		averageClusterSize = runningClusterSize / float(len(cluster.points))
-		clusterSizes[fileName] = averageClusterSize
+			for cluster in clusters[0]:
+				runningClusterSize += len(cluster.points)
+
+			averageClusterSize = runningClusterSize / float(len(cluster.points))
+
+			if minimumAverageClusterRange > averageClusterSize > maximumAverageClusterRange:
+				clusterSizes[fileName] = averageClusterSize
+				break
+
+			currentClusterSize += 1
 
 		# wordCount = 0
 		# uniqueSummaries = {}
