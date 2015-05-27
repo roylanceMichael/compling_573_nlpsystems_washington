@@ -49,7 +49,7 @@ rankModel = svmlight.read_model('../cache/svmlightCache/svmlightModel.dat')
 rouge = RougeEvaluator("../ROUGE", "/opt/dropbox/14-15/573/Data/models/devtest", summaryOutputPath,
                        modelSummaryCachePath, rougeCacheDir)
 
-totalClusters = 20
+totalClusters = 25
 maxWords = 130
 topics = []
 topicTitles = {}
