@@ -168,11 +168,11 @@ class Sentence:
 		beginningArticles = ["--", "_"]
 		allCapsOrNotLowerAlpha = "[[:upper:]0-9-]{5,}"
 
-		for beginningArticle in beginningArticles:
-			result = self.simple.find(beginningArticle, 0)
-
-			if result > -1:
-				self.simple = self.simple[result+len(beginningArticle):]
+		# for beginningArticle in beginningArticles:
+		# 	result = self.simple.find(beginningArticle, 0)
+		#
+		# 	if result > -1:
+		# 		self.simple = self.simple[result+len(beginningArticle):]
 
 		allCapsOrNotLowerAlphaResult = self.simple.find(allCapsOrNotLowerAlpha, 0)
 		if allCapsOrNotLowerAlphaResult > -1:
