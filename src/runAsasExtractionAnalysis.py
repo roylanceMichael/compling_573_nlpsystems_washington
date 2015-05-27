@@ -102,6 +102,8 @@ docIndex = 0
 
 domainOfKeywordTypes = {}
 
+clusterSizes = {}
+
 # fileName refers to cache/asasCache/D1001A ...
 for fileName in os.listdir(cachePath):
 	# grab the topic dictionary with docModels inside of it
@@ -134,6 +136,14 @@ for fileName in os.listdir(cachePath):
 		initialPoints = npclustering.kmeans.getInitialKPoints(allPoints, totalClusters)
 		clusters = npclustering.kmeans.performKMeans(initialPoints, allPoints)
 
+		print "cluster sizes:"
+		runningClusterSize = 0
+		for cluster in clusters[0]:
+			runningClusterSize += len(cluster.points)
+
+		averageClusterSize = runningClusterSize / float(len(cluster.points))
+		clusterSizes[fileName] = averageClusterSize
+
 		# wordCount = 0
 		# uniqueSummaries = {}
 		# bestSentences = []
@@ -161,7 +171,6 @@ for fileName in os.listdir(cachePath):
 			if wordCount > maxWords:
 				break
 
-			print topSentenceResult
 			sentence = topSentenceResult[0]
 			bestSentences.append(sentence)
 
@@ -221,3 +230,13 @@ comparator = EvaluationCompare(evaluationOutputPath, meadCacheDir, rouge)
 comparison = comparator.getComparison()
 print "\n" + comparison
 writeBufferToFile(os.path.join(evaluationOutputPath, "results_compare.txt"), comparison)
+
+print "average cluster sizes"
+summedAverage = 0
+for fileName in clusterSizes:
+	print fileName + ": " + str(clusterSizes[fileName])
+	summedAverage += clusterSizes[fileName]
+
+print "average overall: " + summedAverage / float(len(clusterSizes))
+
+
