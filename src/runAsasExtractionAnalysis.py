@@ -141,13 +141,14 @@ for fileName in os.listdir(cachePath):
 			initialPoints = npclustering.kmeans.getInitialKPoints(allPoints, currentClusterSize)
 			clusters = npclustering.kmeans.performKMeans(initialPoints, allPoints)
 
-			print "cluster sizes:"
 			runningClusterSize = 0
 
 			for cluster in clusters[0]:
 				runningClusterSize += len(cluster.points)
 
 			averageClusterSize = runningClusterSize / float(len(cluster.points))
+
+			print "cluster sizes: " + str(averageClusterSize)
 
 			if minimumAverageClusterRange < averageClusterSize < maximumAverageClusterRange:
 				clusterSizes[fileName] = averageClusterSize
