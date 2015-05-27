@@ -60,15 +60,20 @@ class ExtractionClusteringTests(unittest.TestCase):
 			if wordCount > maxWords:
 				break
 
-			bestSentences.append(topSentenceResult)
+			print topSentenceResult
+			sentence = topSentenceResult[0]
+			bestSentences.append(sentence)
 
-			if topSentenceResult.simple in uniqueSummaries:
+			if sentence.simple in uniqueSummaries:
 				continue
 
-			uniqueSummaries[topSentenceResult.simple] = None
+			uniqueSummaries[sentence.simple] = None
 
-			wordSize = len(topSentenceResult.simple.split(" "))
+			wordSize = len(sentence.simple.split(" "))
 			wordCount += wordSize
+
+		for summary in uniqueSummaries:
+			print summary
 
 		# act
 		for cluster in clusters[0]:

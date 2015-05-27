@@ -46,7 +46,8 @@ rougeCacheDir = "../cache/rougeCache"
 
 rankModel = svmlight.read_model('../cache/svmlightCache/svmlightModel.dat')
 
-rouge = RougeEvaluator("../ROUGE", "/opt/dropbox/14-15/573/Data/models/devtest", summaryOutputPath, modelSummaryCachePath, rougeCacheDir)
+rouge = RougeEvaluator("../ROUGE", "/opt/dropbox/14-15/573/Data/models/devtest", summaryOutputPath,
+                       modelSummaryCachePath, rougeCacheDir)
 
 totalClusters = 20
 maxWords = 130
@@ -56,13 +57,15 @@ for topic in extract.topicReader.Topic.factoryMultiple("../doc/Documents/devtest
 	topics.append(topic)
 	topicTitles[topic.id] = re.sub("\s+", " ", topic.title)
 
-documentRepository = extract.documentRepository.DocumentRepository("/corpora/LDC/LDC02T31/", "/corpora/LDC/LDC08T25/data/", topics)
+documentRepository = extract.documentRepository.DocumentRepository("/corpora/LDC/LDC02T31/",
+                                                                   "/corpora/LDC/LDC08T25/data/", topics)
 
 # load the cached docs
 documentRepository.readFileIdDictionaryFromFileCache(documentCachePath)
 
 # cache the model summaries
 rouge.cacheModelSummaries(topics)
+
 
 def getBestSummaryOrder(sentences, docIndex):
 	permList = []
@@ -85,6 +88,7 @@ def getBestSummaryOrder(sentences, docIndex):
 	bestOrder = permList[maxIndex]
 	return bestOrder
 
+
 ##############################################################
 # helper function for printing out buffers to files
 ##############################################################
@@ -92,6 +96,7 @@ def writeBufferToFile(path, buffer):
 	outFile = open(path, 'w')
 	outFile.write(buffer)
 	outFile.close()
+
 
 docIndex = 0
 
@@ -117,27 +122,47 @@ for fileName in os.listdir(cachePath):
 
 		print "doing clustering now on summarization..."
 
-		# scoredSentenceDictionary = {}
-		# for tupleResult in extractionclustering.scorer.handleScoring(allSentences):
-		# 	key = tupleResult[0]
-		# 	scoredSentenceDictionary[key] = (allSentences[key], tupleResult[1])
+		scoredSentenceDictionary = {}
+		for tupleResult in extractionclustering.scorer.handleScoring(allSentences):
+			key = tupleResult[0]
+			scoredSentenceDictionary[key] = (allSentences[key], tupleResult[1])
 
-		# allPoints = []
-		# for sentenceId in allSentences:
-		# 	allPoints.append(extractionclustering.point.Point(allSentences[sentenceId]))
+		allPoints = []
+		for sentenceId in allSentences:
+			allPoints.append(extractionclustering.point.Point(allSentences[sentenceId]))
+
+		initialPoints = npclustering.kmeans.getInitialKPoints(allPoints, totalClusters)
+		clusters = npclustering.kmeans.performKMeans(initialPoints, allPoints)
+
+		# wordCount = 0
+		# uniqueSummaries = {}
+		# bestSentences = []
+		# for tupleResult in extractionclustering.scorer.handleScoring(allSentences):
+		# 	print tupleResult
+		# 	if wordCount > maxWords:
+		# 		break
 		#
-		# initialPoints = npclustering.kmeans.getInitialKPoints(allPoints, totalClusters)
-		# clusters = npclustering.kmeans.performKMeans(initialPoints, allPoints)
+		# 	sentence = allSentences[tupleResult[0]]
+		# 	bestSentences.append(sentence)
+		#
+		# 	if sentence.simple in uniqueSummaries:
+		# 		continue
+		#
+		# 	uniqueSummaries[sentence.simple] = None
+		#
+		# 	wordSize = len(sentence.simple.split(" "))
+		# 	wordCount += wordSize
 
 		wordCount = 0
 		uniqueSummaries = {}
 		bestSentences = []
-		for tupleResult in extractionclustering.scorer.handleScoring(allSentences):
-			print tupleResult
+		for topSentenceResult in extractionclustering.scorer.returnTopSentencesFromDifferentClusters(
+				scoredSentenceDictionary, clusters):
 			if wordCount > maxWords:
 				break
 
-			sentence = allSentences[tupleResult[0]]
+			print topSentenceResult
+			sentence = topSentenceResult[0]
 			bestSentences.append(sentence)
 
 			if sentence.simple in uniqueSummaries:
@@ -147,21 +172,6 @@ for fileName in os.listdir(cachePath):
 
 			wordSize = len(sentence.simple.split(" "))
 			wordCount += wordSize
-
-		# for topSentenceResult in extractionclustering.scorer.returnTopSentencesFromDifferentClusters(scoredSentenceDictionary, clusters):
-		# 	print topSentenceResult
-		# 	if wordCount > maxWords:
-		# 		break
-		#
-		# 	bestSentences.append(topSentenceResult)
-		#
-		# 	if topSentenceResult.simple in uniqueSummaries:
-		# 		continue
-		#
-		# 	uniqueSummaries[topSentenceResult.simple] = None
-		#
-		# 	wordSize = len(topSentenceResult.simple.split(" "))
-		# 	wordCount += wordSize
 
 		summary = ""
 		for uniqueSentence in uniqueSummaries:
@@ -186,7 +196,6 @@ for fileName in os.listdir(cachePath):
 		# 		uniqueSummaries[actualText] = None
 		# 		summary += actualText
 
-
 		if summary is not None:
 			summaryFileName = reorderedSummaryOutputPath + "/" + fileName
 			summaryFile = open(summaryFileName, 'wb')
@@ -196,7 +205,6 @@ for fileName in os.listdir(cachePath):
 		print summary
 
 	docIndex += 1
-
 
 print "running the rouge evaluator"
 evaluationResults = rouge.evaluate()
