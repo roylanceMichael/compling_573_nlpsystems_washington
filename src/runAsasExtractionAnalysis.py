@@ -50,8 +50,8 @@ rouge = RougeEvaluator("../ROUGE", "/opt/dropbox/14-15/573/Data/models/devtest",
                        modelSummaryCachePath, rougeCacheDir)
 
 totalClusters = 15
-minimumAverageClusterRange = 40
-maximumAverageClusterRange = 48
+minimumAverageClusterRange = 30
+maximumAverageClusterRange = 55
 maxWords = 130
 topics = []
 topicTitles = {}
@@ -133,8 +133,9 @@ for fileName in os.listdir(cachePath):
 
 		allPoints = []
 		# let's try from 20 - 30
+		averageClusterSize = 0
 		currentClusterSize = 20
-		while currentClusterSize < 28:
+		while currentClusterSize < 30:
 			allPoints = []
 			for sentenceId in allSentences:
 				allPoints.append(extractionclustering.point.Point(allSentences[sentenceId]))
@@ -151,10 +152,11 @@ for fileName in os.listdir(cachePath):
 			print "cluster sizes: " + str(averageClusterSize)
 
 			if minimumAverageClusterRange < averageClusterSize < maximumAverageClusterRange:
-				clusterSizes[fileName] = averageClusterSize
 				break
 
 			currentClusterSize += 1
+
+		clusterSizes[fileName] = averageClusterSize
 
 		# wordCount = 0
 		# uniqueSummaries = {}
