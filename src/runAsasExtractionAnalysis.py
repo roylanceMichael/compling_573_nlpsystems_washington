@@ -148,7 +148,7 @@ for fileName in os.listdir(cachePath):
 		# all the cached sentences from the topic
 		allSentences = extractionclustering.sentence.factory(topicDictionary, topicTitleDict, goldSentences[fileName])
 
-		print "doing clustering now on summarization..."
+		print "doing clustering now on summarization... with " + str(len(goldSentences[fileName])) + " gold sentences"
 
 		scoredSentenceDictionary = {}
 		for tupleResult in extractionclustering.scorer.handleScoring(allSentences):

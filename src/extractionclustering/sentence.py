@@ -190,9 +190,9 @@ class Sentence:
 	def distanceToOtherSentence(self, otherSentence):
 		score = self.beginningScore
 
-		for otherChunk in otherSentence.chunkDict:
-			if otherChunk in self.chunkDict:
-				score += 1
+		# for otherChunk in otherSentence.chunkDict:
+		# 	if otherChunk in self.chunkDict:
+		# 		score += 1
 
 		# smoothing
 		return score
@@ -270,7 +270,6 @@ def factory(topicDictionary, topicTitleDict, goldSentences=None):
 	allSentences = {}
 
 	for docNo in topicDictionary:
-		print docNo
 
 		docModel = topicDictionary[docNo]
 		for paragraph in docModel.paragraphs:
