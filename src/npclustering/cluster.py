@@ -30,7 +30,7 @@ class Cluster:
 			if feature in self.currentFeatures:
 				score += self.currentFeatures[feature]
 
-		return score / float(len(self.currentFeatures) + len(otherPoint.features))
+		return score / float(len(self.currentFeatures) + len(otherPoint.features) + 1)
 
 	def highestScoringPoint(self):
 		highestPoint = None
