@@ -50,7 +50,7 @@ rankModel = svmlight.read_model('../cache/svmlightCache/svmlightModel.dat')
 rouge = RougeEvaluator("../ROUGE", "/opt/dropbox/14-15/573/Data/models/devtest", summaryOutputPath,
                        modelSummaryCachePath, rougeCacheDir)
 
-totalClusters = 15
+totalClusters = 25
 minimumAverageClusterRange = 30
 maximumAverageClusterRange = 55
 maxWords = 130
@@ -158,8 +158,8 @@ for fileName in os.listdir(cachePath):
 		allPoints = []
 		# let's try from 20 - 30
 		averageClusterSize = 0
-		currentClusterSize = 24
-		while currentClusterSize < 25:
+		currentClusterSize = 50
+		while currentClusterSize < 51:
 			allPoints = []
 			for sentenceId in allSentences:
 				allPoints.append(extractionclustering.point.Point(allSentences[sentenceId]))
