@@ -120,30 +120,33 @@ trainingFilePath = "/opt/dropbox/14-15/573/Data/peers/training"
 
 numDocs = 0
 
-def loadEntityMap(pickleFileName):
+def loadFromPickleFile(pickleFileName):
 	print "Loading entities from " + pickleFileName
 	begin = time.time()
-	pickleFile = open(pickleFileName, 'rb')
-	map = cPickle.load(pickleFile)
-	loadTime = time.time() - begin
-	print "Finished loading entities from " + pickleFileName + " in " + str(loadTime) + "sec"
-	return map
+	try:
+		pickleFile = open(pickleFileName, 'rb')
+		data = cPickle.load(pickleFile)
+		loadTime = time.time() - begin
+		print "Finished loading entities from " + pickleFileName + " in " + str(loadTime) + "sec"
+		return data
+	except IOError:
+		return None
 
-def addToFileNameDictionary(cluster, fileName, qualityScore, responsivenessScore, dataType):
+def addToFileNameDictionary(cluster, fileName, qualityScore, responsivenessScore, pickleFileName):
 	global numDocs
 	numDocs += 1
 	try:
-		fileNameDictionary[cluster][fileName] = [qualityScore, responsivenessScore, dataType]
+		fileNameDictionary[cluster][fileName] = [qualityScore, responsivenessScore, pickleFileName]
 	except KeyError:
 		fileNameDictionary[cluster] = {}
-		fileNameDictionary[cluster][fileName] = [qualityScore, responsivenessScore, dataType]
+		fileNameDictionary[cluster][fileName] = [qualityScore, responsivenessScore, pickleFileName]
 	print "[%d] %s %d" % (numDocs, fileName, qualityScore)
 
-def getFullPathNameFromClusterId(clusterId, fileNumber, annotator, baseFilePath):
+def getFileNameFromClusterId(clusterId, fileNumber, annotator, baseFilePath):
 	fileName = "%s.M.100.%s.%d" % (clusterId, annotator, fileNumber)
-	return os.path.join(baseFilePath, fileName)
+	return fileName
 
-def addConstraintsFromFileToDictionary(constraintFileName, baseFilePath, dataType):
+def addConstraintsFromFileToDictionary(constraintFileName, baseFilePath):
 	constraintFile = open(constraintFileName, "r")
 
 	for line in constraintFile:
@@ -153,15 +156,17 @@ def addConstraintsFromFileToDictionary(constraintFileName, baseFilePath, dataTyp
 		annotator = items[5]
 		qualityScore = int(items[8])
 		responsivenessScore = int(items[9])
-		fileName = getFullPathNameFromClusterId(clusterId, fileNumber, annotator, baseFilePath)
-		addToFileNameDictionary(clusterId, fileName, qualityScore, responsivenessScore, dataType)
+		fileName = getFileNameFromClusterId(clusterId, fileNumber, annotator, baseFilePath)
+		fullFileName = os.path.join(baseFilePath, fileName)
+		pickleFileName = os.path.join("../cache/textrazorCache", fileName)
+		addToFileNameDictionary(clusterId, fullFileName, qualityScore, responsivenessScore, pickleFileName)
 
 	constraintFile.close()
 
 
 def loadConstraintDictionary():
-	addConstraintsFromFileToDictionary(devtestScoresFilePath, devtestFilePath, "devtest")
-	addConstraintsFromFileToDictionary(trainingScoresFilePath, trainingFilePath, "training")
+	addConstraintsFromFileToDictionary(devtestScoresFilePath, devtestFilePath)
+	addConstraintsFromFileToDictionary(trainingScoresFilePath, trainingFilePath)
 
 
 def getSentenceText(sentences):
@@ -172,8 +177,6 @@ def getSentenceText(sentences):
 
 
 loadConstraintDictionary()
-devtestEntityMap = loadEntityMap(devtestEntityMapFileName)
-trainingEntityMap = loadEntityMap(trainingEntityMapFileName)
 
 
 startTime = time.time()
@@ -185,41 +188,40 @@ for cluster in fileNameDictionary:
 	for fileName in fileNameDictionary[cluster]:
 		qualityScore = fileNameDictionary[cluster][fileName][0]
 		responsivenessScore = fileNameDictionary[cluster][fileName][1]
-		dataType = fileNameDictionary[cluster][fileName][2]
-		if dataType == "devtest":
-			entityMap = devtestEntityMap
+		pickleFileName = fileNameDictionary[cluster][fileName][2]
+		textRazorInfo = loadFromPickleFile(pickleFileName)  # (fileName, entities, sentences)
+		if textRazorInfo is not None:
+			sentences = readSentencesFromFile(fileName)
+
+			try:
+				textrazorEntities = textRazorInfo[1]
+				textrazorSentences = textRazorInfo[2]
+			except KeyError:
+				textrazorEntities = None
+				textrazorSentences = None
+
+			# get the doc objects, and build doc models from them
+			secs = time.time() - startTime
+			docsPerSec = numDocsTried / secs
+			print "processing doc(" + str(numDocsTried) + "/" + str(numDocs) + "): " + fileName + ", rate=" + str(round(docsPerSec, 4)) + " docs per second."
+			nskipped = 1
+			if len(sentences) > 1:  # because there have to be transitions
+				docModel = DummyDocModel(sentences)
+				grid = TextrazorEntityGrid(docModel.cleanSentences(), 2, textrazorEntities, textrazorSentences)
+				if grid.valid and len(grid.matrixIndices) > 0:
+					grid.printMatrix()
+					featureVector = FeatureVector(grid, clusterIndex)
+					featureVector.printVector()
+					featureVector.printVectorWithIndices()
+					vector = featureVector.getVector(qualityScore)
+					featureVectors.append(vector)
+					docIndex += 1
+
+			else:
+				print "SKIPPING (not enough sentences) %s, nskipped=(%d)" % (fileName, nskipped)
+				nskipped += 1
 		else:
-			entityMap = trainingEntityMap
-
-		sentences = readSentencesFromFile(fileName)
-
-		try:
-			textRazorInfo = entityMap[fileName]
-			textrazorEntities = textRazorInfo[0]
-			textrazorSentences = textRazorInfo[1]
-		except KeyError:
-			textrazorEntities = None
-			textrazorSentences = None
-
-		# get the doc objects, and build doc models from them
-		secs = time.time() - startTime
-		docsPerSec = numDocsTried / secs
-		print "processing doc(" + str(numDocsTried) + "/" + str(numDocs) + "): " + fileName + ", rate=" + str(round(docsPerSec, 4)) + " docs per second."
-		nskipped = 1
-		if len(sentences) > 1:  # because there have to be transitions
-			docModel = DummyDocModel(sentences)
-			grid = TextrazorEntityGrid(docModel.cleanSentences(), 2, textrazorEntities, textrazorSentences)
-			if grid.valid and len(grid.matrixIndices) > 0:
-				grid.printMatrix()
-				featureVector = FeatureVector(grid, clusterIndex)
-				featureVector.printVector()
-				featureVector.printVectorWithIndices()
-				vector = featureVector.getVector(qualityScore)
-				featureVectors.append(vector)
-				docIndex += 1
-
-		else:
-			print "SKIPPING %s, nskipped=(%d)" % (fileName, nskipped)
+			print "SKIPPING (no pickle file)%s, nskipped=(%d)" % (fileName, nskipped)
 			nskipped += 1
 
 		# pickleFile = open("../cache/svmlightCache/featureVectors.pickle", 'wb')
