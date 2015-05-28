@@ -55,6 +55,7 @@ class FeatureVector:
 		for sIdx in range(0, len(self.entityGrid.sentences) - 1):
 			s1 = self.entityGrid.grid[sIdx]
 			s2 = self.entityGrid.grid[sIdx + 1]
+
 			for entityId in self.entityGrid.matrixIndices:
 				start = self.entityGrid.tokenFromScore(s1[self.entityGrid.matrixIndices[entityId]])
 				end = self.entityGrid.tokenFromScore(s2[self.entityGrid.matrixIndices[entityId]])
@@ -101,8 +102,10 @@ class FeatureVector:
 #
 class EntityGrid:
 	# build entity grid
-	def __init__(self, sentences):
+	def __init__(self, sentences, minNumEntityMentions=1):
+		self.valid = True
 		self.sentences = sentences
+		self.minNumEntityMentions = minNumEntityMentions
 		self.numSentences = len(sentences)
 		self.grid = None
 		self.matrixIndices = None
@@ -114,6 +117,9 @@ class EntityGrid:
 	def compressMatrix(self):
 		newMatrixIndices = {}
 		usedEntityIds = self.getUsedEntityIds()
+		if len(usedEntityIds) == 0:
+			self.valid = False
+			return
 		newMatrix = self.makeEmptyMatrix(len(usedEntityIds))
 		for sNum in range(0, len(self.grid)):
 			idx = 0
@@ -134,7 +140,7 @@ class EntityGrid:
 		matrixIndices = {}
 		i = 0
 		for entity in entityIds:
-			if entityIds not in matrixIndices.keys():
+			if entity not in matrixIndices.keys():
 				matrixIndices[entity] = i
 				i += 1
 		return matrixIndices
@@ -163,16 +169,22 @@ class EntityGrid:
 
 	# get the entity ids that are being used.
 	def getUsedEntityIds(self):
-		usedEntities = []
+		# count entities
+		entityCounts = {}
 		for index in self.matrixIndices:
 			unused = True
 			for sNum in range(0, len(self.grid)):
 				score = self.grid[sNum][self.matrixIndices[index]]
 				if score != 0.0:
-					unused = False
-					break
-			if not unused:
-				usedEntities.append(index)
+					try:
+						entityCounts[index] += 1
+					except KeyError:
+						entityCounts[index] = 1
+
+		usedEntities = []
+		for entity in entityCounts:
+			if entityCounts[entity] >= self.minNumEntityMentions:
+				usedEntities.append(entity)
 		return usedEntities
 
 

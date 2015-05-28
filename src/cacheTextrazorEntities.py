@@ -59,7 +59,9 @@ def readSentencesFromFile(fileName):
 	allSentences = []
 	inFile = open(fileName, 'r')
 	for line in inFile:
-		allSentences.append(line.strip())
+		tline = line.strip()
+		if len(tline) != 0 and tline is not None:
+			allSentences.append(line.strip())
 	inFile.close()
 	return allSentences
 
@@ -79,19 +81,22 @@ def getFullTextAsSentencesFromDocModel(document):
 
 	return sentences
 
-def getAllSummaryFileNames():
-	directories = ["/opt/dropbox/14-15/573/Data/models/devtest",
-				   "/opt/dropbox/14-15/573/Data/models/training/2009",
-				   "/opt/dropbox/14-15/573/Data/mydata"]
+devtestFilePath = "/opt/dropbox/14-15/573/Data/peers/devtest"
+trainingFilePath = "/opt/dropbox/14-15/573/Data/peers/training"
+
+def getSummaryFileNames(directory):
+	# directories = [devtestFilePath, trainingFilePath]
 	fileNames = []
-	for directory in directories:
-		files = os.listdir(directory)
-		for file in files:
-			fileNames.append(os.path.join(directory, file))
+	# for directory in directories:
+
+	files = os.listdir(directory)
+	for file in files:
+		fileNames.append(os.path.join(directory, file))
 
 	for fileName in fileNames:
 		print fileName
 	return fileNames
+
 
 def cacheDoc(document):
 	sentences = getFullTextAsSentencesFromDocModel(document)
@@ -100,52 +105,39 @@ def cacheDoc(document):
 	trsentences = textRazorInfo.sentences
 	docEntityMap[document.docNo] = [entities, trsentences]
 
+def getEntityIdsFromTREntities(trEntities):
+	entities = []
+	for entity in trEntities:
+		entities.append(entity.id)
+	return entities
 
 def cacheSummary(sentences, fileName):
 	textRazorInfo = textrazor.textRazorEntityExtraction.getTextRazorInfo(sentences)
-	entities = textRazorInfo.entities()
+	entities = getEntityIdsFromTREntities(textRazorInfo.entities())
 	trsentences = textRazorInfo.sentences
 	summaryEntityMap[fileName] = [entities, trsentences]
 
-def cacheDocumentsFromTopics():
-	# test with some random permutations of the documents using our model!
-	print "\n!!!!!!!!!!!!!!!!! CACHING ENTITIES !!!!!!!!!!!!!!!!!!!!!!!!\n"
-	# get training xml file
-	# go through each topic
-	topics = []
-	for topic in extract.topicReader.Topic.factoryMultiple(args.topicXml):
-		topics.append(topic)
 
-	documentRepository = extract.documentRepository.DocumentRepository(args.docInputPath, args.docInputPath2, topics)
 
-	# load the cached docs
-	documentRepository.readFileIdDictionaryFromFileCache(documentCachePath)
-
-	# load and cache the docs if they are not loaded.  just get them if they are.
-	for topic in topics:
-		print "processing topicId: " + topic.id
-
-		# get the doc objects, and build doc models from them
-		for foundDocument in documentRepository.getDocumentsByTopic(topic.id):
-			print "processing docNo: " + foundDocument.docNo
-			cacheDoc(foundDocument)
-
-def cacheDocumentsFromSummaries():
-	files = getAllSummaryFileNames()
+def cacheDocumentsFromSummaries(directory):
+	global summaryEntityMap
+	summaryEntityMap = {}
+	files = getSummaryFileNames(directory)
 	numDocs = len(files)
 	startTime = time.time()
 	fNumDocs = float(numDocs)
 	numDocsProcessed = 1
-	maxN = 5000
+
 	for fileName in files:
 		sentences = readSentencesFromFile(fileName)
-
-		# get the doc objects, and build doc models from them
-		secs = time.time() - startTime
-		docsPerSec = numDocsProcessed / secs
-		print "processing doc(" + str(numDocsProcessed) + "/" + str(numDocs) + "): " + fileName + ", rate=" + str(round(docsPerSec, 4)) + " docs per second."
-		cacheSummary(sentences, fileName)
+		if len(sentences) > 0:
+			# get the doc objects, and build doc models from them
+			secs = time.time() - startTime
+			docsPerSec = numDocsProcessed / secs
+			print "processing doc(" + str(numDocsProcessed) + "/" + str(numDocs) + "): " + fileName + ", rate=" + str(round(docsPerSec, 4)) + " docs per second."
+			cacheSummary(sentences, fileName)
 		numDocsProcessed += 1
+
 
 
 def writeAndValidateMaps(mapFileName, writeMap):
@@ -169,8 +161,12 @@ def writeAndValidateMaps(mapFileName, writeMap):
 #cacheDocumentsFromTopics()
 #writeAndValidateMaps("docEntityMap.pickle", docEntityMap)
 
-cacheDocumentsFromSummaries()
-writeAndValidateMaps("summaryEntityMap.pickle", summaryEntityMap)
+# cacheDocumentsFromSummaries(devtestFilePath)
+# writeAndValidateMaps("devtestEntityMap.pickle", summaryEntityMap)
+
+cacheDocumentsFromSummaries(trainingFilePath)
+writeAndValidateMaps("trainingEntityMap.pickle", summaryEntityMap)
+
 
 
 

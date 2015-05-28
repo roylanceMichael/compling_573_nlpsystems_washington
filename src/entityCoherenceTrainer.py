@@ -19,13 +19,14 @@ __author__ = 'thomas'
 
 import random
 import argparse
-import pickle
+import cPickle
 import svmlight
 import time
 import os
 
 import nltk
 import nltk.data
+import glob
 
 import model.idf
 from entitygrid.textrazorEntityGrid import TextrazorEntityGrid
@@ -68,7 +69,9 @@ def readSentencesFromFile(fileName):
 	allSentences = []
 	inFile = open(fileName, 'r')
 	for line in inFile:
-		allSentences.append(line.strip())
+		tline = line.strip()
+		if len(tline) != 0 and tline is not None:
+			allSentences.append(line.strip())
 	inFile.close()
 	return allSentences
 
@@ -103,24 +106,63 @@ def getFullTextAsSentencesFromDocModel(document):
 docIndex = 1
 featureVectors = []
 firstDocument = None
-summaryEntityMap = None
 
-def getAllFileNames():
-	directories = ["/opt/dropbox/14-15/573/Data/models/devtest",
-				   "/opt/dropbox/14-15/573/Data/models/training/2009",
-				   "/opt/dropbox/14-15/573/Data/mydata"]
-	fileNames = []
-	for directory in directories:
-		files = os.listdir(directory)
-		for file in files:
-			fileNames.append(os.path.join(directory, file))
 
-	print "Training on %d files: " % len(fileNames)
-	n = 1
-	for fileName in fileNames:
-		print "[%d]%s" % (n, fileName)
-		n += 1
-	return fileNames
+devtestEntityMapFileName = "../cache/textrazorCache/devtestEntityMap.pickle"
+devtestEntityMap = {}
+trainingEntityMapFileName = "../cache/textrazorCache/trainingEntityMap.pickle"
+trainingEntityMap = {}
+fileNameDictionary = {}
+devtestScoresFilePath = "/opt/dropbox/14-15/573/Data/scores/devtest.manual.peer.A"
+trainingScoresFilePath = "/opt/dropbox/14-15/573/Data/scores/training.manual.peer.A"
+devtestFilePath = "/opt/dropbox/14-15/573/Data/peers/devtest"
+trainingFilePath = "/opt/dropbox/14-15/573/Data/peers/training"
+
+numDocs = 0
+
+def loadEntityMap(pickleFileName):
+	print "Loading entities from " + pickleFileName
+	begin = time.time()
+	pickleFile = open(pickleFileName, 'rb')
+	map = cPickle.load(pickleFile)
+	loadTime = time.time() - begin
+	print "Finished loading entities from " + pickleFileName + " in " + str(loadTime) + "sec"
+	return map
+
+def addToFileNameDictionary(cluster, fileName, qualityScore, responsivenessScore, dataType):
+	global numDocs
+	numDocs += 1
+	try:
+		fileNameDictionary[cluster][fileName] = [qualityScore, responsivenessScore, dataType]
+	except KeyError:
+		fileNameDictionary[cluster] = {}
+		fileNameDictionary[cluster][fileName] = [qualityScore, responsivenessScore, dataType]
+	print "[%d] %s %d" % (numDocs, fileName, qualityScore)
+
+def getFullPathNameFromClusterId(clusterId, fileNumber, annotator, baseFilePath):
+	fileName = "%s.M.100.%s.%d" % (clusterId, annotator, fileNumber)
+	return os.path.join(baseFilePath, fileName)
+
+def addConstraintsFromFileToDictionary(constraintFileName, baseFilePath, dataType):
+	constraintFile = open(constraintFileName, "r")
+
+	for line in constraintFile:
+		items = line.split()
+		clusterId = items[0]
+		fileNumber = int(items[1])
+		annotator = items[5]
+		qualityScore = int(items[8])
+		responsivenessScore = int(items[9])
+		fileName = getFullPathNameFromClusterId(clusterId, fileNumber, annotator, baseFilePath)
+		addToFileNameDictionary(clusterId, fileName, qualityScore, responsivenessScore, dataType)
+
+	constraintFile.close()
+
+
+def loadConstraintDictionary():
+	addConstraintsFromFileToDictionary(devtestScoresFilePath, devtestFilePath, "devtest")
+	addConstraintsFromFileToDictionary(trainingScoresFilePath, trainingFilePath, "training")
+
 
 def getSentenceText(sentences):
 	plainSentences = []
@@ -128,73 +170,65 @@ def getSentenceText(sentences):
 		plainSentences.append(" ".join(sentence))
 	return plainSentences
 
-def loadEntityMap():
-	global summaryEntityMap
-	pickleFileName = "../cache/textrazorCache/summaryEntityMap.pickle"
-	pickleFile = open(pickleFileName, 'rb')
-	summaryEntityMap = pickle.load(pickleFile)
+
+loadConstraintDictionary()
+devtestEntityMap = loadEntityMap(devtestEntityMapFileName)
+trainingEntityMap = loadEntityMap(trainingEntityMapFileName)
 
 
-files = getAllFileNames()
-numDocs = len(files)
 startTime = time.time()
 fNumDocs = float(numDocs)
 numDocsTried = 1
-maxN = 5000
-loadEntityMap()
+#maxN = 5000
+clusterIndex = 1
+for cluster in fileNameDictionary:
+	for fileName in fileNameDictionary[cluster]:
+		qualityScore = fileNameDictionary[cluster][fileName][0]
+		responsivenessScore = fileNameDictionary[cluster][fileName][1]
+		dataType = fileNameDictionary[cluster][fileName][2]
+		if dataType == "devtest":
+			entityMap = devtestEntityMap
+		else:
+			entityMap = trainingEntityMap
 
-for fileName in files:
-	sentences = readSentencesFromFile(fileName)
+		sentences = readSentencesFromFile(fileName)
 
-	try:
-		textRazorInfo = summaryEntityMap[fileName]
-		textrazorEntities = textRazorInfo[0]
-		textrazorSentences = textRazorInfo[1]
-	except KeyError:
-		textrazorEntities = None
-		textrazorSentences = None
+		try:
+			textRazorInfo = entityMap[fileName]
+			textrazorEntities = textRazorInfo[0]
+			textrazorSentences = textRazorInfo[1]
+		except KeyError:
+			textrazorEntities = None
+			textrazorSentences = None
 
-	# get the doc objects, and build doc models from them
-	secs = time.time() - startTime
-	docsPerSec = numDocsTried / secs
-	print "processing doc(" + str(docIndex) + "/" + str(numDocsTried) + "): " + fileName + ", rate=" + str(round(docsPerSec, 4)) + " docs per second."
-	nskipped = 1
-	if len(sentences) > 1:  # because there have to be transitions
-		docModel = DummyDocModel(sentences)
-		grid = TextrazorEntityGrid(docModel.cleanSentences(), textrazorEntities, textrazorSentences)
-		if len(grid.matrixIndices) > 0:
-			grid.printMatrix()
-			featureVector = FeatureVector(grid, docIndex)
-			featureVector.printVector()
-			featureVector.printVectorWithIndices()
-			vector = featureVector.getVector(2)
+		# get the doc objects, and build doc models from them
+		secs = time.time() - startTime
+		docsPerSec = numDocsTried / secs
+		print "processing doc(" + str(numDocsTried) + "/" + str(numDocs) + "): " + fileName + ", rate=" + str(round(docsPerSec, 4)) + " docs per second."
+		nskipped = 1
+		if len(sentences) > 1:  # because there have to be transitions
+			docModel = DummyDocModel(sentences)
+			grid = TextrazorEntityGrid(docModel.cleanSentences(), 2, textrazorEntities, textrazorSentences)
+			if grid.valid and len(grid.matrixIndices) > 0:
+				grid.printMatrix()
+				featureVector = FeatureVector(grid, clusterIndex)
+				featureVector.printVector()
+				featureVector.printVectorWithIndices()
+				vector = featureVector.getVector(qualityScore)
+				featureVectors.append(vector)
+				docIndex += 1
 
-			# docModel.randomizeSentences() <--- this makes no difference anymore.   kinda misleading, but I don't know
-			# 								     how to fix for now, so just leaving it out.
-			random.shuffle(textrazorSentences)  # <--- instead I'm randomizing here
-			badGrid = TextrazorEntityGrid(docModel.cleanSentences(), textrazorEntities, textrazorSentences)
-			badGrid.printMatrix()
-			badFeatureVector = FeatureVector(badGrid, docIndex)
-			badFeatureVector.printVector()
-			badFeatureVector.printVectorWithIndices()
-			vector = featureVector.getVector(2)
-			badVector = badFeatureVector.getVector(1)
-			print vector
-			print badVector
-			featureVectors.append(vector)
-			featureVectors.append(badVector)
-			docIndex += 1
-	else:
-		print "SKIPPING %s, nskipped=(%d)" % (fileName, nskipped)
-		nskipped += 1
+		else:
+			print "SKIPPING %s, nskipped=(%d)" % (fileName, nskipped)
+			nskipped += 1
 
-	# pickleFile = open("../cache/svmlightCache/featureVectors.pickle", 'wb')
-	# pickle.dump(featureVectors, pickleFile, pickle.HIGHEST_PROTOCOL)
-	# pickleFile.close()
-	if docIndex >= maxN:
-		break
-	numDocsTried += 1
-
+		# pickleFile = open("../cache/svmlightCache/featureVectors.pickle", 'wb')
+		# pickle.dump(featureVectors, pickleFile, pickle.HIGHEST_PROTOCOL)
+		# pickleFile.close()
+		# if docIndex >= maxN:
+		#	break
+		numDocsTried += 1
+	clusterIndex += 1
 # now train on the data
 model = svmlight.learn(featureVectors, type='ranking', verbosity=0)
 svmlight.write_model(model, '../cache/svmlightCache/svmlightModel.dat')

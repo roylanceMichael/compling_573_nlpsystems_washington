@@ -8,21 +8,32 @@ from entitygrid.entityGrid import EntityGrid
 
 class TextrazorEntityGrid(EntityGrid):
 	# build entity grid
-	def __init__(self, sentences, textrazorEntities=None, textrazorSentences=None):
-		EntityGrid.__init__(self, sentences)
+	def __init__(self, sentences, minNumEntityMentions=1, entityIds=None, textrazorSentences=None):
+		EntityGrid.__init__(self, sentences, minNumEntityMentions)
 
-		if textrazorEntities is None or textrazorSentences is None:
+		if entityIds is None or textrazorSentences is None:
 			nerResults = textRazorEntityExtraction.getTextRazorInfo(self.sentences)
 			self.textrazorSentences = nerResults.sentences
-			self.textrazorEntities = nerResults.entities()
+			self.matrixIndices = self.getMatrixIndices(self.getEntityIdsFromTextrazorEntities(nerResults.entities()))
 		else:
-			self.textrazorEntities = textrazorEntities
+			self.matrixIndices = self.getMatrixIndices(entityIds)
 			self.textrazorSentences = textrazorSentences
-		self.numSentences = len(self.textrazorSentences)  # just to make sure they agree
-		self.matrixIndices = self.getMatrixIndices(self.getEntityIdsFromTextrazorEntities())
-		self.grid = self.fillMatrix()
-		self.compressMatrix()
 
+		self.originalMatrixIndices = self.matrixIndices
+		# HACKERY WARNING:
+		# ugh!  this sets the sentences to textrazor's sentences instead of the original sentences,
+		# just in case there is a discrepency between the number of sentences
+		# need a better way to handle this!
+		self.originalSentences = self.sentences
+		self.sentences = self.textrazorSentences
+		self.numSentences = len(self.textrazorSentences)  # just to make sure they agree
+		self.buildMatrix()
+
+	def buildMatrix(self):
+		self.matrixIndices = self.originalMatrixIndices
+		self.grid = self.fillMatrix()
+		self.originalMatrixIndices = self.matrixIndices
+		self.compressMatrix()
 
 	def fillMatrix(self):
 		matrix = self.makeEmptyMatrix(len(self.matrixIndices))
@@ -54,9 +65,9 @@ class TextrazorEntityGrid(EntityGrid):
 			sNum += 1
 		return matrix
 
-	def getEntityIdsFromTextrazorEntities(self):
+	def getEntityIdsFromTextrazorEntities(self, textrazorEntities):
 		entityIds = set()
-		for entity in self.textrazorEntities:
+		for entity in textrazorEntities:
 			if entity not in entityIds:
 				entityIds.add(entity.id)
 		return entityIds

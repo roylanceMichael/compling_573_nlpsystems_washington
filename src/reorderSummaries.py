@@ -91,34 +91,59 @@ def writeSentencesToFile(sentences, fileName):
 		file.write(sentence + "\n")
 	file.close()
 
+def getPlaintextSentencesFromTextrazorSentences(sentences):
+	rawSentences = []
+
+	for sentence in sentences:
+		noSpaceOnNextWord = True
+		rawSentence = ""
+		for word in sentence.words:
+			if word.relation_to_parent == "punct":
+				if word.token == "-LRB-":
+					rawSentence += " ("
+					noSpaceOnNextWord = True
+				elif word.token == "-RRB-":
+					rawSentence += ")"
+				else:
+					rawSentence += word.token
+			else:
+				if not noSpaceOnNextWord and not word.token[0] == '\'':
+					rawSentence += " " + word.token
+				else:
+					noSpaceOnNextWord = False
+					rawSentence += word.token
+		rawSentences.append(rawSentence)
+	return rawSentences
 
 def getBestSummaryOrder(sentences, fileName, docIndex, numDocs):
 	permList = []
 
 	testVectors = []
 
-
-	permutations = [perm for perm in itertools.permutations(sentences)]
+	doc = DummyDocModel(sentences)
+	grid = TextrazorEntityGrid(doc.cleanSentences(), 2)
+	textrazorSentences = grid.textrazorSentences
+	permutations = [perm for perm in itertools.permutations(textrazorSentences)]
 	print "numPermutations: " + str(len(permutations))
 	for permutation in permutations:
+		grid.textrazorSentences = permutation
+		grid.buildMatrix()
 		permList.append(permutation)
-		doc = DummyDocModel(permutation)
-		grid = TextrazorEntityGrid(doc.cleanSentences())
 		featureVector = FeatureVector(grid, docIndex)
 		vector = featureVector.getVector(1)
 		testVectors.append(vector)
+		# grid.printMatrix()
+		# featureVector.printVector()
 
 	predictions = svmlight.classify(rankModel, testVectors)
-
 
 	for p in predictions:
 		print str(p) + " ",
 
-
 	maxInList = max(predictions)
 	maxIndex = predictions.index(maxInList)
 	print "\nreordering document(" + str(docIndex) + "/" + str(numDocs) + "): " + fileName + ", best permutation index=" + str(maxIndex)
-	bestOrder = permList[maxIndex]
+	bestOrder = getPlaintextSentencesFromTextrazorSentences(permList[maxIndex])
 	return bestOrder
 
 
