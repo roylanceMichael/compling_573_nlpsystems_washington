@@ -60,7 +60,7 @@ class Sentence:
 		if self.goldSentences is not None:
 			for sentenceId in self.goldSentences:
 				otherSentence = self.goldSentences[sentenceId]
-				self.beginningScore += (self.distanceToOtherSentence(otherSentence) * 2)
+				self.beginningScore += (self.distanceToOtherSentence(otherSentence) * 3)
 
 	def createChunks(self, chunkMethod):
 		if chunkMethod == 1:
@@ -307,7 +307,7 @@ def factory(topicDictionary, topicTitleDict, goldSentences=None):
 			for sentence in sentences:
 				sentences[sentence].assignEntityScores()
 				sentences[sentence].determineNounChunks()
-				sentences[sentence].createChunks(5)
+				sentences[sentence].createChunks(4)
 				# toggle on and off...
 				sentences[sentence].applyGoldSentencePreferences()
 
