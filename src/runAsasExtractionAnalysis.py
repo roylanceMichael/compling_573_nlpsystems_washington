@@ -35,6 +35,7 @@ from evaluate.rougeEvaluator import RougeEvaluator
 from evaluate.evaluationCompare import EvaluationCompare
 
 cachePath = "../cache/asasCache"
+goldCachePath = "../cache/asasGoldCache"
 summaryOutputPath = "../outputs"
 reorderedSummaryOutputPath = summaryOutputPath + "_reordered"
 evaluationOutputPath = "../results"
@@ -105,6 +106,29 @@ docIndex = 0
 domainOfKeywordTypes = {}
 
 clusterSizes = {}
+
+# fileName refers to cache/asasGoldCache/D0901-A.M.100.A.A ...
+goldTopicDocModels = {}
+for fileName in os.listdir(goldCachePath):
+	# grab the pickled gold summary
+	pickleFilePath = os.path.join(goldCachePath, fileName)
+
+	if os.path.exists(pickleFilePath):
+		pickleFile = open(pickleFilePath, 'rb')
+		goldDocModel = pickle.load(pickleFile)
+
+		# get corresponding topicId
+		topicId = fileName[0:5] + fileName[len(fileName)-3:len(fileName)-2]
+
+		if topicId in goldTopicDocModels:
+			goldTopicDocModels[topicId][fileName] = goldDocModel
+		else:
+			goldTopicDocModels[topicId] = {fileName:goldDocModel}
+
+goldSentences = {}
+for topicId in goldTopicDocModels:
+	allSentences = extractionclustering.sentence.factory(goldTopicDocModels[topicId], {})
+	goldSentences[topicId] = allSentences
 
 # fileName refers to cache/asasCache/D1001A ...
 for fileName in os.listdir(cachePath):

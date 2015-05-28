@@ -23,7 +23,7 @@ if os.path.isfile(minimalStopWordsFile):
 			word = f.readline()
 
 class Sentence:
-	def __init__(self, text, id, sentenceNum, docModel, topicTitleDict, keywordTopicMatchScore=5):
+	def __init__(self, text, id, sentenceNum, docModel, topicTitleDict, goldSentences=None, keywordTopicMatchScore=5):
 		# self.simple = re.sub("[^a-zA-Z0-9 -]", "",  re.sub("\s+", " ", text))
 		self.simple = re.sub("\s+", " ", text)
 		self.uuid = str(uuid.uuid1())
@@ -41,6 +41,7 @@ class Sentence:
 		self.nounChunks = []
 		self.topicTitleDict = topicTitleDict
 		self.chunkDictLen = 0
+		self.goldSentences = goldSentences
 
 		self.keywordTopicMatchScore = keywordTopicMatchScore
 
@@ -54,6 +55,11 @@ class Sentence:
 
 	def __str__(self):
 		return self.uuid + " " + self.simple
+
+	def applyGoldSentencePreferences(self):
+		if self.goldSentences is not None:
+			for sentence in self.goldSentences:
+				self.beginningScore += self.distanceToOtherSentence(sentence)
 
 	def createChunks(self, chunkMethod):
 		if chunkMethod == 1:
@@ -259,7 +265,7 @@ def hasVerb(sentence):
 	return False
 
 
-def factory(topicDictionary, topicTitleDict):
+def factory(topicDictionary, topicTitleDict, goldSentences=None):
 	allSentences = {}
 
 	for docNo in topicDictionary:
@@ -278,7 +284,8 @@ def factory(topicDictionary, topicTitleDict):
 						sentence[0],
 						sentenceNum,
 						docModel,
-						topicTitleDict)
+						topicTitleDict,
+						goldSentences)
 				sentenceNum += 1
 
 			for keywordResult in paragraph.extractionKeywordResults:
@@ -301,6 +308,8 @@ def factory(topicDictionary, topicTitleDict):
 				sentences[sentence].assignEntityScores()
 				sentences[sentence].determineNounChunks()
 				sentences[sentence].createChunks(2)
+				# toggle on and off...
+				sentences[sentence].applyGoldSentencePreferences()
 
 				if len(sentences[sentence].triples) != 0 \
 					and not "''" in sentences[sentence].simple \
