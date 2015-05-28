@@ -158,8 +158,8 @@ for fileName in os.listdir(cachePath):
 		allPoints = []
 		# let's try from 20 - 30
 		averageClusterSize = 0
-		currentClusterSize = 50
-		while currentClusterSize < 51:
+		currentClusterSize = 15
+		while currentClusterSize < 16:
 			allPoints = []
 			for sentenceId in allSentences:
 				allPoints.append(extractionclustering.point.Point(allSentences[sentenceId]))
