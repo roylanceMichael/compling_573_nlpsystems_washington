@@ -60,7 +60,7 @@ class Sentence:
 		if self.goldSentences is not None:
 			for sentenceId in self.goldSentences:
 				otherSentence = self.goldSentences[sentenceId]
-				self.beginningScore += self.distanceToOtherSentence(otherSentence)
+				self.beginningScore += (self.distanceToOtherSentence(otherSentence) * 2)
 
 	def createChunks(self, chunkMethod):
 		if chunkMethod == 1:
