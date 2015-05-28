@@ -307,7 +307,7 @@ def factory(topicDictionary, topicTitleDict, goldSentences=None):
 			for sentence in sentences:
 				sentences[sentence].assignEntityScores()
 				sentences[sentence].determineNounChunks()
-				sentences[sentence].createChunks(5)
+				sentences[sentence].createChunks(3)
 				# toggle on and off...
 				sentences[sentence].applyGoldSentencePreferences()
 
