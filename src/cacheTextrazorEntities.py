@@ -51,8 +51,6 @@ idfCachePath = "../cache/idfCache"
 
 sentence_breaker = nltk.data.load('tokenizers/punkt/english.pickle')
 idf = model.idf.Idf(idfCachePath)
-docEntityMap = {}
-summaryEntityMap = {}
 
 
 def readSentencesFromFile(fileName):
@@ -91,19 +89,16 @@ def getSummaryFileNames(directory):
 
 	files = os.listdir(directory)
 	for file in files:
-		fileNames.append(os.path.join(directory, file))
+		if "-A" in file:
+			fileNames.append(os.path.join(directory, file))
 
+	i = 1
 	for fileName in fileNames:
-		print fileName
+		print "[%d]%s" % (i, fileName)
+		i += 1
+
 	return fileNames
 
-
-def cacheDoc(document):
-	sentences = getFullTextAsSentencesFromDocModel(document)
-	textRazorInfo = textrazor.textRazorEntityExtraction.getTextRazorInfo(sentences)
-	entities = textRazorInfo.entities()
-	trsentences = textRazorInfo.sentences
-	docEntityMap[document.docNo] = [entities, trsentences]
 
 def getEntityIdsFromTREntities(trEntities):
 	entities = []
@@ -111,17 +106,21 @@ def getEntityIdsFromTREntities(trEntities):
 		entities.append(entity.id)
 	return entities
 
+def writeToMap(fileName, entities, sentences):
+	print "Map created, caching..."
+	writeData = (fileName, entities, sentences)
+	justFileName = os.path.basename(fileName)
+	pickleFileName = os.path.join("../cache/textrazorCache", justFileName)
+	pickleFile = open(pickleFileName, 'wb')
+	pickle.dump(writeData, pickleFile, pickle.HIGHEST_PROTOCOL)
+
 def cacheSummary(sentences, fileName):
 	textRazorInfo = textrazor.textRazorEntityExtraction.getTextRazorInfo(sentences)
 	entities = getEntityIdsFromTREntities(textRazorInfo.entities())
 	trsentences = textRazorInfo.sentences
-	summaryEntityMap[fileName] = [entities, trsentences]
-
-
+	writeToMap(fileName, entities, trsentences)
 
 def cacheDocumentsFromSummaries(directory):
-	global summaryEntityMap
-	summaryEntityMap = {}
 	files = getSummaryFileNames(directory)
 	numDocs = len(files)
 	startTime = time.time()
@@ -137,6 +136,7 @@ def cacheDocumentsFromSummaries(directory):
 			print "processing doc(" + str(numDocsProcessed) + "/" + str(numDocs) + "): " + fileName + ", rate=" + str(round(docsPerSec, 4)) + " docs per second."
 			cacheSummary(sentences, fileName)
 		numDocsProcessed += 1
+
 
 
 
@@ -158,14 +158,9 @@ def writeAndValidateMaps(mapFileName, writeMap):
 ##############################################################
 # Script Starts Here
 ###############################################################
-#cacheDocumentsFromTopics()
-#writeAndValidateMaps("docEntityMap.pickle", docEntityMap)
 
-# cacheDocumentsFromSummaries(devtestFilePath)
-# writeAndValidateMaps("devtestEntityMap.pickle", summaryEntityMap)
-
+cacheDocumentsFromSummaries(devtestFilePath)
 cacheDocumentsFromSummaries(trainingFilePath)
-writeAndValidateMaps("trainingEntityMap.pickle", summaryEntityMap)
 
 
 
