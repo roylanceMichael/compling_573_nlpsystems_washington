@@ -272,7 +272,7 @@ writeBufferToFile(os.path.join(evaluationOutputPath, "results_compare.txt"), com
 print "average cluster sizes"
 summedAverage = 0
 for fileName in clusterSizes:
-	print fileName + ": " + str(clusterSizes[fileName])
+	# print fileName + ": " + str(clusterSizes[fileName])
 	summedAverage += clusterSizes[fileName]
 
 print "average overall: " + str(summedAverage / float(len(clusterSizes)))
