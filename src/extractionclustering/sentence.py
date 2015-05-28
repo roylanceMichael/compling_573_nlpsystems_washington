@@ -58,8 +58,9 @@ class Sentence:
 
 	def applyGoldSentencePreferences(self):
 		if self.goldSentences is not None:
-			for sentence in self.goldSentences:
-				self.beginningScore += self.distanceToOtherSentence(sentence)
+			for sentenceId in self.goldSentences:
+				otherSentence = self.goldSentences[sentenceId]
+				self.beginningScore += self.distanceToOtherSentence(otherSentence)
 
 	def createChunks(self, chunkMethod):
 		if chunkMethod == 1:
