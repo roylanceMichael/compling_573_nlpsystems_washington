@@ -146,7 +146,7 @@ for fileName in os.listdir(cachePath):
 			topicTitleDict[word] = None
 
 		# all the cached sentences from the topic
-		allSentences = extractionclustering.sentence.factory(topicDictionary, topicTitleDict, goldSentences[fileName])
+		allSentences = extractionclustering.sentence.factory(topicDictionary, topicTitleDict)
 
 		print "doing clustering now on summarization... with " + str(len(goldSentences[fileName])) + " gold sentences"
 
