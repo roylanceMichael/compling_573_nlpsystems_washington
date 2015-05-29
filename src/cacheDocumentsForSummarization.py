@@ -16,7 +16,7 @@ __author__ = 'thomas'
 import argparse
 import extract
 import extract.topicReader
-import extract.documentRepository2
+import extract.documentRepository
 
 
 
@@ -24,6 +24,7 @@ import extract.documentRepository2
 # get parser args and set up global variables
 parser = argparse.ArgumentParser(description='Basic Document Summarizer.')
 parser.add_argument('--doc-input-path', help='Path to data files', dest='docInputPath')
+parser.add_argument('--doc-input-path2', help='Path to data files', nargs='?', default=None, dest='docInputPath2')
 parser.add_argument('--topic-xml', help='Path to topic xml file', dest='topicXml')
 parser.add_argument('--data-type', help='one of: \"devtest\", \"training\", or \"evaltest\"', dest='dataType')
 
@@ -47,7 +48,7 @@ topics = []
 for topic in extract.topicReader.Topic.factoryMultiple(args.topicXml):
 	topics.append(topic)
 
-documentRepository = extract.documentRepository2.DocumentRepository2(args.docInputPath, args.dataType, topics)
+documentRepository = extract.documentRepository.DocumentRepository(args.docInputPath, args.docInputPath2, args.dataType, topics)
 
 # load the cached docs
 documentRepository.readFileIdDictionaryFromFileCache(documentCachePath)
