@@ -1,8 +1,7 @@
 import cPickle as pickle
-import compressionCacheGen
-from compressionCacheGen import Alligned
+from realize import compressionCacheGen
 
-compressionCorpusCache = "../../cache/compressionCorpusCache/c_Sentences_parsed"
+compressionCorpusCache = "../cache/compressionCorpusCache/c_Sentences_parsed"
 
 c_corpus = pickle.load(open(compressionCorpusCache, 'r'))
 
@@ -16,7 +15,7 @@ for a in c_corpus:
     print a.phrases
 
     """
-    Ideally, I want to convert the above attencity outputs into word level features
+    Ideally, I want to convert the above attensity outputs into word level features
     a.features[ word_index ] [ "in_a_X_relation_in_a_triple" ] = True
     sort of thing.
     Brandon can try to handle that himself, but Mike, who understands better what these
@@ -24,3 +23,4 @@ for a in c_corpus:
     """
 
 pickle.dump(c_corpus, open(compressionCorpusCache+"c_Sentences_att_features", 'w'))
+__author__ = 'mroylance'
