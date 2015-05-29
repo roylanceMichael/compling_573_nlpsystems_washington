@@ -33,12 +33,17 @@ class Alligned:
         """
 
         self.features = list(dict() for x in self.o_words)
+        self.posfeatures = list(dict() for x in self.o_words)
+        self.stemmed = list(None for x in self.o_words)
 
         self.triples = []
         self.entities = []
         self.entityScores = {}
         self.facts = []
         self.phrases = []
+
+        self.tree = None
+        self.dependencies = None
 
     def __str__(self):
         uniValue = (" ".join(self.o_words)).encode("utf-8")
