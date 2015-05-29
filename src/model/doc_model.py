@@ -191,7 +191,7 @@ class Doc_Model:
 	def __init__(self, doc):
 		self.corefPairs = None
 		self.entityGrid = None
-		self.docNo = doc.docNo
+		self.docNo = unicode(doc.docNo, errors="replace")
 		timeFormat = "%Y-%m-%d"
 		if "/" in doc.dateTime:
 			timeFormat = "%m/%d/%Y"
@@ -206,18 +206,18 @@ class Doc_Model:
 		except ValueError:
 			self.dateTime = datetime.min
 
-		self.header = Text(doc.header, self, -4)
-		self.slug = Text(doc.slug, self, -3)
-		self.headline = Text(doc.headline, self, -2)
-		self.trailer = Text(doc.trailer, self, -1)
-		self.body = Text(doc.body, self, 0)
+		self.header = Text(unicode(doc.header, errors="replace"), self, -4)
+		self.slug = Text(unicode(doc.slug, errors="replace"), self, -3)
+		self.headline = Text(unicode(doc.headline, errors="replace"), self, -2)
+		self.trailer = Text(unicode(doc.trailer, errors="replace"), self, -1)
+		self.body = Text(unicode(doc.body, errors="replace"), self, 0)
 
 		if len(doc.paragraphs) > 1:
-			self.paragraphs = [Text(doc.paragraphs[x], self, x + 1) for x in range(len(doc.paragraphs))]
+			self.paragraphs = [Text(unicode(doc.paragraphs[x], errors="replace"), self, x + 1) for x in range(len(doc.paragraphs))]
 		else:
 			# some documents have only tabbed paragraphs instead of xml delimited
-			tab_split = (x.strip() for x in doc.paragraphs[0].split("\t"))
-			tab_split = [x for x in tab_split if len(x) > 0]
+			tab_split = (unicode(x.strip(), errors="replace") for x in doc.paragraphs[0].split("\t"))
+			tab_split = [unicode(x, errors="replace") for x in tab_split if len(x) > 0]
 
 			self.paragraphs = [Text(tab_split[x], self, x + 1) for x in range(len(tab_split))]
 

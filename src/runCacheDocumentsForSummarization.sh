@@ -27,4 +27,4 @@ else
 fi
 
 
-python2.7 cacheDocumentsForSummarization.py --doc-input-path $corporaPath --topic-xml $topicXmlFile --data-type $dataType
+python2.7 cacheDocumentsForSummarizationAsas.py --doc-input-path $corporaPath --topic-xml $topicXmlFile --data-type $dataType
