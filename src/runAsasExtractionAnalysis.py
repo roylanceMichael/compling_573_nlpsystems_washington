@@ -24,7 +24,7 @@ import pickle
 import svmlight
 import extract
 import extract.topicReader
-import extract.documentRepository
+import extract.documentRepository2
 import entitygrid.asasEntityGrid
 import npclustering.kmeans
 import extractionclustering.kmeans
@@ -60,12 +60,12 @@ maximumAverageClusterRange = 55
 maxWords = 130
 topics = []
 topicTitles = {}
-for topic in extract.topicReader.Topic.factoryMultiple("../doc/Documents/devtest/GuidedSumm10_test_topics.xml"):
+for topic in extract.topicReader.Topic.factoryMultiple("/opt/dropbox/14-15/573/Data/Documents/evaltest/GuidedSumm11_test_topics.xml"):
 	topics.append(topic)
 	topicTitles[topic.id] = re.sub("\s+", " ", topic.title)
 
-documentRepository = extract.documentRepository.DocumentRepository("/corpora/LDC/LDC02T31/",
-                                                                   "/corpora/LDC/LDC08T25/data/", topics)
+documentRepository = extract.documentRepository2.DocumentRepository2("/corpora/LDC/LDC11T07/data/",
+                                                                   "evaltest", topics)
 
 # load the cached docs
 documentRepository.readFileIdDictionaryFromFileCache(documentCachePath)
