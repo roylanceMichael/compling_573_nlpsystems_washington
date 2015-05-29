@@ -1,6 +1,7 @@
 import os.path
 import datetime
 import re
+import gzip
 
 docNoKey = "DOCNO"
 dateTimeKey = "DATE_TIME"
@@ -135,8 +136,10 @@ class Document:
 		"""
 			return the characters from a document
 		"""
-
-		docFile = open(filePath, 'r')
+		if filePath[-3:] == ".gz":
+			docFile = gzip.open(filePath)
+		else:
+			docFile = open(filePath, 'r')
 
 		if seekToId is not None:
 			pos = 0
