@@ -9,14 +9,14 @@ class Alligned:
 
         #corpus is already whitespace delimited
         self.o_words = original.split()
-        self.c_words = compressed.split()
+        c_words = compressed.split()
         self.labels = list()
 
         c_pos = 0
         for o_pos in range(len(self.o_words)):
-            if c_pos == len(self.c_words):
+            if c_pos == len(c_words):
                 self.labels.append('O')
-            elif self.o_words[o_pos] == self.c_words[c_pos]:
+            elif self.o_words[o_pos] == c_words[c_pos]:
                 c_pos += 1
                 if o_pos == 0 or self.labels[-1] == 'O':
                     self.labels.append('B')
@@ -32,31 +32,52 @@ class Alligned:
         print("")
         """
 
+        self.features = list(dict() for x in self.o_words)
 
+        self.triples = []
+        self.entities = []
+        self.entityScores = {}
+        self.facts = []
+        self.phrases = []
 
-c_corpus_dir = "/home/thcrzy1/compression_corpus/*.fixed"
+    def __str__(self):
+        return " ".join(self.o_words)
 
-originals = dict()
-c_corpus = dict()
+    def compressed(self):
+        return " ".join(self.o_words[i] for i in range(len(self.labels)) if self.labels[i] != 'O')
 
-for f in glob.glob(c_corpus_dir):
-    print(f)
-    tree = ET.parse(f)
-    root = tree.getroot()
-    for text in root:
-        for s in text:
-            id = s.attrib['id']
-            sentence = s.text
-            if s.tag == 'original':
-                originals[id] = sentence
-            elif s.tag == 'compressed':
-                c_corpus[id] = Alligned(id, originals.pop(id), sentence)
+    def __len__(self):
+        return len(self.o_words)
 
-    if len(originals):
-        print(originals)
-        originals.clear()
+if __name__ == "__main__":
 
-c_corpus = list(c_corpus.values())
-print(str(len(c_corpus))+" sentences in compression corpus")
-cashefile = open("../cache/compressionCorpusCache/c_Sentences", 'w')
-pickle.dump(c_corpus, cashefile)
+    c_corpus_dir = "/home/thcrzy1/compression_corpus/*.fixed"
+
+    originals = dict()
+    c_corpus = dict()
+
+    for f in glob.glob(c_corpus_dir):
+        print(f)
+        tree = ET.parse(f)
+        root = tree.getroot()
+        for text in root:
+            for s in text:
+                id = s.attrib['id']
+                sentence = s.text
+                if s.tag == 'original':
+                    originals[id] = sentence
+                elif s.tag == 'compressed':
+                    c_corpus[id] = Alligned(id, originals.pop(id), sentence)
+
+        if len(originals):
+            print(originals)
+            originals.clear()
+
+    c_corpus = list(c_corpus.values())
+    print(str(len(c_corpus))+" sentences in compression corpus")
+
+    compressionCorpusCache = "/home/thcrzy1/proj/cache/compressionCorpusCache/"
+    #compressionCorpusCache = "../cache/compressionCorpusCache/"
+
+    cashefile = open(compressionCorpusCache+"c_Sentences", 'w')
+    pickle.dump(c_corpus, cashefile)
