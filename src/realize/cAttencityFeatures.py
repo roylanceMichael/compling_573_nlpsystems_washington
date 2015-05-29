@@ -1,14 +1,14 @@
 import cPickle as pickle
 from compressionCacheGen import Alligned
 
-#compressionCorpusCache = "/home/thcrzy1/proj/cache/compressionCorpusCache/"
-compressionCorpusCache = "../cache/compressionCorpusCache/"
+compressionCorpusCache = "/home/thcrzy1/proj/cache/compressionCorpusCache/"
+#compressionCorpusCache = "../cache/compressionCorpusCache/"
 
 c_corpus = pickle.load(open(compressionCorpusCache+'c_Sentences', 'r'))
 
 for a in c_corpus:
 
-    sentence = str()
+    sentence = a.__str__()
 
     a.triples = []
     a.entities = []
