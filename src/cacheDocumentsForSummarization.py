@@ -26,7 +26,7 @@ parser = argparse.ArgumentParser(description='Basic Document Summarizer.')
 parser.add_argument('--doc-input-path', help='Path to data files', dest='docInputPath')
 parser.add_argument('--doc-input-path2', help='Path to data files', nargs='?', default=None, dest='docInputPath2')
 parser.add_argument('--topic-xml', help='Path to topic xml file', dest='topicXml')
-parser.add_argument('--data-type', help='one of: \"devtest\", \"training\", or \"evaltest\"', dest='dataType')
+parser.add_argument('--data-type', help='one of: \"devtest\", \"training\", or \"evaltest\"', nargs='?', default="devtest", dest='dataType')
 
 args = parser.parse_args()
 

@@ -31,7 +31,7 @@ topics = []
 for topic in extract.topicReader.Topic.factoryMultiple("../doc/Documents/devtest/GuidedSumm10_test_topics.xml"):
 	topics.append(topic)
 
-documentRepository = extract.documentRepository.DocumentRepository("/corpora/LDC/LDC02T31/", "/corpora/LDC/LDC08T25/data/", topics)
+documentRepository = extract.documentRepository.DocumentRepository("/corpora/LDC/LDC02T31/", "/corpora/LDC/LDC08T25/data/", "devtest", topics)
 
 # load and cache the docs if they are not loaded.  just get them if they are.
 docModelCache = {}
