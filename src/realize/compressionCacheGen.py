@@ -7,7 +7,7 @@ class Alligned:
     def __init__(self, id, original, compressed):
         self.id = id
 
-        #corpus is already whitespace delimited
+        # corpus is already whitespace delimited
         self.o_words = original.split()
         c_words = compressed.split()
         self.labels = list()
@@ -41,7 +41,8 @@ class Alligned:
         self.phrases = []
 
     def __str__(self):
-        return " ".join(self.o_words)
+        uniValue = (" ".join(self.o_words)).encode("utf-8")
+        return str(uniValue)
 
     def compressed(self):
         return " ".join(self.o_words[i] for i in range(len(self.labels)) if self.labels[i] != 'O')
