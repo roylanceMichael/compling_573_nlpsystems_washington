@@ -1,7 +1,7 @@
 import glob
 import document
 import os
-import pickle
+import cPickle as pickle
 
 filePathTemplate = "%s/%s/%s/%s%s_%s"
 trainingFilePathTemplate = "%s/%s/%s_%s%s.xml"
@@ -10,7 +10,9 @@ trainingFilePathTemplate = "%s/%s/%s_%s%s.xml"
 # file paths are:
 # /corpora/LDC/LDC08T25/data
 class DocumentRepository:
-	def __init__(self, rootDocumentFolder, trainRootFolder, topics):
+	# dataType is one of "training", "devtest", "evaltest"
+	def __init__(self, rootDocumentFolder, trainRootFolder, dataType, topics):
+		self.dataType = dataType
 		self.rootDocumentFolder = rootDocumentFolder
 		self.trainRootFolder = trainRootFolder
 		self.topics = {}
@@ -21,13 +23,13 @@ class DocumentRepository:
 
 	def writefileIdDictionaryToFileCache(self, cachePath):
 		pickleFileName = os.path.join(cachePath, "pickleFile")
-		pickleFile = open(pickleFileName, 'w')
+		pickleFile = open(pickleFileName, 'wb')
 		pickle.dump(self.fileIdDictionary, pickleFile, pickle.HIGHEST_PROTOCOL)
 
 	def readFileIdDictionaryFromFileCache(self, cachePath):
 		pickleFileName = os.path.join(cachePath, "pickleFile")
 		if os.path.exists(pickleFileName):
-			pickleFile = open(pickleFileName, 'r')
+			pickleFile = open(pickleFileName, 'rb')
 			self.fileIdDictionary = pickle.load(pickleFile)
 
 	def getDocumentsGroupedByTopic(self, useDocsetA=True):
@@ -89,6 +91,17 @@ class DocumentRepository:
 		fileName = trainingFilePathTemplate % (self.trainRootFolder, folderName, folderName, year, fileId)
 		return fileName
 
+	def buildEvalFileName(self, docId):
+		# first, find folder
+		# APW_ENG_20050902.0312
+		folderName = docId[0:7].lower()
+		year = docId[8:11]
+		fileId = docId[11:14]
+
+		# does our file exist?
+		fileName = trainingFilePathTemplate % (self.rootDocumentFolder, folderName, folderName, year, fileId)
+		return fileName[:-4] + ".gz"
+
 	def getDocument(self, docId):
 		# example id:
 		# APW19990421.0284
@@ -103,10 +116,15 @@ class DocumentRepository:
 
 		# first, find folder
 		fileName = ""
-		if self.isTest(docId):
-			fileName = self.buildTestFileName(docId)
-		else:
-			fileName = self.buildTrainFileName(docId)
+
+		if self.dataType == "devtest" or self.dataType == "training":
+			if self.isTest(docId):
+				fileName = self.buildTestFileName(docId)
+			else:
+				fileName = self.buildTrainFileName(docId)
+		else:  # evaltest
+			fileName = self.buildEvalFileName(docId)
+
 
 		print "reading document: filename=" + fileName + ", docId=" + cleansedDocId
 		foundDocument = document.Document.factoryForSpecificDocNo(fileName, cleansedDocId)

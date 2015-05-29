@@ -24,7 +24,7 @@ import pickle
 import svmlight
 import extract
 import extract.topicReader
-import extract.documentRepository2
+import extract.documentRepository
 import entitygrid.asasEntityGrid
 import npclustering.kmeans
 import extractionclustering.kmeans
@@ -64,7 +64,7 @@ for topic in extract.topicReader.Topic.factoryMultiple("/opt/dropbox/14-15/573/D
 	topics.append(topic)
 	topicTitles[topic.id] = re.sub("\s+", " ", topic.title)
 
-documentRepository = extract.documentRepository2.DocumentRepository2("/corpora/LDC/LDC11T07/data/",
+documentRepository = extract.documentRepository.DocumentRepository("/corpora/LDC/LDC11T07/data/", None,
                                                                    "evaltest", topics)
 
 # load the cached docs

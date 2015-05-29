@@ -41,6 +41,7 @@ parser.add_argument('--doc-input-path2', help='Path to secondary data files', de
 parser.add_argument('--topic-xml', help='Path to topic xml file', dest='topicXml')
 parser.add_argument('--output-path', help='Path to our output', dest='outputPath')
 parser.add_argument('--rouge-path', help='Path to rouge', dest='rougePath')
+parser.add_argument('--data-type', help='one of: \"devtest\", \"training\", or \"evaltest\"', nargs='?', default="devtest", dest='dataType')
 parser.add_argument('--gold-standard-summary-path', help='Path to gold standard summaries',
 					dest='goldStandardSummaryPath')
 args = parser.parse_args()
@@ -114,7 +115,7 @@ topics = []
 for topic in extract.topicReader.Topic.factoryMultiple(args.topicXml):
 	topics.append(topic)
 
-documentRepository = extract.documentRepository.DocumentRepository(args.docInputPath, args.docInputPath2, topics)
+documentRepository = extract.documentRepository.DocumentRepository(args.docInputPath, args.docInputPath2, args.dataType, topics)
 
 # load the cached docs
 documentRepository.readFileIdDictionaryFromFileCache(documentCachePath)
