@@ -81,7 +81,7 @@ class Text(list, ParentCompare):
 		list.__init__(self, (Sentence(sentences[x], self, x) for x in range(len(sentences))))
 
 	def __str__(self):
-		return self.full
+		return str(self.full.encode("utf-8"))
 
 nounPhraseKey = "NP"
 
@@ -170,7 +170,7 @@ class Chunk(list, ParentCompare):
 			list.__init__(self, [Word(self.full, self.tag, self, 0)])
 
 	def __str__(self):
-		return self.full
+		return str(self.full.encode("utf-8"))
 
 
 class Word(ParentCompare):
@@ -184,7 +184,7 @@ class Word(ParentCompare):
 		self.stem = stemmer(in_string)
 
 	def __str__(self):
-		return self.full
+		return str(self.full.encode("utf-8"))
 
 
 class Doc_Model:
@@ -216,8 +216,8 @@ class Doc_Model:
 			self.paragraphs = [Text(unicode(doc.paragraphs[x], errors="replace"), self, x + 1) for x in range(len(doc.paragraphs))]
 		else:
 			# some documents have only tabbed paragraphs instead of xml delimited
-			tab_split = (unicode(x.strip(), errors="replace") for x in doc.paragraphs[0].split("\t"))
-			tab_split = [unicode(x, errors="replace") for x in tab_split if len(x) > 0]
+			tab_split = (x.strip() for x in doc.paragraphs[0].split("\t"))
+			tab_split = [x for x in tab_split if len(x) > 0]
 
 			self.paragraphs = [Text(tab_split[x], self, x + 1) for x in range(len(tab_split))]
 
