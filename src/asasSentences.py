@@ -34,6 +34,8 @@ import extractionclustering.sentence
 from evaluate.rougeEvaluator import RougeEvaluator
 from evaluate.evaluationCompare import EvaluationCompare
 
+from compress import compress
+
 cachePath = "../cache/asasCache"
 goldCachePath = "../cache/asasGoldCache"
 summaryOutputPath = "../outputs"
@@ -44,13 +46,6 @@ documentCachePath = "../cache/documentCache"
 idfCachePath = "../cache/idfCache"
 meadCacheDir = "../cache/meadCache"
 rougeCacheDir = "../cache/rougeCache"
-
-rankModel = svmlight.read_model('../cache/svmlightCache/svmlightModel.dat')
-
-rouge = RougeEvaluator("../ROUGE",
-                       "/opt/dropbox/14-15/573/Data/models/devtest",
-                       summaryOutputPath,
-                       modelSummaryCachePath, rougeCacheDir)
 
 
 
@@ -69,8 +64,6 @@ documentRepository = extract.documentRepository.DocumentRepository("/corpora/LDC
 # load the cached docs
 documentRepository.readFileIdDictionaryFromFileCache(documentCachePath)
 
-# cache the model summaries
-rouge.cacheModelSummaries(topics)
 
 
 def getBestSummaryOrder(sentences, docIndex):
@@ -133,8 +126,11 @@ for topicId in goldTopicDocModels:
 	allSentences = extractionclustering.sentence.factory(goldTopicDocModels[topicId], {})
 	goldSentences[topicId] = allSentences
 
+
+num_sentences = 3
+
 # fileName refers to cache/asasCache/D1001A ...
-for fileName in os.listdir(cachePath):
+for fileName in os.listdir(cachePath)[:1]:
 	# grab the topic dictionary with docModels inside of it
 	pickleFilePath = os.path.join(cachePath, fileName)
 
@@ -147,8 +143,15 @@ for fileName in os.listdir(cachePath):
 
 		# all the cached sentences from the topic
 		allSentences = extractionclustering.sentence.factory(topicDictionary, topicTitleDict, goldSentences[fileName])
-
-		for sentenceId in allSentences:
-			print allSentences[sentenceId].simple
+		if num_sentences:
+			for sentenceId in allSentences:
+				if num_sentences:
+					#this is where I am testing the compressor
+					s = allSentences[sentenceId]
+					print s.simple
+					c = compress(s)
+					print(c.simple)
+					print("")
+					num_sentences -= 1
 
 	docIndex += 1

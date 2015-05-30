@@ -51,7 +51,6 @@ parser.add_argument('--data-type', help='one of: \"devtest\", \"training\", or \
 					default="devtest", dest='dataType')
 args = parser.parse_args()
 
-
 cachePath = "../cache/asasCache"
 goldCachePath = "../cache/asasGoldCache"
 summaryOutputPath = "../outputs"
@@ -74,12 +73,10 @@ rouge = RougeEvaluator(rougeDir,
                        	modelSummaryCachePath,
 					   	rougeCacheDir)
 
-
-
 totalClusters = 25
 minimumAverageClusterRange = 30
 maximumAverageClusterRange = 55
-maxWords = 400
+maxWords = 130
 topics = []
 topicTitles = {}
 for topic in extract.topicReader.Topic.factoryMultiple(args.topicXml):
@@ -165,16 +162,22 @@ for fileName in os.listdir(cachePath):
 	if os.path.exists(pickleFilePath):
 		pickleFile = open(pickleFilePath, 'rb')
 		topicDictionary = pickle.load(pickleFile)
-		topicTitle = topicTitles[fileName].lower().strip()
+		topicTitle = ""
+		if fileName in topicTitles:
+			topicTitle = topicTitles[fileName].lower().strip()
 
 		topicTitleDict = {}
 		for word in topicTitle.split(" "):
 			topicTitleDict[word] = None
 
-		# all the cached sentences from the topic
-		allSentences = extractionclustering.sentence.factory(topicDictionary, topicTitleDict, goldSentences[fileName])
+		foundGoldSentences = {}
+		if fileName in goldSentences:
+			foundGoldSentences = goldSentences[fileName]
 
-		print "doing clustering now on summarization... with " + str(len(goldSentences[fileName])) + " gold sentences"
+		# all the cached sentences from the topic
+		allSentences = extractionclustering.sentence.factory(topicDictionary, topicTitleDict, foundGoldSentences)
+
+		print "doing clustering now on summarization... with " + str(len(foundGoldSentences)) + " gold sentences"
 
 		scoredSentenceDictionary = {}
 		for tupleResult in extractionclustering.scorer.handleScoring(allSentences):

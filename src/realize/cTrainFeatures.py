@@ -109,13 +109,14 @@ partitions = 5
 for a in c_corpus:
     for i in range(len(a)):
         w = a.o_words[i].lower()
-        features = a.features[i]
+        if w not in stopWords and w not in punct:
+            features = a.features[i]
 
-        tfidf = termFreq[w] * idf.idf[w]
-        scaled = tfidf / maxtfidf * partitions
-        for x in range(1,partitions):
-            if tfidf > x:
-                features[str(x*100/partitions)+"percenttfidf"] = True
+            tfidf = termFreq[w] * idf.idf[w]
+            scaled = tfidf / maxtfidf * partitions
+            for x in range(1,partitions):
+                if scaled > x:
+                    features[str(x*100/partitions)+"percenttfidf"] = True
 
 example = c_corpus[0]
 

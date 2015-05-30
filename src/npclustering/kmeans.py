@@ -15,7 +15,7 @@ import random
 
 def getInitialKPoints(points, k):
 	# just grabbing a random initial point, for now
-	initialPoints = [random.choice(points)]
+	initialPoints = [points[0]]
 
 	while len(initialPoints) < k:
 		largestScore = 0
@@ -103,27 +103,3 @@ def performKMeans(initialPoints, points, minimumMovement=0, maxIterations=100):
 def rebalanceClusters(clusters):
 	for actualCluster in clusters:
 		actualCluster.recalculateFeatures()
-
-	# rebalance clusters
-	# featuresToRemove = []
-	#
-	# for actualCluster in clusters:
-	# 	for feature in actualCluster.currentFeatures:
-	# 		for otherCluster in clusters:
-	# 			if otherCluster == actualCluster:
-	# 				continue
-	#
-	# 			if feature in otherCluster.currentFeatures:
-	# 				featuresToRemove.append(feature)
-	# 				break
-	#
-	# for actualCluster in clusters:
-	# 	for feature in featuresToRemove:
-	# 		if feature in actualCluster.currentFeatures:
-	# 			actualCluster.currentFeatures.pop(feature, None)
-	#
-	# for actualCluster in clusters:
-	# 	print actualCluster.currentFeatures
-
-def getRandomCluster(clusters):
-	return random.choice(clusters)
