@@ -15,7 +15,7 @@ import random
 
 def getInitialKPoints(points, k):
 	# just grabbing a random initial point, for now
-	initialPoints = [random.choice(points)]
+	initialPoints = [points[0]]
 
 	while len(initialPoints) < k:
 		largestScore = 0
