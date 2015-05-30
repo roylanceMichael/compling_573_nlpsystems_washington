@@ -134,6 +134,7 @@ clusterSizes = {}
 # fileName refers to cache/asasGoldCache/D0901-A.M.100.A.A ...
 goldTopicDocModels = {}
 for fileName in os.listdir(goldCachePath):
+	print fileName
 	# grab the pickled gold summary
 	pickleFilePath = os.path.join(goldCachePath, fileName)
 
@@ -265,6 +266,7 @@ for fileName in os.listdir(cachePath):
 		print summary
 		if summary is not None:
 			summaryFileName = summaryOutputPath + "/" + fileName
+			print "--------------------------- \n summaryFileName: %s\n ----------------------" % summaryFileName
 			summaryFile = open(summaryFileName, 'wb')
 			summaryFile.write(summary)
 			summaryFile.close()
