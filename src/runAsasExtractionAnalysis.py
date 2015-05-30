@@ -36,8 +36,9 @@ from evaluate.rougeEvaluator import RougeEvaluator
 from evaluate.evaluationCompare import EvaluationCompare
 
 
-
-from compress import compress
+do_compression = False
+if do_compression:
+	from compress import compress
 
 
 
@@ -239,7 +240,8 @@ for fileName in os.listdir(cachePath):
 				break
 
 			sentence = topSentenceResult[0]
-			sentence = compress(sentence)
+			if do_compression:
+				sentence = compress(sentence)
 			bestSentences.append(sentence)
 
 			if sentence.simple in uniqueSummaries:
