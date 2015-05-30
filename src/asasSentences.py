@@ -57,7 +57,6 @@ rouge = RougeEvaluator("../ROUGE",
 totalClusters = 25
 minimumAverageClusterRange = 30
 maximumAverageClusterRange = 55
-maxWords = 130
 topics = []
 topicTitles = {}
 for topic in extract.topicReader.Topic.factoryMultiple("/opt/dropbox/14-15/573/Data/Documents/evaltest/GuidedSumm11_test_topics.xml"):

@@ -37,7 +37,7 @@ from evaluate.evaluationCompare import EvaluationCompare
 
 
 
-from compress import compress
+# from compress import compress
 
 
 
@@ -62,8 +62,8 @@ documentCachePath = "../cache/documentCache"
 idfCachePath = "../cache/idfCache"
 meadCacheDir = "../cache/meadCache"
 rougeCacheDir = "../cache/rougeCache"
-#rougeDir = "../ROUGE"
-rougeDir = "/opt/dropbox/14-15/573/code/ROUGE"
+rougeDir = "../ROUGE"
+# rougeDir = "/opt/dropbox/14-15/573/code/ROUGE"
 
 
 rankModel = svmlight.read_model('../cache/svmlightCache/svmlightModel.dat')
@@ -79,7 +79,7 @@ rouge = RougeEvaluator(rougeDir,
 totalClusters = 25
 minimumAverageClusterRange = 30
 maximumAverageClusterRange = 55
-maxWords = 130
+maxWords = 400
 topics = []
 topicTitles = {}
 for topic in extract.topicReader.Topic.factoryMultiple(args.topicXml):
@@ -236,7 +236,7 @@ for fileName in os.listdir(cachePath):
 				break
 
 			sentence = topSentenceResult[0]
-			sentence = compress(sentence)
+			#sentence = compress(sentence)
 			bestSentences.append(sentence)
 
 			if sentence.simple in uniqueSummaries:
