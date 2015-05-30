@@ -46,13 +46,14 @@ parser = argparse.ArgumentParser(description='Basic Document Summarizer.')
 parser.add_argument('--doc-input-path', help='Path to data files', dest='docInputPath')
 parser.add_argument('--doc-input-path2', help='Path to data files', nargs='?', default=None, dest='docInputPath2')
 parser.add_argument('--topic-xml', help='Path to topic xml file', dest='topicXml')
+parser.add_argument('--asas-cache-path', help='Path to asas cache', dest='cachePath')
 parser.add_argument('--gold-standard-summary-path', help='Path to gold standard summaries',
 					dest='modelSummaryDir')
 parser.add_argument('--data-type', help='one of: \"devtest\", \"training\", or \"evaltest\"', nargs='?',
 					default="devtest", dest='dataType')
 args = parser.parse_args()
 
-cachePath = "../cache/asasCache"
+#cachePath = "../cache/asasCache"
 goldCachePath = "../cache/asasGoldCache"
 summaryOutputPath = "../outputs"
 reorderedSummaryOutputPath = summaryOutputPath + "_reordered"
@@ -156,9 +157,9 @@ for topicId in goldTopicDocModels:
 	goldSentences[topicId] = allSentences
 
 # fileName refers to cache/asasCache/D1001A ...
-for fileName in os.listdir(cachePath):
+for fileName in os.listdir(args.cachePath):
 	# grab the topic dictionary with docModels inside of it
-	pickleFilePath = os.path.join(cachePath, fileName)
+	pickleFilePath = os.path.join(args.cachePath, fileName)
 
 	# open
 	if os.path.exists(pickleFilePath):
@@ -271,25 +272,7 @@ for fileName in os.listdir(cachePath):
 			summaryFile.write(summary)
 			summaryFile.close()
 
-		print "now calculating the best order..."
 
-		# bestOrder = getBestSummaryOrder(bestSentences, docIndex)
-		#
-		# summary = ""
-		# uniqueSummaries = {}
-		# for newSentence in bestOrder:
-		# 	actualText = re.sub("\s+", " ", newSentence.simple) + "\n"
-		# 	if actualText not in uniqueSummaries:
-		# 		uniqueSummaries[actualText] = None
-		# 		summary += actualText
-
-		if summary is not None:
-			summaryFileName = reorderedSummaryOutputPath + "/" + fileName
-			summaryFile = open(summaryFileName, 'wb')
-			summaryFile.write(summary)
-			summaryFile.close()
-
-		print summary
 
 	docIndex += 1
 	# break
