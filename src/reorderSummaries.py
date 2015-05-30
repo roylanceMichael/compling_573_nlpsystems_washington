@@ -40,8 +40,6 @@ from evaluate.evaluationCompare import EvaluationCompare
 
 # get parser args and set up global variables
 parser = argparse.ArgumentParser(description='Basic Document Summarizer.')
-parser.add_argument('--doc-input-path', help='Path to data files', dest='docInputPath')
-parser.add_argument('--doc-input-path2', help='Path to secondary data files', dest='docInputPath2')
 parser.add_argument('--topic-xml', help='Path to topic xml file', dest='topicXml')
 parser.add_argument('--output-path', help='Path to our output', dest='outputPath')
 parser.add_argument('--rouge-path', help='Path to rouge', dest='rougePath')
