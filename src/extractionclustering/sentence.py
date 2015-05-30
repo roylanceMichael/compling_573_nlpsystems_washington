@@ -184,8 +184,11 @@ class Sentence:
 				score += 1
 
 		# smoothing
-		return score
-		# return score / (self.chunkDictLen + otherSentence.chunkDictLen + 1)
+		# return score
+		if otherSentence.chunkDictLen > 0:
+			return score / otherSentence.chunkDictLen
+		else:
+			return score
 
 		"""
 		for phrase in self.phrases:
