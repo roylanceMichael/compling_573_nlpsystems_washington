@@ -37,7 +37,7 @@ from evaluate.evaluationCompare import EvaluationCompare
 
 
 
-from compress import compress
+# from compress import compress
 
 
 
@@ -236,7 +236,7 @@ for fileName in os.listdir(cachePath):
 				break
 
 			sentence = topSentenceResult[0]
-			sentence = compress(sentence)
+			# sentence = compress(sentence)
 			bestSentences.append(sentence)
 
 			if sentence.simple in uniqueSummaries:
