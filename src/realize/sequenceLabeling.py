@@ -72,21 +72,24 @@ trainfeaturevectors = varthresh.fit_transform(trainfeaturevectors, trainLabels)
 testfeaturevectors = varthresh.transform(testfeaturevectors)
 """
 
-classifiers = [BernoulliNB(), DecisionTreeClassifier(), LogisticRegression(), OneVsRestClassifier(LinearSVC(random_state=0)) ]
-classifier_names = ["BernoulliNB", "DecisionTreeClassifier", "MaxEnt", "SVM"]
+#classifiers = [BernoulliNB(), DecisionTreeClassifier(), LogisticRegression(), OneVsRestClassifier(LinearSVC(random_state=0)) ]
+#classifier_names = ["BernoulliNB", "DecisionTreeClassifier", "MaxEnt", "SVM"]
+
+classifiers = [LogisticRegression(), OneVsRestClassifier(LinearSVC(random_state=0)) ]
+classifier_names = ["MaxEnt", "SVM"]
 
 allscores = list()
-for keep in range(10, 101, 10):
+for keep in range(10, 11, 10):
     selector = SelectPercentile(chi2, keep)
-    trainfeaturevectors = selector.fit_transform(trainfeaturevectors, trainLabels)
-    testfeaturevectors = selector.transform(testfeaturevectors)
+    selected_trainfeaturevectors = selector.fit_transform(trainfeaturevectors, trainLabels)
+    selected_testfeaturevectors = selector.transform(testfeaturevectors)
 
     scores = list()
     for c in range(len(classifiers)):
         classifier = classifiers[c]
 
-        classifier.fit(trainfeaturevectors, trainLabels)
-        scores.append((classifier.score(testfeaturevectors, testLabels), keep, classifier_names[c], c))
+        classifier.fit(selected_trainfeaturevectors, trainLabels)
+        scores.append((classifier.score(selected_testfeaturevectors, testLabels), keep, classifier_names[c], c))
 
     print(str(keep)+"\t"+"\t".join(str(s[0]) for s in scores))
     allscores += scores
@@ -97,12 +100,12 @@ bestsettings = max(allscores)
 print(bestsettings)
 
 bestselector = SelectPercentile(chi2, bestsettings[1])
-trainfeaturevectors = bestselector.fit_transform(trainfeaturevectors, trainLabels)
+selected_trainfeaturevectors = bestselector.fit_transform(trainfeaturevectors, trainLabels)
 bestclassifier = classifiers[bestsettings[3]]
-bestclassifier.fit(trainfeaturevectors, trainLabels)
+bestclassifier.fit(selected_trainfeaturevectors, trainLabels)
 
 print(bestselector)
 print(bestclassifier)
 
-pickle.dump((bestselector, bestclassifier), open(compressionCorpusCache+"compressionClassifier", 'wb'))
+pickle.dump((vec, bestselector, bestclassifier), open(compressionCorpusCache+"compressionClassifier", 'wb'))
 

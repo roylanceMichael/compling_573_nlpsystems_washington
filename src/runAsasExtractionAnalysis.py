@@ -34,7 +34,7 @@ import extractionclustering.sentence
 from evaluate.rougeEvaluator import RougeEvaluator
 from evaluate.evaluationCompare import EvaluationCompare
 
-from compress import compress
+#from compress import compress
 
 cachePath = "../cache/asasCache"
 goldCachePath = "../cache/asasGoldCache"
@@ -216,7 +216,7 @@ for fileName in os.listdir(cachePath):
 				break
 
 			sentence = topSentenceResult[0]
-			sentence = compress(sentence)
+			#sentence = compress(sentence)
 			bestSentences.append(sentence)
 
 			if sentence.simple in uniqueSummaries:
