@@ -240,6 +240,9 @@ for fileName in os.listdir(args.cachePath):
 				scoredSentenceDictionary, clusters):
 
 			nextSentence = topSentenceResult[0]
+			nextSentenceWordCount_nocompress = len(nextSentence.simple.split(" "))
+			if wordCount + nextSentenceWordCount_nocompress > maxWords:
+				continue
 			if do_compression:
 				nextSentence = compress(nextSentence)
 			nextSentenceWordCount = len(nextSentence.simple.split(" "))

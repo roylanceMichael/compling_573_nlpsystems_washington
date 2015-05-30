@@ -75,6 +75,9 @@ testfeaturevectors = varthresh.transform(testfeaturevectors)
 #classifiers = [BernoulliNB(), DecisionTreeClassifier(), LogisticRegression(), OneVsRestClassifier(LinearSVC(random_state=0)) ]
 #classifier_names = ["BernoulliNB", "DecisionTreeClassifier", "MaxEnt", "SVM"]
 
+#classifiers = [LogisticRegression(), OneVsRestClassifier(LinearSVC(random_state=0)) ]
+#classifier_names = ["MaxEnt", "SVM"]
+
 classifiers = [LogisticRegression(), OneVsRestClassifier(LinearSVC(random_state=0)) ]
 classifier_names = ["MaxEnt", "SVM"]
 
