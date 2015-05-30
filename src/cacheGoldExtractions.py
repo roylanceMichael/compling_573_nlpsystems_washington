@@ -26,8 +26,8 @@ idfCachePath = "../cache/idfCache"
 meadCacheDir = "../cache/meadCache"
 rougeCacheDir = "../cache/rougeCache"
 
-ss = attensity.semantic_server.SemanticServer("http://192.168.1.11:8888")
-configUrl = ss.configurations().config_url(3)
+ss = attensity.semantic_server.SemanticServer("http://192.168.1.7:8888")
+configUrl = ss.configurations().config_url(1)
 
 directories = ["/opt/dropbox/14-15/573/Data/models/devtest","/opt/dropbox/14-15/573/Data/models/training/2009","/opt/dropbox/14-15/573/Data/mydata"]
 

@@ -164,7 +164,7 @@ for topic in topics:
 print "running the rouge evaluator"
 evaluationResults = evaluate()
 evaluation = evaluationResults[0]
-writeBufferToFile(os.path.join(evaluationOutputPath, "D3.results"), evaluation)
+writeBufferToFile(os.path.join(evaluationOutputPath, "D4.results"), evaluation)
 
 # call the evaluation comparison routine.
 # note:  this will only print the summaries you have on your machine.
