@@ -174,7 +174,7 @@ for topic in extract.topicReader.Topic.factoryMultiple(args.topicXml):
 rouge.cacheModelSummaries(topics)
 evaluationResults = rouge.evaluate()
 evaluation = evaluationResults[0]
-writeBufferToFile(os.path.join(evaluationOutputPath, "D3.results"), evaluation)
+writeBufferToFile(os.path.join(evaluationOutputPath, "D4.results"), evaluation)
 
 
 # now switch to reordered output
@@ -183,7 +183,7 @@ rouge2.rougeConfigFileName = os.path.join(rouge2.rougeCachePath, "rouge_config_r
 rouge2.cacheModelSummaries(topics)
 evaluationResults = rouge2.evaluate()
 evaluation = evaluationResults[0]
-writeBufferToFile(os.path.join(evaluationOutputPath, "D3.results_reordered"), evaluation)
+writeBufferToFile(os.path.join(evaluationOutputPath, "D4.results_reordered"), evaluation)
 
 
 
