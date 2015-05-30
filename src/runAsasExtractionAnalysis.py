@@ -31,8 +31,22 @@ import extractionclustering.kmeans
 import extractionclustering.scorer
 import extractionclustering.point
 import extractionclustering.sentence
+import argparse
 from evaluate.rougeEvaluator import RougeEvaluator
 from evaluate.evaluationCompare import EvaluationCompare
+
+
+
+parser = argparse.ArgumentParser(description='Basic Document Summarizer.')
+parser.add_argument('--doc-input-path', help='Path to data files', dest='docInputPath')
+parser.add_argument('--doc-input-path2', help='Path to data files', nargs='?', default=None, dest='docInputPath2')
+parser.add_argument('--topic-xml', help='Path to topic xml file', dest='topicXml')
+parser.add_argument('--gold-standard-summary-path', help='Path to gold standard summaries',
+					dest='modelSummaryDir')
+parser.add_argument('--data-type', help='one of: \"devtest\", \"training\", or \"evaltest\"', nargs='?',
+					default="devtest", dest='dataType')
+args = parser.parse_args()
+
 
 cachePath = "../cache/asasCache"
 goldCachePath = "../cache/asasGoldCache"
@@ -44,13 +58,17 @@ documentCachePath = "../cache/documentCache"
 idfCachePath = "../cache/idfCache"
 meadCacheDir = "../cache/meadCache"
 rougeCacheDir = "../cache/rougeCache"
+#rougeDir = "../ROUGE"
+rougeDir = "/opt/dropbox/14-15/573/code/ROUGE"
+
 
 rankModel = svmlight.read_model('../cache/svmlightCache/svmlightModel.dat')
 
-rouge = RougeEvaluator("../ROUGE",
-                       "/opt/dropbox/14-15/573/Data/models/devtest",
-                       summaryOutputPath,
-                       modelSummaryCachePath, rougeCacheDir)
+rouge = RougeEvaluator(rougeDir,
+                      	args.modelSummaryDir,
+                    	summaryOutputPath,
+                       	modelSummaryCachePath,
+					   	rougeCacheDir)
 
 
 
@@ -60,12 +78,12 @@ maximumAverageClusterRange = 55
 maxWords = 130
 topics = []
 topicTitles = {}
-for topic in extract.topicReader.Topic.factoryMultiple("/opt/dropbox/14-15/573/Data/Documents/evaltest/GuidedSumm11_test_topics.xml"):
+for topic in extract.topicReader.Topic.factoryMultiple(args.topicXml):
 	topics.append(topic)
 	topicTitles[topic.id] = re.sub("\s+", " ", topic.title)
 
-documentRepository = extract.documentRepository.DocumentRepository("/corpora/LDC/LDC11T07/data/", None,
-                                                                   "evaltest", topics)
+documentRepository = extract.documentRepository.DocumentRepository(args.docInputPath, args.docInputPath2,
+                                                                   args.dataType, topics)
 
 # load the cached docs
 documentRepository.readFileIdDictionaryFromFileCache(documentCachePath)
