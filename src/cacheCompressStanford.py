@@ -43,12 +43,12 @@ for aligned in pickleFile:
      
      
     except:
-    	print(text)
+        print(text)
         print( "Unexpected error:", sys.exc_info()[0])
 
     cachedAligned.append(aligned)
     if len(cachedAligned) % 10 == 0:
-    	print("parsed "+str(len(cachedAligned)))
+        print("parsed "+str(len(cachedAligned)))
 
 pickleFile = open(filePathToPickle, 'wb')
 pickle.dump(cachedAligned, pickleFile, pickle.HIGHEST_PROTOCOL)
