@@ -19,17 +19,20 @@ if [ "devtest" == "$dataType" ]; then
 	corporaPath2="/corpora/LDC/LDC08T25/data/"
 	topicXmlFile="/opt/dropbox/14-15/573/Data/Documents/devtest/GuidedSumm10_test_topics.xml"
 	goldStandardSummaryPath="/opt/dropbox/14-15/573/Data/models/devtest"
+	asasCachePath="../cache/asasCache"
 elif [ "training" == "$dataType" ]; then
 	# for training data
 	corporaPath="/corpora/LDC/LDC02T31/"
 	corporaPath2="/corpora/LDC/LDC08T25/data/"
 	topicXmlFile="/opt/dropbox/14-15/573/Data/Documents/training/2009/UpdateSumm09_test_topics.xml"
 	goldStandardSummaryPath="/opt/dropbox/14-15/573/Data/models/training/2009"
+	asasCachePath="../cache/asasCacheTraining"
 else
 	# for evaltest data
 	corporaPath="/corpora/LDC/LDC11T07/data/"
 	topicXmlFile="/opt/dropbox/14-15/573/Data/Documents/evaltest/GuidedSumm11_test_topics.xml"
 	goldStandardSummaryPath="/opt/dropbox/14-15/573/Data/models/evaltest"
+	asasCachePath="../cache/asasCacheEval"
 fi
 
 echo "$corporaPath $corporaPath2 $topicXmlFile $goldStandardSummaryPath $dataType"
@@ -38,7 +41,7 @@ echo "$corporaPath $corporaPath2 $topicXmlFile $goldStandardSummaryPath $dataTyp
 export JAVA_HOME="/opt/jdk1.8.0"
 export PATH=$JAVA_HOME/bin:$PATH
 
-python2.7 runAsasExtractionAnalysis.py --doc-input-path $corporaPath --doc-input-path2 $corporaPath2 --topic-xml $topicXmlFile --gold-standard-summary-path $goldStandardSummaryPath --data-type $dataType
+python2.7 runAsasExtractionAnalysis.py --doc-input-path $corporaPath --doc-input-path2 $corporaPath2 --topic-xml $topicXmlFile --gold-standard-summary-path $goldStandardSummaryPath --data-type $dataType --asas-cache-path $asasCachePath
 python2.7 reorderSummaries.py --doc-input-path $corporaPath --doc-input-path2 $corporaPath2 --topic-xml $topicXmlFile --gold-standard-summary-path $goldStandardSummaryPath --data-type $dataType --rouge-path ../ROUGE --output-path ../outputs
 
 mkdir -p ../outputs/D4.${dataType}
