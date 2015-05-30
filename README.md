@@ -26,3 +26,17 @@ Submit the condor job with "condor_submit Dx.cmd".
 # ROUGE-4: Average_R: 0.00491
 
 Although the r decreases for reordering, the p increases to 0.06688 ROUGE-2
+
+# Deliverable 4 Dev Results
+
+# ROUGE-1: Average_R: 0.23577
+# ROUGE-2: Average_R: 0.07144
+# ROUGE-3: Average_R: 0.02821
+# ROUGE-4: Average_R: 0.01271
+
+# Deliverable 4 Eval Results
+
+# ROUGE-1: Average_R: 0.26140
+# ROUGE-2: Average_R: 0.06851
+# ROUGE-3: Average_R: 0.02268
+# ROUGE-4: Average_R: 0.00950
