@@ -18,6 +18,7 @@ import extract
 import extract.topicReader
 import extract.documentRepository2
 import extract
+import re
 import attensity.semantic_server
 import model.doc_model
 import extract.topicReader
@@ -60,8 +61,8 @@ documentRepository = extract.documentRepository2.DocumentRepository2(args.docInp
 # load the cached docs
 documentRepository.readFileIdDictionaryFromFileCache(documentCachePath)
 
-ss = attensity.semantic_server.SemanticServer("http://10.1.1.116:8888")
-configUrl = ss.configurations().config_url(3)
+ss = attensity.semantic_server.SemanticServer("http://192.168.1.7:8888")
+configUrl = ss.configurations().config_url(1)
 
 docModelCache = {}
 # load and cache the docs if they are not loaded.  just get them if they are.
@@ -83,11 +84,12 @@ for topic in topics:
 			newParagraph = extractionclustering.paragraph.Paragraph()
 			docModel.paragraphs.append(newParagraph)
 			# cleansedParagraph = re.sub("\s+", " ", str(paragraph))
-			newParagraph.text = str(paragraph)
+			newParagraph.text = re.sub(r'[^\x00-\x7F]', ' ', str(paragraph))
 
 			parse = ss.parse()
-			print newParagraph.text
-			parse.process(newParagraph.text, configUrl)
+			actualText = newParagraph.text
+			print actualText
+			parse.process(actualText, configUrl)
 			ext = attensity.extractions.Extractions.from_protobuf(parse.result)
 
 			for extraction in ext.extractions():

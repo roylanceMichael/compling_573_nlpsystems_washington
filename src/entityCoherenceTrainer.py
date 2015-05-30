@@ -207,7 +207,7 @@ for cluster in fileNameDictionary:
 			nskipped = 1
 			if len(sentences) > 1:  # because there have to be transitions
 				docModel = DummyDocModel(sentences)
-				grid = TextrazorEntityGrid(docModel.cleanSentences(), 2, textrazorEntities, textrazorSentences)
+				grid = TextrazorEntityGrid(docModel.cleanSentences(), 1, textrazorEntities, textrazorSentences)
 				if grid.valid and len(grid.matrixIndices) > 0:
 					grid.printMatrix()
 					featureVector = FeatureVector(grid, clusterIndex)

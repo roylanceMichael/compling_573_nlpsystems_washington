@@ -121,7 +121,7 @@ def getBestSummaryOrder(sentences, fileName, docIndex, numDocs):
 	testVectors = []
 
 	doc = DummyDocModel(sentences)
-	grid = TextrazorEntityGrid(doc.cleanSentences(), 2)
+	grid = TextrazorEntityGrid(doc.cleanSentences(), 1)
 	textrazorSentences = grid.textrazorSentences
 	permutations = [perm for perm in itertools.permutations(textrazorSentences)]
 	print "numPermutations: " + str(len(permutations))
