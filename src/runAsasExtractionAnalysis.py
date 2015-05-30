@@ -51,7 +51,6 @@ parser.add_argument('--data-type', help='one of: \"devtest\", \"training\", or \
 					default="devtest", dest='dataType')
 args = parser.parse_args()
 
-
 cachePath = "../cache/asasCache"
 goldCachePath = "../cache/asasGoldCache"
 summaryOutputPath = "../outputs"
@@ -62,8 +61,8 @@ documentCachePath = "../cache/documentCache"
 idfCachePath = "../cache/idfCache"
 meadCacheDir = "../cache/meadCache"
 rougeCacheDir = "../cache/rougeCache"
-#rougeDir = "../ROUGE"
-rougeDir = "/opt/dropbox/14-15/573/code/ROUGE"
+rougeDir = "../ROUGE"
+# rougeDir = "/opt/dropbox/14-15/573/code/ROUGE"
 
 
 rankModel = svmlight.read_model('../cache/svmlightCache/svmlightModel.dat')
@@ -73,8 +72,6 @@ rouge = RougeEvaluator(rougeDir,
                     	summaryOutputPath,
                        	modelSummaryCachePath,
 					   	rougeCacheDir)
-
-
 
 totalClusters = 25
 minimumAverageClusterRange = 30
@@ -173,10 +170,14 @@ for fileName in os.listdir(cachePath):
 		for word in topicTitle.split(" "):
 			topicTitleDict[word] = None
 
-		# all the cached sentences from the topic
-		allSentences = extractionclustering.sentence.factory(topicDictionary, topicTitleDict, goldSentences[fileName])
+		foundGoldSentences = {}
+		if fileName in goldSentences:
+			foundGoldSentences = goldSentences[fileName]
 
-		print "doing clustering now on summarization... with " + str(len(goldSentences[fileName])) + " gold sentences"
+		# all the cached sentences from the topic
+		allSentences = extractionclustering.sentence.factory(topicDictionary, topicTitleDict, foundGoldSentences)
+
+		print "doing clustering now on summarization... with " + str(len(foundGoldSentences)) + " gold sentences"
 
 		scoredSentenceDictionary = {}
 		for tupleResult in extractionclustering.scorer.handleScoring(allSentences):
@@ -238,7 +239,7 @@ for fileName in os.listdir(cachePath):
 				break
 
 			sentence = topSentenceResult[0]
-			# sentence = compress(sentence)
+			#sentence = compress(sentence)
 			bestSentences.append(sentence)
 
 			if sentence.simple in uniqueSummaries:
