@@ -23,9 +23,10 @@ vec, selector, classifier = pickle.load(open(classifierCachePath+classifierFileN
 
 
 corenlp_dir = "/NLP_TOOLS/tool_sets/stanford-corenlp/stanford-corenlp-full-2015-04-20/"
-parser = StanfordCoreNLP(corenlp_dir)
+parser = 0
+
 tree_re = re.compile(r"\(ROOT.*")
-print("StanfordCoreNLP loaded")
+#print("StanfordCoreNLP loaded")
 # needed for tree features
 
 
@@ -49,7 +50,12 @@ termFreq = defaultdict(int)
 
 stemmer = SnowballStemmer('english')
 
+parser = 0
+
 def compress(sentence):
+    global parser
+    if not parser:
+        parser = StanfordCoreNLP(corenlp_dir)
     text = sentence.simple
     words = word_tokenize(text)
     w_features = [dict() for w in words]

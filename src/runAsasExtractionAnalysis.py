@@ -37,7 +37,7 @@ from evaluate.evaluationCompare import EvaluationCompare
 
 
 
-# from compress import compress
+from compress import compress
 
 
 
@@ -144,9 +144,9 @@ for fileName in os.listdir(goldCachePath):
 		topicId = fileName[0:5] + fileName[len(fileName)-3:len(fileName)-2]
 
 		if topicId in goldTopicDocModels:
-			goldTopicDocModels[topicId][topicId] = goldDocModel
+			goldTopicDocModels[topicId][fileName] = goldDocModel
 		else:
-			goldTopicDocModels[topicId] = {topicId: goldDocModel}
+			goldTopicDocModels[topicId] = {fileName: goldDocModel}
 
 goldSentences = {}
 for topicId in goldTopicDocModels:
@@ -239,7 +239,7 @@ for fileName in os.listdir(cachePath):
 				break
 
 			sentence = topSentenceResult[0]
-			#sentence = compress(sentence)
+			sentence = compress(sentence)
 			bestSentences.append(sentence)
 
 			if sentence.simple in uniqueSummaries:
