@@ -147,6 +147,7 @@ for fileName in os.listdir(cachePath)[:1]:
 		if num_sentences:
 			for sentenceId in allSentences:
 				if num_sentences:
+					#this is where I am testing the compressor
 					s = allSentences[sentenceId]
 					print s.simple
 					c = compress(s)

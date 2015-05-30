@@ -26,6 +26,7 @@ corenlp_dir = "/NLP_TOOLS/tool_sets/stanford-corenlp/stanford-corenlp-full-2015-
 parser = StanfordCoreNLP(corenlp_dir)
 tree_re = re.compile(r"\(ROOT.*")
 print("StanfordCoreNLP loaded")
+# needed for tree features
 """
 
 def getPathsToLeaves(tree, path=[], index=0):
