@@ -13,6 +13,8 @@ import sys
 import model.idf
 from model.idf import Idf
 
+from realize.cTrainFeatures import getPathsToLeaves, getDepths
+
 from extractionclustering.sentence import Sentence
 from corenlp import StanfordCoreNLP
 
@@ -29,7 +31,7 @@ tree_re = re.compile(r"\(ROOT.*")
 #print("StanfordCoreNLP loaded")
 # needed for tree features
 
-
+"""
 def getPathsToLeaves(tree, path=[], index=0):
     current = path+[tree.label()]
     for i in range(len(tree)):
@@ -39,6 +41,7 @@ def getPathsToLeaves(tree, path=[], index=0):
                 yield y
         else:
             yield (x, current, index)
+"""
 
 negation = ["not", "n't"]
 
@@ -151,7 +154,37 @@ def compress(sentence):
                 w_features[i]["tree_"+n] = True
             w_features[i][str(paths[i][2])+"_from_left"] = True
         #print(a.treefeatures[0])
-    
+    if dependencies:
+        #make a tree out of it
+        d_tree = defaultdict(list)
+        mother_relations = defaultdict(list)
+        daughter_relations = defaultdict(list)
+        for dep in dependencies:
+            d_tree[dep[1]].append((dep[0], dep[2]))
+            mother_relations[dep[1]].append(dep[0])
+            daughter_relations[dep[2]].append(dep[0])
+
+        #now we can check depth and such
+        #print(d_tree)
+        depths = getDepths(d_tree, u'ROOT', dict(), 0)
+        #print(depths)
+
+        for i in range(len(words)):
+            w = words[i]
+            treefeatures = w_features[i]
+            if w in depths:
+                w_depth = depths[w]
+                treefeatures["dep_depth_"+str(w_depth)] = True
+                if w_depth > 3:
+                    treefeatures["dep_depth_over_3"] = True
+                if w_depth > 5:
+                    treefeatures["dep_depth_over_5"] = True
+            if w in mother_relations:
+                for rel in mother_relations[w]:
+                    treefeatures["dep_mother_"+rel] = True
+            if w in daughter_relations:
+                for rel in daughter_relations[w]:
+                    treefeatures["dep_daughter_"+rel] = True
 
     # get max tfidf for scaling
     maxtfidf = max( tf*idf.idf[w] for w, tf in termFreq.items() )

@@ -79,7 +79,7 @@ classifiers = [LogisticRegression(), OneVsRestClassifier(LinearSVC(random_state=
 classifier_names = ["MaxEnt", "SVM"]
 
 allscores = list()
-for keep in range(10, 11, 10):
+for keep in range(5, 21, 5):
     selector = SelectPercentile(chi2, keep)
     selected_trainfeaturevectors = selector.fit_transform(trainfeaturevectors, trainLabels)
     selected_testfeaturevectors = selector.transform(testfeaturevectors)
