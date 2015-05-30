@@ -41,5 +41,5 @@ export PATH=$JAVA_HOME/bin:$PATH
 python2.7 runAsasExtractionAnalysis.py --doc-input-path $corporaPath --doc-input-path2 $corporaPath2 --topic-xml $topicXmlFile --gold-standard-summary-path $goldStandardSummaryPath --data-type $dataType
 python2.7 reorderSummaries.py --doc-input-path $corporaPath --doc-input-path2 $corporaPath2 --topic-xml $topicXmlFile --gold-standard-summary-path $goldStandardSummaryPath --data-type $dataType --rouge-path ../ROUGE --output-path ../outputs
 
-mkdir -p ../outputs/D4.${dataType}
-cp ../outputs_reordered/* ../outputs/D4.${dataType}
+# mkdir -p "../outputs/D4.${dataType}"
+# cp "../outputs_reordered/* ../outputs/D4.${dataType}"
