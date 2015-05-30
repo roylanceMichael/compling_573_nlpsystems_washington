@@ -290,7 +290,7 @@ for fileName in os.listdir(cachePath):
 		print summary
 
 	docIndex += 1
-	break
+	# break
 
 print "running the rouge evaluator"
 evaluationResults = rouge.evaluate()
