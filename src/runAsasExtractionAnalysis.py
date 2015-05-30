@@ -165,7 +165,9 @@ for fileName in os.listdir(cachePath):
 	if os.path.exists(pickleFilePath):
 		pickleFile = open(pickleFilePath, 'rb')
 		topicDictionary = pickle.load(pickleFile)
-		topicTitle = topicTitles[fileName].lower().strip()
+		topicTitle = ""
+		if fileName in topicTitles:
+			topicTitle = topicTitles[fileName].lower().strip()
 
 		topicTitleDict = {}
 		for word in topicTitle.split(" "):
