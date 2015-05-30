@@ -8,6 +8,7 @@ from nltk.stem.snowball import SnowballStemmer
 from nltk.tree import Tree
 from collections import defaultdict
 import string
+import re
 
 def getPathsToLeaves(tree, path=[], index=0):
     current = path+[tree.label()]
@@ -18,6 +19,13 @@ def getPathsToLeaves(tree, path=[], index=0):
                 yield y
         else:
             yield (x, current, index)
+
+def getDepths(d_tree, current=u'ROOT', depths=dict(), d = 0):
+    if current not in depths:
+        depths[current] = d
+        for dep in d_tree[current]:
+            getDepths(d_tree, dep[1], depths, d+1)
+    return depths
 
 
 compressionCorpusCache = "/home/thcrzy1/proj/cache/compressionCorpusCache/"
@@ -98,6 +106,43 @@ for a in c_corpus:
                 a.treefeatures[i]["tree_"+n] = True
             a.treefeatures[i][str(paths[i][2])+"_from_left"] = True
         #print(a.treefeatures[0])
+    if a.dependencies:
+        #make a tree out of it
+        d_tree = defaultdict(list)
+        mother_relations = defaultdict(list)
+        daughter_relations = defaultdict(list)
+        for dep in a.dependencies:
+            d_tree[dep[1]].append((dep[0], dep[2]))
+            mother_relations[dep[1]].append(dep[0])
+            daughter_relations[dep[2]].append(dep[0])
+
+        #now we can check depth and such
+        #print(d_tree)
+        depths = getDepths(d_tree, u'ROOT', dict(), 0)
+        #print(depths)
+
+        for i in range(len(a)):
+            w = a.o_words[i]
+            if w in depths:
+                w_depth = depths[w]
+                treefeatures = a.treefeatures[i]
+                treefeatures["dep_depth_"+str(w_depth)] = True
+                if w_depth > 3:
+                    treefeatures["dep_depth_over_3"] = True
+                if w_depth > 5:
+                    treefeatures["dep_depth_over_5"] = True
+            if w in mother_relations:
+                for rel in mother_relations[w]:
+                    treefeatures["dep_mother_"+rel] = True
+            if w in daughter_relations:
+                for rel in daughter_relations[w]:
+                    treefeatures["dep_daughter_"+rel] = True
+
+
+
+
+
+
 
 
 # get max tfidf for scaling
