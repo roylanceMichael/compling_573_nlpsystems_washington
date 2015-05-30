@@ -36,8 +36,9 @@ from evaluate.rougeEvaluator import RougeEvaluator
 from evaluate.evaluationCompare import EvaluationCompare
 
 
-
-from compress import compress
+do_compression = False
+if do_compression:
+	from compress import compress
 
 
 
@@ -68,15 +69,15 @@ rougeDir = "../ROUGE"
 rankModel = svmlight.read_model('../cache/svmlightCache/svmlightModel.dat')
 
 rouge = RougeEvaluator(rougeDir,
-                      	args.modelSummaryDir,
-                    	summaryOutputPath,
-                       	modelSummaryCachePath,
-					   	rougeCacheDir)
+					   args.modelSummaryDir,
+					   summaryOutputPath,
+					   modelSummaryCachePath,
+					   rougeCacheDir)
 
 totalClusters = 25
 minimumAverageClusterRange = 30
 maximumAverageClusterRange = 55
-maxWords = 130
+maxWords = 100
 topics = []
 topicTitles = {}
 for topic in extract.topicReader.Topic.factoryMultiple(args.topicXml):
@@ -84,7 +85,7 @@ for topic in extract.topicReader.Topic.factoryMultiple(args.topicXml):
 	topicTitles[topic.id] = re.sub("\s+", " ", topic.title)
 
 documentRepository = extract.documentRepository.DocumentRepository(args.docInputPath, args.docInputPath2,
-                                                                   args.dataType, topics)
+																   args.dataType, topics)
 
 # load the cached docs
 documentRepository.readFileIdDictionaryFromFileCache(documentCachePath)
@@ -141,7 +142,7 @@ for fileName in os.listdir(goldCachePath):
 		goldDocModel = pickle.load(pickleFile)
 
 		# get corresponding topicId
-		topicId = fileName[0:5] + fileName[len(fileName)-3:len(fileName)-2]
+		topicId = fileName[0:5] + fileName[len(fileName) - 3:len(fileName) - 2]
 
 		if topicId in goldTopicDocModels:
 			goldTopicDocModels[topicId][fileName] = goldDocModel
@@ -235,20 +236,27 @@ for fileName in os.listdir(cachePath):
 		bestSentences = []
 		for topSentenceResult in extractionclustering.scorer.returnTopSentencesFromDifferentClusters(
 				scoredSentenceDictionary, clusters):
-			if wordCount > maxWords:
+
+			nextSentence = topSentenceResult[0]
+			if do_compression:
+				nextSentence = compress(nextSentence)
+			nextSentenceWordCount = len(nextSentence.simple.split(" "))
+
+			if wordCount + nextSentenceWordCount > maxWords:
+				s = "-------------\n"
+				for nextSentence in bestSentences:
+					s += nextSentence.simple + "\n"
+				print s
 				break
 
-			sentence = topSentenceResult[0]
-			sentence = compress(sentence)
-			bestSentences.append(sentence)
-
-			if sentence.simple in uniqueSummaries:
+			if nextSentence.simple in uniqueSummaries:
 				continue
 
-			uniqueSummaries[sentence.simple] = None
+			bestSentences.append(nextSentence)
 
-			wordSize = len(sentence.simple.split(" "))
-			wordCount += wordSize
+			uniqueSummaries[nextSentence.simple] = None
+
+			wordCount += nextSentenceWordCount
 
 		summary = ""
 		for uniqueSentence in uniqueSummaries:
@@ -282,12 +290,13 @@ for fileName in os.listdir(cachePath):
 		print summary
 
 	docIndex += 1
+	break
 
 print "running the rouge evaluator"
 evaluationResults = rouge.evaluate()
 evaluation = evaluationResults[0]
-writeBufferToFile(os.path.join(evaluationOutputPath, "D3.results"), evaluation)
-writeBufferToFile(os.path.join(evaluationOutputPath, "D3.results_reordered"), evaluation)
+writeBufferToFile(os.path.join(evaluationOutputPath, "D4.results"), evaluation)
+writeBufferToFile(os.path.join(evaluationOutputPath, "D4.results_reordered"), evaluation)
 
 # call the evaluation comparison routine.
 # note:  this will only print t
@@ -306,5 +315,3 @@ for fileName in clusterSizes:
 	summedAverage += clusterSizes[fileName]
 
 print "average overall: " + str(summedAverage / float(len(clusterSizes)))
-
-
