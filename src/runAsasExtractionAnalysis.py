@@ -238,6 +238,8 @@ for fileName in os.listdir(cachePath):
 				scoredSentenceDictionary, clusters):
 
 			nextSentence = topSentenceResult[0]
+			if do_compression:
+				nextSentence = compress(nextSentence)
 			nextSentenceWordCount = len(nextSentence.simple.split(" "))
 
 			if wordCount + nextSentenceWordCount > maxWords:
@@ -247,13 +249,10 @@ for fileName in os.listdir(cachePath):
 				print s
 				break
 
-			sentence = topSentenceResult[0]
-			if do_compression:
-				sentence = compress(sentence)
-			bestSentences.append(sentence)
-
 			if nextSentence.simple in uniqueSummaries:
 				continue
+
+			bestSentences.append(nextSentence)
 
 			uniqueSummaries[nextSentence.simple] = None
 
@@ -291,7 +290,7 @@ for fileName in os.listdir(cachePath):
 		print summary
 
 	docIndex += 1
-	# break
+	break
 
 print "running the rouge evaluator"
 evaluationResults = rouge.evaluate()
