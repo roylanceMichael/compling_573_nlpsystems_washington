@@ -1,9 +1,10 @@
 import cPickle as pickle
 from compressionCacheGen import Alligned
 from sklearn.feature_extraction import DictVectorizer
-from sklearn.feature_selection import SelectPercentile, chi2
+from sklearn.feature_selection import SelectPercentile, chi2, VarianceThreshold
 from sklearn.naive_bayes import BernoulliNB
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.linear_model import LogisticRegression
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.svm import LinearSVC
 
@@ -24,6 +25,8 @@ for a in c_corpus:
 
         f["stem_"+a.stemmed[i][0]] = True
         f["affix_"+a.stemmed[i][1]] = True
+
+        f.update(a.treefeatures[i])
 
         wordFeatures.append(f)
         f = f.copy()
@@ -48,8 +51,8 @@ for a in c_corpus:
         labels.append(a.labels[i])
 
 
-print(allFeatures[0])
-print(allFeatures[3])
+#print(allFeatures[0])
+#print(allFeatures[3])
 
 partition = len(allFeatures) * 9 / 10
 trainWordFeatures = allFeatures[:partition]
@@ -62,7 +65,15 @@ vec = DictVectorizer()
 trainfeaturevectors = vec.fit_transform(trainWordFeatures)
 testfeaturevectors = vec.transform(testWordFeatures)
 
-classifiers = [BernoulliNB(), DecisionTreeClassifier(), OneVsRestClassifier(LinearSVC(random_state=0)) ]
+"""
+vth = 0.1
+varthresh = VarianceThreshold(threshold=vth*(1.0-vth))
+trainfeaturevectors = varthresh.fit_transform(trainfeaturevectors, trainLabels)
+testfeaturevectors = varthresh.transform(testfeaturevectors)
+"""
+
+classifiers = [BernoulliNB(), DecisionTreeClassifier(), LogisticRegression(), OneVsRestClassifier(LinearSVC(random_state=0)) ]
+classifier_names = ["BernoulliNB", "DecisionTreeClassifier", "MaxEnt", "SVM"]
 
 allscores = list()
 for keep in range(10, 101, 10):
@@ -71,18 +82,27 @@ for keep in range(10, 101, 10):
     testfeaturevectors = selector.transform(testfeaturevectors)
 
     scores = list()
-    for classifier in classifiers:
-        #classifier = BernoulliNB()
-        #classifier = DecisionTreeClassifier()
-        #classifier = OneVsRestClassifier(LinearSVC(random_state=0))
+    for c in range(len(classifiers)):
+        classifier = classifiers[c]
+
         classifier.fit(trainfeaturevectors, trainLabels)
-        scores.append((classifier.score(testfeaturevectors, testLabels), keep, classifier))
+        scores.append((classifier.score(testfeaturevectors, testLabels), keep, classifier_names[c], c))
 
     print(str(keep)+"\t"+"\t".join(str(s[0]) for s in scores))
     allscores += scores
 
-print(max(allscores))
+print("saving the best classifier:")
 
-#print(featurearray)
-#print(vec.get_feature_names())
+bestsettings = max(allscores)
+print(bestsettings)
+
+bestselector = SelectPercentile(chi2, bestsettings[1])
+trainfeaturevectors = bestselector.fit_transform(trainfeaturevectors, trainLabels)
+bestclassifier = classifiers[bestsettings[3]]
+bestclassifier.fit(trainfeaturevectors, trainLabels)
+
+print(bestselector)
+print(bestclassifier)
+
+pickle.dump((bestselector, bestclassifier), open(compressionCorpusCache+"compressionClassifier", 'wb'))
 

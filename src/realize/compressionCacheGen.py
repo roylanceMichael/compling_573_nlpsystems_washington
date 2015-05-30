@@ -45,6 +45,40 @@ class Alligned:
         self.tree = None
         self.dependencies = None
 
+        self.treefeatures = list(dict() for x in self.o_words)
+        self.dependfeatures = list(dict() for x in self.o_words)
+
+    def update(self, otherAligned):
+        for i in range(len(self.o_words)):
+            if hasattr(otherAligned, 'features'):
+                self.features[i].update(otherAligned.features[i])
+            if hasattr(otherAligned, 'posfeatures'):
+                self.posfeatures[i].update(otherAligned.posfeatures[i])
+            if hasattr(otherAligned, 'stemmed'):
+                self.stemmed[i] = otherAligned.stemmed[i]
+
+            if hasattr(otherAligned, 'treefeatures'):
+                self.treefeatures[i].update(otherAligned.treefeatures[i])
+            if hasattr(otherAligned, 'dependfeatures'):
+                self.dependfeatures[i].update(otherAligned.dependfeatures[i])
+
+        if hasattr(otherAligned, 'triples') and len(otherAligned.triples):
+            self.triples = otherAligned.triples
+        if hasattr(otherAligned, 'entities') and len(otherAligned.entities):
+            self.entities = otherAligned.entities
+        if hasattr(otherAligned, 'entityScores'):
+            self.entityScores.update(otherAligned.entityScores)
+        if hasattr(otherAligned, 'facts') and len(otherAligned.facts):
+            self.facts = otherAligned.facts
+        if hasattr(otherAligned, 'phrases') and len(otherAligned.phrases):
+            self.phrases = otherAligned.phrases
+
+        if hasattr(otherAligned, 'tree') and otherAligned.tree:
+            self.tree = otherAligned.tree
+        if hasattr(otherAligned, 'dependencies') and otherAligned.dependencies:
+            self.dependencies = otherAligned.dependencies
+
+
     def __str__(self):
         uniValue = (" ".join(self.o_words)).encode("utf-8")
         return str(uniValue)

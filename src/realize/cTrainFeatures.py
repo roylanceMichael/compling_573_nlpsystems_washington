@@ -5,13 +5,25 @@ from model.idf import Idf
 import nltk
 from nltk.corpus import stopwords
 from nltk.stem.snowball import SnowballStemmer
+from nltk.tree import Tree
 from collections import defaultdict
 import string
+
+def getPathsToLeaves(tree, path=[], index=0):
+    current = path+[tree.label()]
+    for i in range(len(tree)):
+        x=tree[i]
+        if type(x) is Tree:
+            for y in getPathsToLeaves(x, current, i):
+                yield y
+        else:
+            yield (x, current, index)
+
 
 compressionCorpusCache = "/home/thcrzy1/proj/cache/compressionCorpusCache/"
 #compressionCorpusCache = "../cache/compressionCorpusCache/"
 
-c_corpus = pickle.load(open(compressionCorpusCache+'c_Sentences', 'r'))
+c_corpus = pickle.load(open(compressionCorpusCache+'c_Sentences_full_parsed', 'r'))
 
 negation = ["not", "n't"]
 
@@ -34,7 +46,7 @@ for a in c_corpus:
                 a.features[x]["infirst"+str(i)] = True
                 a.features[-1-x]["inlast"+str(i)] = True
 
-    pos = [ x[1] for x in nltk.pos_tag(a.o_words) ]
+    #pos = [ x[1] for x in nltk.pos_tag(a.o_words) ]
 
     for i in range(len(a)):
         w = a.o_words[i]
@@ -57,7 +69,7 @@ for a in c_corpus:
             features["stopWords"] = True
 
         #pos
-        a.posfeatures[i]["pos_"+pos[i]] = True
+        #a.posfeatures[i]["pos_"+pos[i]] = True
 
         # compute the basic term frequencies of all words in paragraphs
         # for use in building corpus-wide quarry term frequency
@@ -69,6 +81,24 @@ for a in c_corpus:
         if len(stem) < len(w) and w.startswith(stem):
             suffix = w[len(stem):]
         a.stemmed[i] = (stem, suffix)
+
+    #Stanford tree features
+    #print(a.tree)
+    if a.tree:
+        tree = Tree.fromstring(a.tree[0].encode('ascii', 'ignore'))
+        #print(str(tree))
+        paths = list(getPathsToLeaves(tree))
+        #print(paths)
+        for i in range(min(len(paths), len(a.o_words))):
+            #print(paths[i][1])
+            a.treefeatures[i]["tree_depth_"+str(len(paths[i][1]))] = True
+            for x in range(0,2):
+                a.treefeatures[i][str(x)+"_up_"+paths[i][1][-1-x]] = True
+            for n in paths[i][1]:
+                a.treefeatures[i]["tree_"+n] = True
+            a.treefeatures[i][str(paths[i][2])+"_from_left"] = True
+        #print(a.treefeatures[0])
+
 
 # get max tfidf for scaling
 maxtfidf = max( tf*idf.idf[w] for w, tf in termFreq.items() )
@@ -94,6 +124,7 @@ for i in range(len(example)):
     print(example.features[i])
     print(example.posfeatures[i])
     print(example.stemmed[i])
+    print(example.treefeatures[i])
     print("")
 
 pickle.dump(c_corpus, open(compressionCorpusCache+"c_Sentences_basic_features", 'w'))
