@@ -144,9 +144,9 @@ for fileName in os.listdir(goldCachePath):
 		topicId = fileName[0:5] + fileName[len(fileName)-3:len(fileName)-2]
 
 		if topicId in goldTopicDocModels:
-			goldTopicDocModels[topicId][topicId] = goldDocModel
+			goldTopicDocModels[topicId][fileName] = goldDocModel
 		else:
-			goldTopicDocModels[topicId] = {topicId: goldDocModel}
+			goldTopicDocModels[topicId] = {fileName: goldDocModel}
 
 goldSentences = {}
 for topicId in goldTopicDocModels:
