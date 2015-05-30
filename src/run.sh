@@ -33,4 +33,9 @@ else
 fi
 
 echo "$corporaPath $corporaPath2 $topicXmlFile $goldStandardSummaryPath $dataType"
+
+# required for running the Stanford parser for compression
+export JAVA_HOME="/opt/jdk1.8.0"
+export PATH=$JAVA_HOME/bin:$PATH
+
 python2.7 runAsasExtractionAnalysis.py --doc-input-path $corporaPath --doc-input-path2 $corporaPath2 --topic-xml $topicXmlFile --gold-standard-summary-path $goldStandardSummaryPath --data-type $dataType
