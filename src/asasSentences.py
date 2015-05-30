@@ -127,7 +127,7 @@ for topicId in goldTopicDocModels:
 	goldSentences[topicId] = allSentences
 
 
-num_sentences = 3
+num_sentences = 10
 
 # fileName refers to cache/asasCache/D1001A ...
 for fileName in os.listdir(cachePath)[:1]:

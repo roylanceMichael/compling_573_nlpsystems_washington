@@ -36,8 +36,9 @@ from evaluate.rougeEvaluator import RougeEvaluator
 from evaluate.evaluationCompare import EvaluationCompare
 
 
-
-# from compress import compress
+do_compression = False
+if do_compression:
+	from compress import compress
 
 
 
@@ -144,9 +145,9 @@ for fileName in os.listdir(goldCachePath):
 		topicId = fileName[0:5] + fileName[len(fileName) - 3:len(fileName) - 2]
 
 		if topicId in goldTopicDocModels:
-			goldTopicDocModels[topicId][topicId] = goldDocModel
+			goldTopicDocModels[topicId][fileName] = goldDocModel
 		else:
-			goldTopicDocModels[topicId] = {topicId: goldDocModel}
+			goldTopicDocModels[topicId] = {fileName: goldDocModel}
 
 goldSentences = {}
 for topicId in goldTopicDocModels:
@@ -246,8 +247,10 @@ for fileName in os.listdir(cachePath):
 				print s
 				break
 
-			# sentence = compress(sentence)
-			bestSentences.append(nextSentence)
+			sentence = topSentenceResult[0]
+			if do_compression:
+				sentence = compress(sentence)
+			bestSentences.append(sentence)
 
 			if nextSentence.simple in uniqueSummaries:
 				continue
