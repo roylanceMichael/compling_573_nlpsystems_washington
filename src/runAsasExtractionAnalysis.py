@@ -37,7 +37,10 @@ from evaluate.evaluationCompare import EvaluationCompare
 
 
 
-# from compress import compress
+from compress import compress
+
+
+
 parser = argparse.ArgumentParser(description='Basic Document Summarizer.')
 parser.add_argument('--doc-input-path', help='Path to data files', dest='docInputPath')
 parser.add_argument('--doc-input-path2', help='Path to data files', nargs='?', default=None, dest='docInputPath2')
@@ -58,7 +61,8 @@ documentCachePath = "../cache/documentCache"
 idfCachePath = "../cache/idfCache"
 meadCacheDir = "../cache/meadCache"
 rougeCacheDir = "../cache/rougeCache"
-rougeDir = "/opt/dropbox/14-15/573/code/ROUGE"
+rougeDir = "../ROUGE"
+# rougeDir = "/opt/dropbox/14-15/573/code/ROUGE"
 
 
 rankModel = svmlight.read_model('../cache/svmlightCache/svmlightModel.dat')
@@ -235,7 +239,7 @@ for fileName in os.listdir(cachePath):
 				break
 
 			sentence = topSentenceResult[0]
-			# sentence = compress(sentence)
+			sentence = compress(sentence)
 			bestSentences.append(sentence)
 
 			if sentence.simple in uniqueSummaries:

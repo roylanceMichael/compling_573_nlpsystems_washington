@@ -21,13 +21,14 @@ classifierFileName = "compressionClassifier"
 
 vec, selector, classifier = pickle.load(open(classifierCachePath+classifierFileName, 'rb'))
 
-"""
+
 corenlp_dir = "/NLP_TOOLS/tool_sets/stanford-corenlp/stanford-corenlp-full-2015-04-20/"
-parser = StanfordCoreNLP(corenlp_dir)
+parser = None
+
 tree_re = re.compile(r"\(ROOT.*")
 print("StanfordCoreNLP loaded")
 # needed for tree features
-"""
+
 
 def getPathsToLeaves(tree, path=[], index=0):
     current = path+[tree.label()]
@@ -44,12 +45,15 @@ negation = ["not", "n't"]
 stopWords = set(stopwords.words('english'))
 punct = set(string.punctuation) | {"''", "``"}
 
-idf = Idf("/home/thcrzy1/PycharmProjects/compling_573_nlpsystems_washington/cache/idfCache")
+idf = Idf("../cache/idfCache")
 termFreq = defaultdict(int)
 
 stemmer = SnowballStemmer('english')
 
 def compress(sentence):
+    if not parser:
+        parser = StanfordCoreNLP(corenlp_dir)
+
     text = sentence.simple
     words = word_tokenize(text)
     w_features = [dict() for w in words]
@@ -111,7 +115,7 @@ def compress(sentence):
     #Stanford tree features
     text = text.encode('ascii', 'ignore')
 
-    """
+    
     tree = None
     dependencies = None
 
@@ -143,9 +147,9 @@ def compress(sentence):
                 w_features[i][str(x)+"_up_"+paths[i][1][-1-x]] = True
             for n in paths[i][1]:
                 w_features[i]["tree_"+n] = True
-            a.treefeatures[i][str(paths[i][2])+"_from_left"] = True
+            w_features[i][str(paths[i][2])+"_from_left"] = True
         #print(a.treefeatures[0])
-    """
+    
 
     # get max tfidf for scaling
     maxtfidf = max( tf*idf.idf[w] for w, tf in termFreq.items() )
@@ -203,7 +207,13 @@ def compress(sentence):
         if labels[i] != 'O':
             retained_words.append(words[i])
 
-    sentence.simple = " ".join(retained_words)
+    newsentence = ""
+    for i in range(len(retained_words)):
+        if i != 0 and retained_words[i] not in punct and retained_words[i-1] not in ["``"]:
+            newsentence += " "
+        newsentence += retained_words[i]
+        
+    sentence.simple = newsentence
 
     return sentence
 

@@ -1886,6 +1886,7 @@ sub readText {
 	  $tmpText.=" ";
 	}
 	$tmpText.=join(" ",@tokens[0..$lengthLimit-$tmpTextLen-1]);
+	# TMARSH print "limiting text to $lengthLimit:  $tmpText \n";
 	last;
       }
     }
