@@ -15,7 +15,7 @@ class EvaluationCompare:
 	def __init__(self, resultsDir, meadCacheDir, rougeEvaluator):
 		self.resultsDir = resultsDir
 		self.meadCacheDir = meadCacheDir
-		self.resultsFileName = os.path.join(self.resultsDir, "D3.results")
+		self.resultsFileName = os.path.join(self.resultsDir, "D4.results")
 		self.meadStandardFileName = os.path.join(self.meadCacheDir, "evaluations", "standard.results")
 		self.meadInitialFileName = os.path.join(self.meadCacheDir, "evaluations", "initial.results")
 		self.meadRandomFileName = os.path.join(self.meadCacheDir, "evaluations", "random.results")
