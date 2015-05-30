@@ -92,42 +92,42 @@ class Document:
 
 		if docNoKey in objectDictionary:
 			for item in objectDictionary[docNoKey]:
-				newDocument.docNo += item
+				newDocument.docNo += unicode(item, errors='replace')
 
 		if docTypeKey in objectDictionary:
 			for item in objectDictionary[docTypeKey]:
-				newDocument.docType += item
+				newDocument.docType += unicode(item, errors='replace')
 
 		if dateTimeKey in objectDictionary:
 			for item in objectDictionary[dateTimeKey]:
-				newDocument.dateTime += item
+				newDocument.dateTime += unicode(item, errors='replace')
 
 		if headerKey in objectDictionary:
 			for item in objectDictionary[headerKey]:
-				newDocument.header += item
+				newDocument.header += unicode(item, errors='replace')
 
 		if slugKey in objectDictionary:
 			for item in objectDictionary[slugKey]:
-				newDocument.slug += item
+				newDocument.slug += unicode(item, errors='replace')
 
 		if headlineKey in objectDictionary:
 			for item in objectDictionary[headlineKey]:
-				newDocument.headline += item
+				newDocument.headline += unicode(item, errors='replace')
 
 		if trailerKey in objectDictionary:
 			for item in objectDictionary[trailerKey]:
-				newDocument.trailer += item
+				newDocument.trailer += unicode(item, errors='replace')
 
 		if pKey in objectDictionary:
 			for item in objectDictionary[pKey]:
-				newDocument.paragraphs.append(item)
+				newDocument.paragraphs.append(unicode(item, errors='replace'))
 		elif textKey in objectDictionary:
 			for item in objectDictionary[textKey]:
-				newDocument.paragraphs.append(Document.cleanseParagraph(item))
+				newDocument.paragraphs.append(Document.cleanseParagraph(unicode(item, errors='replace')))
 
 		if bodyKey in objectDictionary:
 			for item in objectDictionary[bodyKey]:
-				newDocument.body += item
+				newDocument.body += unicode(item, errors='replace')
 
 		return newDocument
 
