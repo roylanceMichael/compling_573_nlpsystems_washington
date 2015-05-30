@@ -13,7 +13,7 @@ import sys
 import model.idf
 from model.idf import Idf
 
-from realize.cTrainFeatures import getPathsToLeaves, getDepths
+#from realize.cTrainFeatures import getPathsToLeaves, getDepths
 
 from extractionclustering.sentence import Sentence
 from corenlp import StanfordCoreNLP
@@ -31,7 +31,6 @@ tree_re = re.compile(r"\(ROOT.*")
 #print("StanfordCoreNLP loaded")
 # needed for tree features
 
-"""
 def getPathsToLeaves(tree, path=[], index=0):
     current = path+[tree.label()]
     for i in range(len(tree)):
@@ -41,7 +40,13 @@ def getPathsToLeaves(tree, path=[], index=0):
                 yield y
         else:
             yield (x, current, index)
-"""
+
+def getDepths(d_tree, current=u'ROOT', depths=dict(), d = 0):
+    if current not in depths:
+        depths[current] = d
+        for dep in d_tree[current]:
+            getDepths(d_tree, dep[1], depths, d+1)
+    return depths
 
 negation = ["not", "n't"]
 
